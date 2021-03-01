@@ -12,4 +12,7 @@ if __name__ == '__main__':
     while True:
         _input  = input('> ')
         _output = calculator.evaluate(_input)
-        print(_output)
+ 
+        print(_input + " = " + str(_output))
+
+
