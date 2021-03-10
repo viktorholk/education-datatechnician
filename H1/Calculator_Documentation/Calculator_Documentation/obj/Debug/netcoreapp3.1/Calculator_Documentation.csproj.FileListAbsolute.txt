@@ -1,0 +1,15 @@
+C:\Users\Viktor\Desktop\Development\education_datatechnician\H1\Calculator_Documentation\Calculator_Documentation\obj\Debug\netcoreapp3.1\Calculator_Documentation.csprojAssemblyReference.cache
+C:\Users\Viktor\Desktop\Development\education_datatechnician\H1\Calculator_Documentation\Calculator_Documentation\obj\Debug\netcoreapp3.1\Calculator_Documentation.AssemblyInfoInputs.cache
+C:\Users\Viktor\Desktop\Development\education_datatechnician\H1\Calculator_Documentation\Calculator_Documentation\obj\Debug\netcoreapp3.1\Calculator_Documentation.AssemblyInfo.cs
+C:\Users\Viktor\Desktop\Development\education_datatechnician\H1\Calculator_Documentation\Calculator_Documentation\obj\Debug\netcoreapp3.1\Calculator_Documentation.csproj.CoreCompileInputs.cache
+C:\Users\Viktor\Desktop\Development\education_datatechnician\H1\Calculator_Documentation\Calculator_Documentation\bin\Debug\netcoreapp3.1\Calculator_Documentation.exe
+C:\Users\Viktor\Desktop\Development\education_datatechnician\H1\Calculator_Documentation\Calculator_Documentation\bin\Debug\netcoreapp3.1\Calculator_Documentation.deps.json
+C:\Users\Viktor\Desktop\Development\education_datatechnician\H1\Calculator_Documentation\Calculator_Documentation\bin\Debug\netcoreapp3.1\Calculator_Documentation.runtimeconfig.json
+C:\Users\Viktor\Desktop\Development\education_datatechnician\H1\Calculator_Documentation\Calculator_Documentation\bin\Debug\netcoreapp3.1\Calculator_Documentation.runtimeconfig.dev.json
+C:\Users\Viktor\Desktop\Development\education_datatechnician\H1\Calculator_Documentation\Calculator_Documentation\bin\Debug\netcoreapp3.1\Calculator_Documentation.dll
+C:\Users\Viktor\Desktop\Development\education_datatechnician\H1\Calculator_Documentation\Calculator_Documentation\bin\Debug\netcoreapp3.1\Calculator_Documentation.pdb
+C:\Users\Viktor\Desktop\Development\education_datatechnician\H1\Calculator_Documentation\Calculator_Documentation\obj\Debug\netcoreapp3.1\Calculator_Documentation.dll
+C:\Users\Viktor\Desktop\Development\education_datatechnician\H1\Calculator_Documentation\Calculator_Documentation\obj\Debug\netcoreapp3.1\Calculator_Documentation.pdb
+C:\Users\Viktor\Desktop\Development\education_datatechnician\H1\Calculator_Documentation\Calculator_Documentation\obj\Debug\netcoreapp3.1\Calculator_Documentation.genruntimeconfig.cache
+C:\Users\Viktor\Desktop\Development\education_datatechnician\H1\Calculator_Documentation\Calculator_Documentation\bin\Debug\netcoreapp3.1\Calculator_Documentation.xml
+C:\Users\Viktor\Desktop\Development\education_datatechnician\H1\Calculator_Documentation\Calculator_Documentation\obj\Debug\netcoreapp3.1\Calculator_Documentation.xml
