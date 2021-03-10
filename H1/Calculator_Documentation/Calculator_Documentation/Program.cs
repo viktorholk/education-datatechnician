@@ -3,6 +3,11 @@
 namespace Calculator_Documentation
 {
 
+    /// <summary>
+    /// The Calculator class that is the pinpoint of the project
+    /// In here we have the mathematically logical methods such as Add, Subtract, Multiply and division
+    /// There is also a method called GetNumbers that returns the (int)numbers that are used in the logical methods
+    /// </summary>
     public class Calculator
     {
         /// <summary>

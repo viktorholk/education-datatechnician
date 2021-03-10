@@ -4,6 +4,13 @@
         <name>Calculator_Documentation</name>
     </assembly>
     <members>
+        <member name="T:Calculator_Documentation.Calculator">
+            <summary>
+            The Calculator class that is the pinpoint of the project
+            In here we have the mathematically logical methods such as Add, Subtract, Multiply and division
+            There is also a method called GetNumbers that returns the (int)numbers that are used in the logical methods
+            </summary>
+        </member>
         <member name="M:Calculator_Documentation.Calculator.Add(System.Single,System.Single)">
             <summary>
                 Takes two arguments and takes the sum of it by adding them together
