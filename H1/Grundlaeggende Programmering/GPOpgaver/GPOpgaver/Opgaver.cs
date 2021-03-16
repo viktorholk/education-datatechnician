@@ -172,7 +172,8 @@ namespace GPOpgaver
 
             for (int i = 0; i < length; i++)
             {
-                multiples[i] = num * i;
+                Console.WriteLine(i);
+                multiples[i] = num * (i + 1);
             }
 
             return multiples;
@@ -227,7 +228,29 @@ namespace GPOpgaver
         {
             throw new NotImplementedException();
             //Write your solution here
+            ///*
+            // * First we are going through the txt to get a number and consider the zeros
+            // * 
+            // */
 
+            //string number = "";
+            //string zeros = "";
+            //int digitStart;
+
+            //for (int i = 0; i < txt.Length; i++)
+            //{
+            //    char _char = Convert.ToChar(txt[i]);
+            //    if (Char.IsDigit(_char))
+            //    {
+            //        if (_char == Convert.ToChar("0"))
+            //            zeros += "0";
+            //        else
+            //            number += txt[i];
+            //    }
+            //}
+
+            //string txtWithoutNumbers;
+            //return $"{zeros},{number}";
         }
         /*
          * Exercise 10.
