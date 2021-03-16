@@ -210,6 +210,8 @@ namespace GPOpgaver
          */
         public static long Factorial(int n)
         {
+            if (n == 0)
+                return 1;
             long result = n;
             for (int i = n - 1; i > 0; i--)
             {
