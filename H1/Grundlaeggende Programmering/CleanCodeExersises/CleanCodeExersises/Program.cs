@@ -81,13 +81,9 @@ namespace CleanCodeExersises
          */
         public bool IsLoggedInClean(bool isNotloggedIn)
         {
-            if (!isNotloggedIn)
-            {
-                Console.WriteLine("Succesfully logged in.");
-                return true;
-            }
-            Console.WriteLine("Failed to logged in.");
-            return false;
+            // We dont need to writeline whether or not it was successful because this is in the backend, and we dont need anything else 
+            // than a boolean thats says true of false
+            return !isNotloggedIn;
         }
         /*
          * Intermediate exercise
@@ -114,7 +110,7 @@ namespace CleanCodeExersises
         {
             return (employee.Age > 55
                 && employee.YearsEmployed > 10
-                && employee.IsRetired) ? true : false;
+                && employee.IsRetired);
         }
         
         /*
