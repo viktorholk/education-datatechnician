@@ -11,6 +11,32 @@ namespace CleanCodeExersises
     {
         static void Main(string[] args)
         {
+            Program program = new Program();
+
+            Console.WriteLine("IsLegalDrikingAge:");
+            int age = 25;
+            Console.WriteLine($"Dirty: {program.IsLegalDrikingAgeDirty(age)}");
+            Console.WriteLine($"Clean: {program.IsLegalDrikingAgeClean(age)}");
+            Console.WriteLine();
+
+            Console.WriteLine("IsLoggedIn:");
+            bool isNotloggedIn = true;
+            Console.WriteLine($"Dirty: {program.IsLoggedInDirty(isNotloggedIn)}");
+            Console.WriteLine($"Clean: {program.IsLoggedInClean(isNotloggedIn)}");
+            Console.WriteLine();
+
+            Console.WriteLine("Eligible:");
+            Employee employee = new Employee(65, 12, true);
+            Console.WriteLine($"Dirty: {program.eligibleDirty(employee)}");
+            Console.WriteLine($"Clean: {program.eligibleClean(employee)}");
+            Console.WriteLine();
+
+            bool isPreordered = true;
+            Console.WriteLine($"Dirty: {program.GetPriceDirty(isPreordered)}");
+            Console.WriteLine($"Clean: {program.GetPriceClean(isPreordered)}");
+            Console.WriteLine();
+
+
         }
         /*
          * Magic Number exercise
@@ -30,10 +56,9 @@ namespace CleanCodeExersises
          * Solution to Magic Number exercise
          * Use consts to describe the numbers you are using to your programs.
          */
-        public bool IsLegalDrikingAgeClean()
+        public bool IsLegalDrikingAgeClean(int age)
         {
-            throw new NotImplementedException();
-            //Write your solution here
+            return age > 21;
         }
         /*
          * Be positive exersise
@@ -54,10 +79,15 @@ namespace CleanCodeExersises
         /*
          * Solution to Be positive exersise
          */
-        public bool IsLoggedInClean()
+        public bool IsLoggedInClean(bool isNotloggedIn)
         {
-            throw new NotImplementedException();
-            //Write your solution here
+            if (!isNotloggedIn)
+            {
+                Console.WriteLine("Succesfully logged in.");
+                return true;
+            }
+            Console.WriteLine("Failed to logged in.");
+            return false;
         }
         /*
          * Intermediate exercise
@@ -80,10 +110,11 @@ namespace CleanCodeExersises
          * Solution to ohm Intermediate exercise
          * An intermediate Variable says a lot more them a long expression
          */
-        public bool eligibleClean()
+        public bool eligibleClean(Employee employee)
         {
-            throw new NotImplementedException();
-            //Write your solution here
+            return (employee.Age > 55
+                && employee.YearsEmployed > 10
+                && employee.IsRetired) ? true : false;
         }
         
         /*
@@ -103,10 +134,9 @@ namespace CleanCodeExersises
          * Solution to Ternary exersise
          * Use a oneline Ternary.
          */
-        public double GetPriceClean()
+        public double GetPriceClean(bool isPreordered)
         {
-            throw new NotImplementedException();
-            //Write your solution here
+            return isPreordered ? 200.00 : 350.00;
         }
         /*
          * Strong type exersise - not done
