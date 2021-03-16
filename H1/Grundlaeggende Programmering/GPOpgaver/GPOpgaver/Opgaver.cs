@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
+using System.Linq;
 namespace GPOpgaver
 {
     public static class Opgaver
@@ -233,8 +233,8 @@ namespace GPOpgaver
             // * 
             // */
             // Create a new string without any digits
-            int number  = 0;
-            int zeros   = 0;
+            int number = 0;
+            int zeros = 0;
             int digitStart = 0;
 
             string newString;
@@ -265,7 +265,7 @@ namespace GPOpgaver
                         }
                     }
                     // If there is a number
-                    if (numberString.Length > 0 )
+                    if (numberString.Length > 0)
                         number = Convert.ToInt32(numberString);
                     break;
                 }
@@ -277,7 +277,6 @@ namespace GPOpgaver
             else
                 newString = txt;
 
-            Console.WriteLine("aaaaaaaaaaaaaaa " + newString );
             // If there isn't any numbers add 1 to the string
             if (number == 0)
                 return txt + "1";
@@ -314,9 +313,74 @@ namespace GPOpgaver
          */
         public static bool ValidatePassword(string password)
         {
-            throw new NotImplementedException();
-            //Write your solution here
-        }
+            char[] specialCharacters = new char[27] { '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '+', '=', '-', '{', '}', '[', ']', ':', ';', '"', '\'', '?', '<', '>', ',', '.', '_' };
+            char[] allowedCharacters = new char[26] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
 
+            bool uppercaseCheck = false;
+            bool lowercaseCheck = false;
+            bool numberCheck = false;
+            bool specialCharCheck = false;
+
+            // If the password is either under 8 characters or over 25 characters return false for invalid secure password
+            if (password.Length < 8 || password.Length > 24)
+                return false;
+
+            // Convert password to char array to we can check each char and make sure that the password fits the security of the algorithm
+            char[] charArray = password.ToCharArray();
+
+
+            // Check if there is a uppercase character
+            for (int i = 0; i < charArray.Length; i++)
+            {
+                if (char.IsUpper(charArray[i]))
+                {
+                    // check if the character is also allowed
+                    if (allowedCharacters.Contains(Char.ToLower(charArray[i])))
+                        uppercaseCheck = true;
+                    break;
+                }
+            }
+
+            // Check if there is a lowercase character
+            for (int i = 0; i < charArray.Length; i++)
+            {
+                if (char.IsLower(charArray[i]))
+                {
+                    if (allowedCharacters.Contains(Char.ToLower(charArray[i])))
+                        lowercaseCheck = true;
+                    break;
+                }
+            }
+
+            // Check if there is a number character
+            for (int i = 0; i < charArray.Length; i++)
+            {
+                if (char.IsDigit(charArray[i]))
+                {
+                    numberCheck = true;
+                    break;
+                }
+            }
+
+            // Check if there is a special character
+            for (int i = 0; i < charArray.Length; i++)
+            {
+                if (specialCharacters.Contains(charArray[i]))
+                {
+                    specialCharCheck = true;
+                    break;
+                }
+            }
+
+
+            // Check if all of the conditions is met and return
+            if (uppercaseCheck
+                && lowercaseCheck
+                && numberCheck
+                && specialCharCheck)
+                return true;
+            // None or not all conditions is met
+            return false;
+        }
     }
 }
