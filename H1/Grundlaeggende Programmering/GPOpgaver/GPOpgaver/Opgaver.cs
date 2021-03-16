@@ -225,55 +225,25 @@ namespace GPOpgaver
          */
         public static string IncrementString(string txt)
         {
-            string ns = txt;
-            char[] charArray = ns.ToCharArray();
-
-            int leadingZerosStart = 0;
-            int leadingZerosEnd = 0;
-
-            // Check for leading zeros
-            for (int i = 0; i < charArray.Length; i++)
-            {
-                if (Char.GetNumericValue(charArray[i]) == 0)
-                {
-                    leadingZerosStart = i;
-                    if (leadingZerosEnd > 0) break;
-                    for (int j = i; j < charArray.Length; j++)
-                    {
-                        if (Char.GetNumericValue(charArray[j]) != 0)
-                        {
-                            leadingZerosEnd = j;
-                            break;
-                        }
-                    }
-                }
-            }
-
-            //if (leadingZerosEnd > 0)
-            //{
-            //    ns.Remove(leadingZerosStart, leadingZerosEnd);
-            //}
-
-
-
-            if (Char.IsNumber(charArray[^1]))
-            {
-                charArray[^1] = (char)(Convert.ToInt16(charArray[^1] + 1));
-                ns = string.Join("", charArray);
-            }
-            else
-            {
-                ns += "1";
-            }
-            return ns;
+            throw new NotImplementedException();
+            //Write your solution here
 
         }
         /*
          * Exercise 10.
-         * Write a more effectiv version of this function.
+         * Write a method to validate a sercure password.
+         *     The password must contain at least one uppercase character.
+         *     The password must contain at least one lowercase character.
+         *     The password must contain at least one number.
+         *     The password must contain at least one special character ! @ # $ % ^ & * ( ) + = - { } [ ] : ; " ' ? < > , . _
+         *     The password must be at least 8 characters in length.
+         *     The password must not be over 25 characters in length.
          */
+        public static bool ValidatePassword(string password)
+        {
+            throw new NotImplementedException();
+            //Write your solution here
+        }
 
     }
-
-
 }
