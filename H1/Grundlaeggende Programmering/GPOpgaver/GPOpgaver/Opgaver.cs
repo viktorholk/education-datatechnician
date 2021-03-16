@@ -228,31 +228,79 @@ namespace GPOpgaver
          */
         public static string IncrementString(string txt)
         {
-            throw new NotImplementedException();
-            //Write your solution here
             ///*
             // * First we are going through the txt to get a number and consider the zeros
             // * 
             // */
+            // Create a new string without any digits
+            int number  = 0;
+            int zeros   = 0;
+            int digitStart = 0;
 
-            //string number = "";
-            //string zeros = "";
-            //int digitStart;
+            string newString;
 
-            //for (int i = 0; i < txt.Length; i++)
-            //{
-            //    char _char = Convert.ToChar(txt[i]);
-            //    if (Char.IsDigit(_char))
-            //    {
-            //        if (_char == Convert.ToChar("0"))
-            //            zeros += "0";
-            //        else
-            //            number += txt[i];
-            //    }
-            //}
 
-            //string txtWithoutNumbers;
-            //return $"{zeros},{number}";
+            for (int i = 0; i < txt.Length; i++)
+            {
+                if (Char.IsDigit(txt[i]))
+                {
+                    // Get digitstart
+                    digitStart = i;
+                    string numberString = "";
+                    for (int j = i; j < txt.Length; j++)
+                    {
+                        double _digit = Char.GetNumericValue(txt[j]);
+                        if (_digit == 0)
+                            zeros++;
+                        // If it is no longer leading zeros
+                        // The zeros after the first digit > 0 should be considered the number
+                        else
+                        {
+                            for (int k = j; k < txt.Length; k++)
+                            {
+                                double _number = Char.GetNumericValue(txt[k]);
+                                numberString += _number;
+                            }
+                            break;
+                        }
+                    }
+                    // If there is a number
+                    if (numberString.Length > 0 )
+                        number = Convert.ToInt32(numberString);
+                    break;
+                }
+            }
+
+            // Create the new string without any of the numbers
+            if (digitStart > 0)
+                newString = txt.Remove(digitStart);
+            else
+                newString = txt;
+
+            Console.WriteLine("aaaaaaaaaaaaaaa " + newString );
+            // If there isn't any numbers add 1 to the string
+            if (number == 0)
+                return txt + "1";
+            // if there is a number increment it
+            // and if there is leading zeros add them to the string
+            else
+            {
+                // Get digit length
+                // So we can match if the incremented int then has a increased digit and then remove a zero
+                int digitLength = number.ToString().Length;
+                number++;
+                if (digitLength != number.ToString().Length)
+                    zeros--;
+
+                // Return the new string with the correct amount of zeros and incremented number
+                for (int i = 0; i < zeros; i++)
+                {
+                    newString += "0";
+                }
+                newString += number.ToString();
+            }
+
+            return newString;
         }
         /*
          * Exercise 10.
