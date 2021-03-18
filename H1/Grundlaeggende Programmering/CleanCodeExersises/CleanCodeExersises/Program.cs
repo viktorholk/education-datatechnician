@@ -58,7 +58,8 @@ namespace CleanCodeExersises
          */
         public bool IsLegalDrikingAgeClean(int age)
         {
-            return age > 21;
+            const int legalDrinkingAge = 21;
+            return age > legalDrinkingAge;
         }
         /*
          * Be positive exersise
