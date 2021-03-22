@@ -16,7 +16,7 @@ namespace Personnel
         public string username;
         public string password;
 
-        public string GetInfo()
+        public override string ToString()
         {
             return $"{this.id}, {this.type}, {this.username}";
         }
@@ -74,7 +74,7 @@ namespace Personnel
                     // Check if student is in class
                     if (educateClassId == student.classId)
                     {
-                        Console.WriteLine(student.GetInfo());
+                        Console.WriteLine(student);
                     }
                 }
             }
@@ -131,7 +131,7 @@ namespace Personnel
                     switch (input)
                     {
                         case 1:
-                            Console.WriteLine(user.GetInfo());
+                            Console.WriteLine(user);
                             break;
                         default:
                             Console.WriteLine("Not a valid option.");
@@ -152,7 +152,7 @@ namespace Personnel
                     switch (input)
                     {
                         case 1:
-                            Console.WriteLine(user.GetInfo());
+                            Console.WriteLine(user);
                             break;
                         case 2:
                             // cast to teacher object
