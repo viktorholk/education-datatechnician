@@ -18,18 +18,20 @@ namespace Point2D
             return $"( {this.x}, {this.y} )";
         }
 
-        public double GetDistance()
+        public double Distance(Point2D p2)
         {
-            return Math.Sqrt(Math.Pow(this.x, 2) + Math.Pow(this.y, 2));
+            
+            return Math.Sqrt(Math.Pow(p2.x - this.x, 2) + Math.Pow(p2.y - this.y,2));
         }
     }
     class Program
     {
         static void Main(string[] args)
         {
-            Point2D point = new Point2D(5.0, 10.0);
-            Console.Write($"The distance between {point.GetPoints()} = ");
-            Console.Write(point.GetDistance());
+            Point2D point1 = new Point2D(5, 10);
+            Point2D point2 = new Point2D(8, 12);
+            Console.Write($"The distance between {point1.GetPoints()} and {point2.GetPoints()}  = ");
+            Console.Write(point1.Distance(point2));
             Console.WriteLine();
         }
     }
