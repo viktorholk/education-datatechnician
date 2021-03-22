@@ -1,5 +1,6 @@
 ﻿using System;
-namespace ClassExercises
+
+namespace Point2D
 {
 
     class Point2D
@@ -22,13 +23,10 @@ namespace ClassExercises
             return Math.Sqrt(Math.Pow(this.x, 2) + Math.Pow(this.y, 2));
         }
     }
-
-
     class Program
     {
         static void Main(string[] args)
         {
-
             Point2D point = new Point2D(5.0, 10.0);
             Console.Write($"The distance between {point.GetPoints()} = ");
             Console.Write(point.GetDistance());
