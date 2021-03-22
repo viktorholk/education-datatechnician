@@ -3,6 +3,29 @@ using System.Collections.Generic;
 
 namespace Personnel
 {
+    class ClassRoom
+    {
+        public static List<ClassRoom> classRooms = new List<ClassRoom>();
+
+        public Teacher Teacher;
+        public List<Student> students = new List<Student>();
+
+        public string Name;
+
+        public ClassRoom(Teacher teacher, string name)
+        {
+            this.Teacher = teacher;
+            this.Name = name;
+
+            classRooms.Add(this);
+        }
+
+        public override string ToString()
+        {
+            return $"Classroom: {this.Name}";
+        }
+    }
+
     class Personnel
     {
         static public List<Personnel> personnels = new List<Personnel>();
@@ -16,85 +39,114 @@ namespace Personnel
         public string username;
         public string password;
 
+        public Personnel(PersonnelTypes type, string username, string password)
+        {
+            // Set personnel id
+            id = personnels.Count + 1;
+            // assign parameters
+            this.username = username;
+            this.password = password;
+            this.type = type;
+
+            // Add to personnel list
+            personnels.Add(this);
+            Console.WriteLine("yes");
+        }
+
+        public Personnel( string username, string password )
+        {
+            // Set personnel id
+            id = personnels.Count + 1;
+            this.username = username;
+            this.password = password;
+
+            // Add to personnel list
+            personnels.Add(this);
+        }
+
         public override string ToString()
         {
-            return $"{this.id}, {this.type}, {this.username}";
+            return $"{this.type}[id={this.id}, username={this.username}] ";
+        }
+
+        public static Personnel Authenticate( string username, string password )
+        {
+            foreach (var personnel in personnels)
+            {
+                if (personnel.username == username
+                    && personnel.password == password)
+                    return personnel;
+            }
+            return null;
         }
     }
 
     class Student : Personnel
     {
-
-
-        public int classId;
-        public Student(string username, string password, int classId)
+        public Student( string username, string password ) : base ( username, password )
         {
-            // Get student id
-            id = personnels.Count + 1;
-            this.classId = classId;
-            // Assign the type
-            type = PersonnelTypes.Student;
-
-            this.username = username;
-            this.password = password;
-
-            personnels.Add(this);
-
+            type = Personnel.PersonnelTypes.Student;
         }
+
+        public ClassRoom AssignClassRoom(ClassRoom room)
+        {
+            room.students.Add(this);
+            return room;
+        }
+
     }
 
     class Teacher : Personnel
     {
-        int educateClassId;
-
-        public Teacher(string username, string password, int educateClassId)
+        public Teacher(string username, string password) : base(username, password)
         {
-            // Get teacher id
-            id = personnels.Count + 1;
-
-            this.educateClassId = educateClassId;
-            // type of personel
-            type = PersonnelTypes.Teacher;
-
-            this.username = username;
-            this.password = password;
-
-            personnels.Add(this);
-
+            type = Personnel.PersonnelTypes.Teacher;
+        }
+        
+        private ClassRoom GetClassRoom()
+        {
+            foreach (var room in ClassRoom.classRooms)
+            {
+                if (room.Teacher == this)
+                    return room;
+            }
+            return null;
         }
 
-        public void PrintStudentClass()
+        public  void PrintStudents()
         {
-            foreach (var personnel in personnels)
+            ClassRoom room = GetClassRoom();
+            Console.WriteLine($"You are the teacher of classroom: {room.Name}");
+            foreach (var student in room.students)
             {
-                if (personnel.type == PersonnelTypes.Student)
-                {
-                    // Cast the personnel object to student object
-                    Student student = (Student)personnel;
-                    // Check if student is in class
-                    if (educateClassId == student.classId)
-                    {
-                        Console.WriteLine(student);
-                    }
-                }
+                Console.WriteLine(student);
             }
         }
+
     }
+
     class Program
     {
         static void Main(string[] args)
         {
-            // Define already registered users
-            new Teacher("teacher1", "123", 1);
-            new Student("student1", "123", 1);
-            new Student("student2", "123", 1);
-            new Student("student3", "123", 1);
-            new Student("student4", "123", 1);
+            // Create the teacher(s)
+            Teacher teacher1 = new Teacher("bob", "123");
+            Teacher teacher2 = new Teacher("Kent", "123");
+            // Create the classroom(s)
+            ClassRoom classA1= new ClassRoom(teacher1, "A1");
+            ClassRoom classA2= new ClassRoom(teacher2, "A2");
+            // Assign teacher to classroom(s)
+            new ClassRoom(teacher2, "A2");
+            // Create the student(s)
+            new Student("elev", "123").AssignClassRoom(classA1);
+            new Student("elev2", "123").AssignClassRoom(classA1);
+            new Student("elev3", "123").AssignClassRoom(classA1);
+            new Student("elev4", "123").AssignClassRoom(classA1);
+            new Student("elev5", "123").AssignClassRoom(classA2);
+            new Student("elev6", "123").AssignClassRoom(classA2);
+            new Student("elev7", "123").AssignClassRoom(classA2);
+            new Student("elev8", "123").AssignClassRoom(classA2);
 
-            new Teacher("teacher2", "123", 2);
-            new Student("student5", "123", 2);
-            new Student("student6", "123", 2);
-            new Student("student7", "123", 2);
 
             Console.WriteLine("Personnel Login");
             Personnel user;
@@ -110,8 +162,11 @@ namespace Personnel
                 Console.Write("PASSWORD: ");
                 password = Console.ReadLine();
 
-                user = LoginUser(username, password);
-                if (user != null) break;
+                user = Personnel.Authenticate(username, password);
+                if (user != null)
+                {
+                    break;
+                }
                 else Console.WriteLine("Incorrect username or password");
             }
 
@@ -132,6 +187,14 @@ namespace Personnel
                     {
                         case 1:
                             Console.WriteLine(user);
+                            Console.WriteLine("You are in the following classrooms:");
+                            foreach (var room in ClassRoom.classRooms)
+                            {
+                                if (room.students.Contains((Student)user))
+                                {
+                                    Console.WriteLine(room);
+                                }
+                            }
                             break;
                         default:
                             Console.WriteLine("Not a valid option.");
@@ -155,9 +218,10 @@ namespace Personnel
                             Console.WriteLine(user);
                             break;
                         case 2:
-                            // cast to teacher object
-                            Teacher teacher = (Teacher)user;
-                            teacher.PrintStudentClass();
+                            // cast to teacher class
+                            var _ = (Teacher)user;
+                            _.PrintStudents();
+
                             break;
                         default:
                             Console.WriteLine("Not a valid option.");
@@ -175,17 +239,6 @@ namespace Personnel
                 Console.WriteLine("Not a valid number!");
             }
             return userInput;
-        }
-
-        static Personnel LoginUser ( string username, string password )
-        {
-            foreach (var personnel in Personnel.personnels)
-            {
-                if (personnel.username == username
-                    && personnel.password == password)
-                    return personnel;
-            }
-            return null;
         }
 
     }
