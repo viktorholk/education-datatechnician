@@ -74,7 +74,6 @@ namespace Aflevering
     /// 
     public class Product
     {
-        public static List<Product> products = new List<Product>();
 
         public enum Types
         {
@@ -105,7 +104,34 @@ namespace Aflevering
     {
         static void Main(string[] args)
         {
+            Shelf electronicsShelf = new Shelf(10, "Electronics Shelf");
 
+            electronicsShelf.AddProduct(new Product(Product.Types.Electronics, "Electric Boogaloo USB", "A wicked USB device!", 1));
+            electronicsShelf.AddProduct(new Product(Product.Types.Electronics, "Bluetooth Avocado", "The revolutionized avocado technology", 1));
+
+            Shelf agricultureShelf = new Shelf(10000, "Agriculture Shelf");
+
+            agricultureShelf.AddProduct(new Product(Product.Types.Agriculture, "A huge ass combine harvester", "It is really big.", 2500));
+            agricultureShelf.AddProduct(new Product(Product.Types.Agriculture, "Apple Seed", "Grows an apple tree or whatever", 1));
+            agricultureShelf.AddProduct(new Product(Product.Types.Agriculture, "Apple Seed", "Grows an apple tree or whatever", 1));
+            agricultureShelf.AddProduct(new Product(Product.Types.Agriculture, "Plow 2000 diesel", "The Diesel plow 2000", 250));
+
+            foreach (var shelf in Shelf.shelves)
+            {
+                Console.WriteLine("### SHELF ###");
+                Console.WriteLine($"Identifier: {shelf.Identifier}");
+                Console.WriteLine($"Description: {shelf.Description}");
+                Console.WriteLine($"UnitStorageSize: {shelf.UnitStorageSize}");
+                Console.WriteLine("     ### PRODUCT(S) ###");
+                foreach (var product in shelf.products)
+                {
+                    Console.WriteLine($"    Product: {product.Name}");
+                    Console.WriteLine($"    Description: {product.Description}");
+                    Console.WriteLine($"    UnitSize: {product.UnitSize}");
+                    Console.WriteLine();
+                }
+                Console.WriteLine();
+            }
         }
     }
 }
