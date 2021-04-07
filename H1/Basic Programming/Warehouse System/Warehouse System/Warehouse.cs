@@ -36,6 +36,7 @@ namespace Warehouse_System
             this.Description = description;
             this.Identifier = GetIdentifier();
         }
+
     }
 
     class Warehouse
@@ -43,9 +44,9 @@ namespace Warehouse_System
         public static void InitializeDatabase()
         {
             SQLite.Execute(@"CREATE TABLE IF NOT EXISTS 'shelves' (
-                'id'    INTEGER NOT NULL,
-                'identifier'    TEXT NOT NULL UNIQUE,
-                'description'   TEXT,
+                'id'                    INTEGER NOT NULL,
+                'identifier'            TEXT NOT NULL UNIQUE,
+                'description'           TEXT,
                 'maxUnitStorageSize'    INTEGER NOT NULL DEFAULT 100,
                 PRIMARY KEY('id' AUTOINCREMENT)
             )");
@@ -58,9 +59,10 @@ namespace Warehouse_System
 
             SQLite.Execute(@"CREATE TABLE IF NOT EXISTS 'products' (
 
-                'id'    INTEGER NOT NULL,
-                'name'  TEXT NOT NULL,
+                'id'        INTEGER NOT NULL,
+                'name'      TEXT NOT NULL,
                 'category'  INTEGER NOT NULL,
+                'unitSize'  INTEGER NOT NULL DEFAULT 1,
                 'shelfId'   INTEGER NOT NULL,
                 FOREIGN KEY('shelfId') REFERENCES 'shelves'('id'),
                 FOREIGN KEY('category') REFERENCES 'product_categories'('id'),
@@ -89,22 +91,46 @@ namespace Warehouse_System
             }
         }
 
-        public static void AddProduct(Product product, string shelfIdentifier)
+        /// <summary>
+        /// The Addproduct method adds the product to a valid shelf in the warehouse
+        /// It will get the shelf object from the database from the given shelfIdentifier parameter
+        /// It will check if there is storage space for the product and if there is, it will add it to the shelf.
+        /// </summary>
+        /// <param name="product"></param>
+        /// <param name="shelfIdentifier"></param>
+        /// <returns>
+        /// Returns 1 for success
+        /// Returns 0 for storage error
+        /// </returns>
+        public static int AddProduct(Product product, string shelfIdentifier)
         {
             // Get shelf id so it creates the reference in the db
-            Result shelfResults = SQLite.GetResults($"SELECT id from shelves where identifier = '{shelfIdentifier}'");
-            if (shelfResults.Count > 0)
+            var query = SQLite.GetResults($"SELECT id, maxUnitStorageSize from shelves where identifier = '{shelfIdentifier}'");
+            Console.WriteLine(product.UnitSize);
+
+            if (query.Count > 0)
             {
-                int shelfId = Convert.ToInt32(shelfResults[0]["id"]);
-                SQLite.Execute($"INSERT INTO products (name, category, shelfId) VALUES ('{product.Name}', '{(int)product.Category}', {shelfId})");
+                var shelf = query[0];
+                int shelfId = Convert.ToInt32(shelf["id"]);
+                int shelfMaxUnitStorageSize = Convert.ToInt32(shelf["maxUnitStorageSize"]);
+                int shelfCurrentStorageSize = 0;
+                //// Get all the products that are on the shelf to get the sum of
+                query = SQLite.GetResults($"SELECT sum(unitSize) as sum from products where shelfId = {shelfId}");
+                if (query[0]["sum"] != "NULL")
+                    shelfCurrentStorageSize = Convert.ToInt32(query[0]["sum"]);
+
+                if ((product.UnitSize + shelfCurrentStorageSize) <= shelfMaxUnitStorageSize)
+                {
+                    return SQLite.Execute($"INSERT INTO products (name, category, unitSize ,shelfId) VALUES ('{product.Name}','{(int)product.Category}', {product.UnitSize}, {shelfId})");
+                }
             }
-            else Console.WriteLine("Can not place shelf on a shelf that doesn't exist!");
+            else Console.WriteLine("No shelves has been set up in the warehouse!");
+
+            return 0;
         }
         public static void AddShelf(Shelf shelf)
         {
             SQLite.Execute($"INSERT INTO shelves (identifier, description) VALUES ('{shelf.Identifier}', '{shelf.Description}')");
-
-
         }
     }
 }
