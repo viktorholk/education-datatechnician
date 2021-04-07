@@ -52,7 +52,7 @@ namespace Warehouse_System
 
             SQLite.Execute(@"CREATE TABLE IF NOT EXISTS 'product_categories' (
                 'id'    INTEGER NOT NULL,
-                'name'  TEXT NOT NULL,
+                'name'  TEXT NOT NULL UNIQUE,
                 PRIMARY KEY('id' AUTOINCREMENT)
             );");
 
@@ -79,7 +79,13 @@ namespace Warehouse_System
             // Insert the valid product categories to the db
             foreach (string name in Enum.GetNames(typeof(Product.Categories)))
             {
-                SQLite.Execute($"INSERT INTO product_categories (name) VALUES ('{name}')");
+                // We are taking this in a try and catch approach,
+                // since the category names in the db has the constraint UNIQUE, so when we try to run it twice it will throw error
+                // We can first check if the category already exists in the db, but if the amount of categories increases it will take performance.
+                try
+                {
+                    SQLite.Execute($"INSERT INTO product_categories (name) VALUES ('{name}')");
+                } catch { }
             }
         }
 
