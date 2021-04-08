@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Script Interactor</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="resources/styles/style.css" rel="stylesheet"/>
+
+    <link href="https://fonts.googleapis.com/css2?family=Bitter:wght@300;700&display=swap" rel="stylesheet">
+    
+    <!-- scripts -->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/gh/zerodevx/zero-md@2/dist/zero-md.min.js"></script>
+    <script src="resources/js/main.js"></script>
+
+</head>
+<body>
+    
+    <div class="container">
+        <div id="header">
+            <img src="resources/images/logo.svg"/>
+            <h1>SCRIPT<br>INTERACTOR</h1>
+        </div>
+        <p id="description">
+             Script Interactor is an open-source twitch chatbot tool built in Node js.<br>
+            It encourages your viewers to interact with your Twitch stream by letting them execute various custom scripts where you as the broadcaster, are the target.
+        </p>
+
+        <div style="padding-inline: 15%;">
+            <div  class="navigation">
+                <a id="usage-button" style="float: left;" class="button selected" href="#">USAGE</a>
+                <a id="contact-button" style="float: right;"    class="button" href="#">CONTACT</a>
+                <a id="download-button" style="float: right;"    class="button" href="#">DOWNLOAD</a>
+                <div style="clear:both;"></div>
+            </div>
+            <div id="content"></div>
+        </div>
+
+
+        <div id="content-usage" class="hidden">
+            <zero-md src="https://raw.githubusercontent.com/viktorholk/Script-Interactor/main/README.md"></zero-md>
+        </div>
+
+        <div id="content-download" class="hidden">
+            <zero-md src="https://raw.githubusercontent.com/viktorholk/Script-Interactor/website/resources/DOWNLOAD.md"></zero-md>
+        </div>
+        <div id="content-contact" class="hidden">
+            <zero-md src="https://raw.githubusercontent.com/viktorholk/Script-Interactor/website/resources/CONTACT.md"></zero-md>
+            
+        </div>
+
+
+        <div id="footer">
+            <p>© 2021 <a target="_blank" href="https://tactoctical.com">TACTOCTICAL</a></p>
+        </div>
+    </div>
+</body>
+</html>
