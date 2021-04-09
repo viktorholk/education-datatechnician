@@ -16,7 +16,7 @@ namespace Warehouse_System
         private char GetIdentifier()
         {
             // Get all the shelves in the db
-            Result shelves = SQLite.GetResults("SELECT * FROM shelves");
+            Records shelves = SQLite.GetRecords("SELECT * FROM shelves");
 
             // If there is mulitple shelves increment the char to the next
             if (shelves.Count > 0)
@@ -36,9 +36,7 @@ namespace Warehouse_System
             this.Description = description;
             this.Identifier = GetIdentifier();
         }
-
     }
-
     class Warehouse
     {
         public static void InitializeDatabase()
@@ -64,8 +62,8 @@ namespace Warehouse_System
                 'category'  INTEGER NOT NULL,
                 'unitSize'  INTEGER NOT NULL DEFAULT 1,
                 'shelfId'   INTEGER NOT NULL,
-                FOREIGN KEY('shelfId') REFERENCES 'shelves'('id'),
-                FOREIGN KEY('category') REFERENCES 'product_categories'('id'),
+                FOREIGN KEY('shelfId') REFERENCES 'shelves'('id') ON DELETE CASCADE,
+                FOREIGN KEY('category') REFERENCES 'product_categories'('id') ON DELETE CASCADE,
                 PRIMARY KEY('id' AUTOINCREMENT)
             );");
 
@@ -105,8 +103,7 @@ namespace Warehouse_System
         public static int AddProduct(Product product, string shelfIdentifier)
         {
             // Get shelf id so it creates the reference in the db
-            var query = SQLite.GetResults($"SELECT id, maxUnitStorageSize from shelves where identifier = '{shelfIdentifier}'");
-            Console.WriteLine(product.UnitSize);
+            var query = SQLite.GetRecords($"SELECT id, maxUnitStorageSize from shelves where identifier = '{shelfIdentifier}'");
 
             if (query.Count > 0)
             {
@@ -115,7 +112,7 @@ namespace Warehouse_System
                 int shelfMaxUnitStorageSize = Convert.ToInt32(shelf["maxUnitStorageSize"]);
                 int shelfCurrentStorageSize = 0;
                 //// Get all the products that are on the shelf to get the sum of
-                query = SQLite.GetResults($"SELECT sum(unitSize) as sum from products where shelfId = {shelfId}");
+                query = SQLite.GetRecords($"SELECT sum(unitSize) as sum from products where shelfId = {shelfId}");
                 if (query[0]["sum"] != "NULL")
                     shelfCurrentStorageSize = Convert.ToInt32(query[0]["sum"]);
 
@@ -130,7 +127,54 @@ namespace Warehouse_System
         }
         public static void AddShelf(Shelf shelf)
         {
-            SQLite.Execute($"INSERT INTO shelves (identifier, description) VALUES ('{shelf.Identifier}', '{shelf.Description}')");
+            SQLite.Execute($"INSERT INTO shelves (identifier, description, maxUnitStorageSize) VALUES ('{shelf.Identifier}', '{shelf.Description}', {shelf.MaxUnitStorageSize})");
         }
+
+        public static Records GetProducts()
+        {
+            return SQLite.GetRecords(@"
+                SELECT products.id, products.name, product_categories.name as category, shelves.identifier as shelf, count(*) as count
+                from products
+                INNER JOIN shelves
+                ON products.shelfId = shelves.id
+                INNER JOIN product_categories
+                ON products.category = product_categories.id
+                group by products.name
+                having count(*) > 0");
+        }
+
+        public static void PrettyPrintRecords(Records records)
+        {
+
+            // Take the first result to gather the column fields
+            if (records.Count > 0)
+            {
+                foreach (var record in records[0])
+                {
+                    // If the field is ID, then we wont take as much space for the print
+                    if (record.Key == "id")
+                    {
+                        Console.Write($"{record.Key,-6}");
+                    }
+                    else Console.Write($"{record.Key,-18}");
+                }
+                Console.WriteLine();
+                // Print all of the rows
+                foreach (var record in records)
+                {
+                    foreach (KeyValuePair<string,string> data in record)
+                    {
+                        if (data.Key == "id")
+                        {
+                            Console.Write($"{data.Value,-6}");
+                        }
+                        else Console.Write($"{data.Value,-18}");
+                    }
+                    Console.WriteLine();
+                }
+            }
+            else Console.WriteLine("Records is empty");
+        }
+
     }
 }
