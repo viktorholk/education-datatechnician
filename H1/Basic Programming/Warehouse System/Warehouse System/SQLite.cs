@@ -5,11 +5,12 @@ using Microsoft.Data.Sqlite;
 namespace Warehouse_System
 {
 
-    public class Result : List<Dictionary<string, string>> { }
+    public class Records : List<Dictionary<string, string>> { }
     class SQLite
     {
 
         private static readonly SqliteConnection Instance = new SqliteConnection($"Data Source=warehouse.db");
+
 
         public static int Execute(string query)
         {
@@ -19,18 +20,18 @@ namespace Warehouse_System
             cmd.CommandText = query;
             return cmd.ExecuteNonQuery();
         }
-        public static Result GetResults(string query)
+        public static Records GetRecords(string query)
         {
             Instance.Open();
 
-            Result results = null;
+            Records records = null;
 
             var cmd = Instance.CreateCommand();
             cmd.CommandText = query;
 
             using (var reader = cmd.ExecuteReader())
             {
-                results = new Result();
+                records = new Records();
                 
                 while (reader.Read())
                 {
@@ -40,10 +41,10 @@ namespace Warehouse_System
                     {
                         record[reader.GetName(i)] = reader.IsDBNull(i) ? "NULL" : reader.GetString(i);
                     }
-                    results.Add(record);
+                   records.Add(record);
                 }
             }
-            return results;
+            return records;
         }
     }
 }
