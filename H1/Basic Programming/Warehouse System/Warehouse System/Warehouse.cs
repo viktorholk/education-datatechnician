@@ -39,6 +39,7 @@ namespace Warehouse_System
     }
     class Warehouse
     {
+
         public static void InitializeDatabase()
         {
             SQLite.Execute(@"CREATE TABLE IF NOT EXISTS 'shelves' (
@@ -133,19 +134,30 @@ namespace Warehouse_System
         public static Records GetProducts()
         {
             return SQLite.GetRecords(@"
-                SELECT products.id, products.name, product_categories.name as category, shelves.identifier as shelf, count(*) as count
+                SELECT products.id, products.name, product_categories.name as category, shelves.identifier as shelf
                 from products
                 INNER JOIN shelves
-                ON products.shelfId = shelves.id
+                ON products.shelfId=shelves.id
                 INNER JOIN product_categories
                 ON products.category = product_categories.id
-                group by products.name
-                having count(*) > 0");
+                ORDER BY product_categories.name ASC");
+        }
+
+        public static Records GetShelves()
+        {
+            return SQLite.GetRecords(@"
+                SELECT shelves.id, shelves.identifier, shelves.description, shelves.maxUnitStorageSize as maxStorage,
+                (SELECT sum(products.unitSize) from products where products.shelfId = shelves.id) as usedStorage,
+                (SELECT count(*) from products where products.shelfId = shelves.id) as products
+                FROM shelves
+                ");
         }
 
         public static void PrettyPrintRecords(Records records)
         {
-
+            //The length of the pretty print of the columns
+            const int columnIdLength = 6;
+            const int columnDataLength = 18;
             // Take the first result to gather the column fields
             if (records.Count > 0)
             {
@@ -154,27 +166,42 @@ namespace Warehouse_System
                     // If the field is ID, then we wont take as much space for the print
                     if (record.Key == "id")
                     {
-                        Console.Write($"{record.Key,-6}");
+                        Console.Write($"{record.Key,-columnIdLength}");
                     }
-                    else Console.Write($"{record.Key,-18}");
+                    else {
+
+                        Console.Write($"{record.Key,-columnDataLength}");
+                    }
                 }
                 Console.WriteLine();
                 // Print all of the rows
                 foreach (var record in records)
                 {
-                    foreach (KeyValuePair<string,string> data in record)
+                    foreach (KeyValuePair<string, string> data in record)
                     {
                         if (data.Key == "id")
                         {
-                            Console.Write($"{data.Value,-6}");
+                            Console.Write($"{data.Value,-columnIdLength}");
                         }
-                        else Console.Write($"{data.Value,-18}");
+                        else {
+                            var value = data.Value;
+                            if (value.Length > columnDataLength)
+                            {
+                                const string endPrefix = "...";
+                                value = value.Substring(0, (columnDataLength - endPrefix.Length) - 1) + endPrefix;
+                            }
+                            Console.Write($"{value,-columnDataLength}");
+                        }
+                        
                     }
                     Console.WriteLine();
                 }
+                Console.WriteLine();
             }
             else Console.WriteLine("Records is empty");
-        }
 
+        }
     }
 }
+
+
