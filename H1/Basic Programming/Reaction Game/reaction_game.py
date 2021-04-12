@@ -109,7 +109,7 @@ def get_highscore(player):
         data = get_highscores()
         if not data:
             return None
-
+        # Reverse the list so we get the best highscore first
         for i in data[::-1]:
             if i['player'] == player:
                 return i['score']
@@ -134,7 +134,7 @@ if __name__ == '__main__':
         print("press enter as quickly as possible to calculate your reaction time")
         print(" $ PRESS 1 for singleplayer")
         print(" $ PRESS 2 for multiplayer")
-        print(" $ PRESS 3 to print last 10 highscores")
+        print(" $ PRESS 3 to print highscores")
         print(" $ PRESS q to quit")
         # Wait for player to press any key to start the game
         menu_selection = getch()
