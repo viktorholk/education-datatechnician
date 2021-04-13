@@ -42,6 +42,7 @@ namespace Warehouse_System
 
         public static void InitializeDatabase()
         {
+            // Shelves Table
             SQLite.Execute(@"CREATE TABLE IF NOT EXISTS 'shelves' (
                 'id'                    INTEGER NOT NULL,
                 'identifier'            TEXT NOT NULL UNIQUE,
@@ -49,13 +50,13 @@ namespace Warehouse_System
                 'maxUnitStorageSize'    INTEGER NOT NULL DEFAULT 100,
                 PRIMARY KEY('id' AUTOINCREMENT)
             )");
-
+            // Product categories table
             SQLite.Execute(@"CREATE TABLE IF NOT EXISTS 'product_categories' (
                 'id'    INTEGER NOT NULL,
                 'name'  TEXT NOT NULL UNIQUE,
                 PRIMARY KEY('id' AUTOINCREMENT)
             );");
-
+            // Product table
             SQLite.Execute(@"CREATE TABLE IF NOT EXISTS 'products' (
 
                 'id'        INTEGER NOT NULL,
@@ -67,7 +68,7 @@ namespace Warehouse_System
                 FOREIGN KEY('category') REFERENCES 'product_categories'('id') ON DELETE CASCADE,
                 PRIMARY KEY('id' AUTOINCREMENT)
             );");
-
+            // Customer table
             SQLite.Execute(@"CREATE TABLE IF NOT EXISTS 'customers' (
 
                 'id'    INTEGER NOT NULL,
@@ -76,6 +77,22 @@ namespace Warehouse_System
                 'zipCode'   TEXT,
                 PRIMARY KEY('id' AUTOINCREMENT)
             );");
+            // Orders table
+            SQLite.Execute(@"CREATE TABLE 'orders' (
+
+                'id'    INTEGER NOT NULL,
+                'customer_id'   INTEGER NOT NULL,
+                'date'  INTEGER NOT NULL,
+                FOREIGN KEY('customer_id') REFERENCES 'customers'('id') ON DELETE CASCADE,
+                PRIMARY KEY('id' AUTOINCREMENT)
+            ); ");
+            // Order Lines table
+            SQLite.Execute(@"REATE TABLE 'orderlines'(
+                'id'    INTEGER NOT NULL,
+                'product_id'    INTEGER NOT NULL,
+                FOREIGN KEY('product_id') REFERENCES 'products'('id') ON DELETE CASCADE,
+                PRIMARY KEY('id' AUTOINCREMENT)
+            ); ");
 
             // Insert the valid product categories to the db
             foreach (string name in Enum.GetNames(typeof(Product.Categories)))
@@ -136,10 +153,10 @@ namespace Warehouse_System
             return SQLite.GetRecords(@"
                 SELECT products.id, products.name, product_categories.name as category, shelves.identifier as shelf
                 from products
-                INNER JOIN shelves
-                ON products.shelfId=shelves.id
-                INNER JOIN product_categories
-                ON products.category = product_categories.id
+                    INNER JOIN shelves
+                    ON products.shelfId=shelves.id
+                    INNER JOIN product_categories
+                    ON products.category = product_categories.id
                 ORDER BY product_categories.name ASC");
         }
 
