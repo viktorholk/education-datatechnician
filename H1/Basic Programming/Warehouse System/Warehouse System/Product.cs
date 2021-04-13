@@ -13,7 +13,6 @@ namespace Warehouse_System
             Agriculture = 2,
             Convenience = 3
         };
-
         public string       Name;
         public Categories   Category;
         public int          UnitSize;
