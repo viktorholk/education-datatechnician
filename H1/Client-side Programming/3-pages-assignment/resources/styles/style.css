@@ -2,35 +2,41 @@ body{
     background-color: #212529;
 }
 
-#header {
+#header #logo {
     display: flex;
     justify-content: center;
     align-items: center;
 }
-#header img {
+
+#header #logo img {
     width: 15em;
 }
-#header h1{
+
+#header #logo h1{
     color: white;
 
     font-weight: bold;
     justify-content: start;
 }
-#description {
+
+#header #description {
     padding-inline: 15%;
     color: white;
     text-align: center;
     font-family: 'bitter', serif;
 }
 
-.navigation{
+#header #navigation {
+    padding-inline: 15%;
+}
+
+#header #navigation #navigation-items{
     display: block;
     font-weight: bold;
     font-family: 'bitter', serif;
-
 }
 
-.navigation .button{
+#header #navigation #navigation-items .button{
     display: inline-block;
     margin: 0.3em;
     color: white !important;
@@ -38,20 +44,24 @@ body{
     font-size: 1.2em;
     transition: 250ms;
 }
-.navigation .button:hover{
+
+#header #navigation #navigation-items .button:hover{
     transform: scaleX(1.05);
 }
-.navigation .button:hover::after{
+
+#header #navigation #navigation-items .button:hover::after{
     transform: scaleX(1);
 }
-.navigation .button::after{
+
+#header #navigation #navigation-items .button::after{
     display: block;
     content: '';
     border-bottom: solid 2px #9072c7;
     transform: scaleX(0);
     transition: transform 150ms ease-in-out;
 }
-.navigation .selected {
+
+#header #navigation #navigation-items .selected {
     color: #9072c7 !important;
 }
 
@@ -60,7 +70,14 @@ body{
     border-radius: 1.5vh;
     padding: 1em;
     margin-bottom: 3em;
+    animation: content-load forwards 1s;
 }
+
+@keyframes content-load{
+    from{opacity: 0; transform: scale(0.80);}
+    to{}
+}
+
 #content h1{
     font-family: 'bitter', serif;
     font-weight: bold;
@@ -69,11 +86,6 @@ body{
     border-bottom: 2px solid #9072c7;
     margin-bottom: 1em;
 
-}
-
-
-.hidden {
-    display: none;
 }
 
 #footer {
@@ -89,3 +101,6 @@ body{
     color: white;
 }
 
+.hidden {
+    display: none;
+}
