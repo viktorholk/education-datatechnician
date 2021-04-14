@@ -1,0 +1,9 @@
+C:\Users\Viktor\Desktop\Development\education_datatechnician\H1\Client-side Programming\BlazorWebAssemblyApp\BlazorWebAssemblyApp\Shared\bin\Debug\netstandard2.1\BlazorWebAssemblyApp.Shared.deps.json
+C:\Users\Viktor\Desktop\Development\education_datatechnician\H1\Client-side Programming\BlazorWebAssemblyApp\BlazorWebAssemblyApp\Shared\bin\Debug\netstandard2.1\BlazorWebAssemblyApp.Shared.dll
+C:\Users\Viktor\Desktop\Development\education_datatechnician\H1\Client-side Programming\BlazorWebAssemblyApp\BlazorWebAssemblyApp\Shared\bin\Debug\netstandard2.1\BlazorWebAssemblyApp.Shared.pdb
+C:\Users\Viktor\Desktop\Development\education_datatechnician\H1\Client-side Programming\BlazorWebAssemblyApp\BlazorWebAssemblyApp\Shared\obj\Debug\netstandard2.1\BlazorWebAssemblyApp.Shared.csprojAssemblyReference.cache
+C:\Users\Viktor\Desktop\Development\education_datatechnician\H1\Client-side Programming\BlazorWebAssemblyApp\BlazorWebAssemblyApp\Shared\obj\Debug\netstandard2.1\BlazorWebAssemblyApp.Shared.AssemblyInfoInputs.cache
+C:\Users\Viktor\Desktop\Development\education_datatechnician\H1\Client-side Programming\BlazorWebAssemblyApp\BlazorWebAssemblyApp\Shared\obj\Debug\netstandard2.1\BlazorWebAssemblyApp.Shared.AssemblyInfo.cs
+C:\Users\Viktor\Desktop\Development\education_datatechnician\H1\Client-side Programming\BlazorWebAssemblyApp\BlazorWebAssemblyApp\Shared\obj\Debug\netstandard2.1\BlazorWebAssemblyApp.Shared.csproj.CoreCompileInputs.cache
+C:\Users\Viktor\Desktop\Development\education_datatechnician\H1\Client-side Programming\BlazorWebAssemblyApp\BlazorWebAssemblyApp\Shared\obj\Debug\netstandard2.1\BlazorWebAssemblyApp.Shared.dll
+C:\Users\Viktor\Desktop\Development\education_datatechnician\H1\Client-side Programming\BlazorWebAssemblyApp\BlazorWebAssemblyApp\Shared\obj\Debug\netstandard2.1\BlazorWebAssemblyApp.Shared.pdb
