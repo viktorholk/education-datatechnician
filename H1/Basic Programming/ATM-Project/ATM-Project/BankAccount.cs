@@ -10,8 +10,6 @@ namespace ATM_Project
         private double Balance;
         private string PIN;
 
-        private bool IsAuthenticated;
-
         public static List<BankAccount> bankAccounts = new List<BankAccount>();
 
         public BankAccount(string username, string pin, double balance = 0.0)
@@ -20,8 +18,6 @@ namespace ATM_Project
             this.PIN = pin;
             this.Balance = balance;
 
-            this.IsAuthenticated = false;
-
             BankAccount.bankAccounts.Add(this);
         }
 
@@ -29,7 +25,6 @@ namespace ATM_Project
         {
             if (pin == this.PIN)
             {
-                this.IsAuthenticated = true;
                 return true;
             }
             return false;
