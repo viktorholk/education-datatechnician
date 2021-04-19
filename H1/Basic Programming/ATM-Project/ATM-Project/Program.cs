@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 namespace ATM_Project
 {
     class Program
@@ -28,6 +29,7 @@ namespace ATM_Project
             new BankAccount("ryan", "1234", 500);
             new BankAccount("vector", "1234", 750);
 
+
             // Program main loop
             while (true)
             {
@@ -50,7 +52,16 @@ namespace ATM_Project
                     loggedInBankAccount = AuthenticateCredentials(username, pin);
                     if (loggedInBankAccount == null)
                     {
-                        Console.WriteLine("Invalid credentials, try again.");
+                        Logger.Log(
+                            $"Failed to authenticate credentials for user: {username}",
+                            "Invalid credentials, try again."
+                            );
+                    } else
+                    {
+                        Logger.Log(
+                            $"Credentials sucessfully authenticated for {username}",
+                            "You have logged in"
+                            );
                     }
                 }
                 // Menu
@@ -74,16 +85,23 @@ namespace ATM_Project
                     {
                         case 1:
                             // Print the balance to the user
-                            Console.WriteLine($"Balance: {loggedInBankAccount.GetBalance():c}");
+                            Logger.Log(
+                                $"{loggedInBankAccount.Username}, Balance: {loggedInBankAccount.GetBalance():c}",
+                                $"Balance: {loggedInBankAccount.GetBalance():c}"
+                                );
                             break;
 
                         case 2:
                             // Deposit money to the account
+
                             Console.Write("Deposit Amount: ");
                             double depositAmount = DoubleReadline();
 
                             loggedInBankAccount.Deposit(depositAmount);
                             Console.WriteLine($"Successfully deposited {depositAmount:c}");
+                            Logger.Log(
+                                $"{loggedInBankAccount.Username}, deposited {depositAmount:c}",
+                                $"You have successfully deposited {depositAmount:c}");
                             break;
 
                         case 3:
@@ -92,10 +110,15 @@ namespace ATM_Project
 
                             if (loggedInBankAccount.Withdraw(withdrawAmount) > 0.0)
                             {
-                                Console.WriteLine($"Successfully withdrew {withdrawAmount}");
-
+                                Logger.Log(
+                                    $"{loggedInBankAccount.Username} withdrew {withdrawAmount:c}",
+                                    $"Successfully withdrew {withdrawAmount:c}"
+                                    );
                             }
-                            else Console.WriteLine("Insufficient withdraw amount");
+                            else Logger.Log(
+                                        $"{loggedInBankAccount.Username}, did not have enough balance to withdraw {withdrawAmount:c}",
+                                        $"Insufficient balance, you have {loggedInBankAccount.GetBalance():c}"
+                                        );
                             break;
 
                         case 4:
@@ -123,9 +146,14 @@ namespace ATM_Project
                                     // Deposit the money and withdraw it from the loggedinuser
                                     receiver.Deposit(transferAmount);
                                     loggedInBankAccount.Withdraw(transferAmount);
-                                    Console.WriteLine($"Successfully transferred {transferAmount:c} to {receiver.Username}");
+                                    Logger.Log(
+                                        $"{loggedInBankAccount.Username}, transferred ${transferAmount:c} to {receiver.Username}",
+                                        $"Successfully transferred {transferAmount:c} to {receiver.Username}");
                                 }
-                                else Console.WriteLine("Insufficient transfer amount");
+                                else
+                                Logger.Log(
+                                    $"{loggedInBankAccount.Username}, did not have enough balance to transfer {transferAmount:c} to {receiver.Username}",
+                                    $"Insufficient balance, you have {loggedInBankAccount.GetBalance():c}");
                             }
                             else Console.WriteLine("Choose a valid account");
 
