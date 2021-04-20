@@ -4,26 +4,22 @@ using System.Text;
 
 namespace Warehouse_System
 {
-
     class Product
     {
-        public enum Categories
-        {
-            Electronics = 1,
-            Agriculture = 2,
-            Convenience = 3
-        };
-        public string       Name;
-        public Categories   Category;
-        public int          UnitSize;
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int UnitSize { get; set; }
 
-        public Product(string name, Categories category, int unitSize)
+        public Product(int id, string name, int unitSize)
         {
+            this.Id = id;
             this.Name = name;
-            this.Category = category;
             this.UnitSize = unitSize;
-            
         }
 
+        public override string ToString()
+        {
+            return $"{this.Id}, {this.Name}, {this.UnitSize}";
+        }
     }
 }
