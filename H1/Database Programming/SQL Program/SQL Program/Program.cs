@@ -27,9 +27,10 @@ namespace SQL_Program
             Console.WriteLine("     basket");
             Console.WriteLine("     basket_items");
             Console.WriteLine("List of commands:");
-            Console.WriteLine("     show (table) - To show all listings of a table");
+            Console.WriteLine("     Show (table) - To show all listings of a table");
             Console.WriteLine("     Add (table) - To show all listings of a table");
             Console.WriteLine("     Remove (table) - To show all listings of a table");
+            Console.WriteLine("     Quit - Quit the program");
             while (true)
             {
                 Console.Write(" $ ");
@@ -75,10 +76,28 @@ namespace SQL_Program
                             }
                             else Console.WriteLine($"No records for {inputArgs[1]}");
                             break;
+                        case "remove":
+                            PrettyPrintRecords(Database.GetRecords($"SELECT * FROM {inputArgs[1]}"));
+                            Console.WriteLine("Select the ID of the row you want to remove");
+                            int idSelection;
+                            while (true)
+                            {
+                                Console.Write("ID: ");
+                                if (Int32.TryParse(Console.ReadLine(), out idSelection))
+                                    break;
+                                else Console.WriteLine("That is not an ID!");
+                            }
+                            Database.Execute($"DELETE FROM {inputArgs[1]} WHERE Id={idSelection}");
+                            Console.WriteLine($"Removed row with the id {idSelection}");
+                            break;
                         default:
                             Console.WriteLine($"{userInput}, is not a command!");
                             break;
                     }
+                }
+                else if(inputArgs[0] == "quit")
+                {
+                    break;
                 }
                 else Console.WriteLine("Command requires table");
             }
