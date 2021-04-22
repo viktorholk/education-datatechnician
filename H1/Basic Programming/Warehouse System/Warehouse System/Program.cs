@@ -1,23 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
-
 namespace Warehouse_System
 {
     class Program
     {
-        static List<Product> products = new List<Product>();
-        static void Main(string[] args)
+
+        static void PrintData()
         {
-            var records = Database.GetRecords("SELECT * FROM products");
-            foreach (var row in records)
+            foreach (var item in ProductCategory.categories)
             {
-                foreach (KeyValuePair<string,string> data in row)
+                Console.WriteLine(item);
+            }
+
+            foreach (var item in Shelf.shelves)
+            {
+                Console.WriteLine(item);
+                foreach (var p in item.products)
                 {
-                    products.Add(new Product(data["]))
+                    Console.WriteLine($"    {p}");
                 }
             }
         }
-
-
+        static void Main(string[] args)
+        {
+            Database.LoadData();
+            PrintData();
+        }
     }
 }
