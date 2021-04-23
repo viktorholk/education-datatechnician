@@ -83,6 +83,7 @@ namespace Warehouse_System
                 'name'      TEXT NOT NULL,
                 'category_id'  INTEGER NOT NULL,
                 'unitSize'  INTEGER NOT NULL DEFAULT 1,
+                'unitPrice' INTEGER NOT NULL DEFAULT 0,
                 'shelf_id'   INTEGER NOT NULL,
                 FOREIGN KEY('shelf_id') REFERENCES 'shelves'('id') ON DELETE CASCADE,
                 FOREIGN KEY('category_id') REFERENCES 'product_categories'('id') ON DELETE CASCADE,
@@ -90,10 +91,10 @@ namespace Warehouse_System
             );");
             // Customer table
             Execute(@"CREATE TABLE IF NOT EXISTS 'customers' (
-
                 'id'    INTEGER NOT NULL,
                 'firstName' TEXT NOT NULL,
                 'lastName'  TEXT,
+	            'address'	TEXT NOT NULL,
                 'zipCode'   TEXT,
                 PRIMARY KEY('id' AUTOINCREMENT)
             );");
@@ -109,8 +110,10 @@ namespace Warehouse_System
             // Order Lines table
             Execute(@"CREATE TABLE IF NOT EXISTS 'orderlines'(
                 'id'    INTEGER NOT NULL,
+                'order_id' INTEGER NOT NULL,
                 'product_id'    INTEGER NOT NULL,
                 FOREIGN KEY('product_id') REFERENCES 'products'('id') ON DELETE CASCADE,
+                FOREIGN KEY('order_id') REFERENCES 'orders'('id') ON DELETE CASCADE,
                 PRIMARY KEY('id' AUTOINCREMENT)
             ); ");
 
@@ -119,7 +122,9 @@ namespace Warehouse_System
         public static void LoadData()
         {
             ProductCategory.LoadCategories();
+            Product.LoadProducts();
             Shelf.LoadShelves();
+            Customer.LoadCustomers();
         }
 
         public static void PrettyPrint(Records records)

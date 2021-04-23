@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Warehouse_System
 {
-    class Order
+    class Company
     {
     }
 }

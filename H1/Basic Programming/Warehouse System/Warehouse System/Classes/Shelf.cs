@@ -29,7 +29,7 @@ namespace Warehouse_System
             {
                 foreach (var record in records)
                 {
-                    Product product = new Product(Convert.ToInt32(record["id"]), record["name"], Convert.ToInt32(record["category_id"]), Convert.ToInt32(record["unitSize"]));
+                    Product product = new Product(Convert.ToInt32(record["id"]), record["name"], Convert.ToInt32(record["category_id"]), Convert.ToInt32(record["unitSize"]), Convert.ToInt32(record["unitPrice"]));
                     products.Add(product);
                 }
             }
@@ -116,8 +116,8 @@ namespace Warehouse_System
                 // Add it to the database
                 Database.Execute(@$"
                     INSERT INTO products 
-                    (name, category_id, unitSize, shelf_id) 
-                    VALUES ('{product.Name}', {product.Category.Id}, {product.UnitSize}, {this.Id})
+                    (name, category_id, unitSize, unitPrice, shelf_id) 
+                    VALUES ('{product.Name}', {product.Category.Id}, {product.UnitSize},{product.UnitPrice}, {this.Id})
                 ");
                 Console.WriteLine($"Saved product {product.Name}");
                 product.Saved = true;
@@ -125,11 +125,6 @@ namespace Warehouse_System
                 GetProducts();
             }
             else Console.WriteLine($"{product.Name} is already saved");
-        }
-        public void RemoveProduct(Product product)
-        {
-            product.Remove();
-            GetProducts();
         }
         public override string ToString()
         {
