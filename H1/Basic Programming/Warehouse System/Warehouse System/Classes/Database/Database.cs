@@ -92,7 +92,7 @@ namespace Warehouse_System
 
                 'id'    INTEGER NOT NULL,
                 'customer_id'   INTEGER NOT NULL,
-                'date'  INTEGER NOT NULL,
+                'date'  TEXT NOT NULL,
                 FOREIGN KEY('customer_id') REFERENCES 'customers'('id') ON DELETE CASCADE,
                 PRIMARY KEY('id' AUTOINCREMENT)
             ); ");
