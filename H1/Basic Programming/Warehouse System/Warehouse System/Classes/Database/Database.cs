@@ -5,17 +5,6 @@ using Microsoft.Data.Sqlite;
 
 namespace Warehouse_System
 {
-    class TableData
-    {
-        public string Name { get; set; }
-        public string DataType { get; set; }
-        public string Value { get; set; }
-        public TableData(string name, string dataType)
-        {
-            Name = name;
-            DataType = dataType;
-        }
-    }
     public class Records : List<Dictionary<string,string>> {
         public string TableName;
     }

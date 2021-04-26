@@ -5,8 +5,12 @@ using System.Text;
 
 namespace Warehouse_System
 {
-    class Product
+    class Product : SQLObject
     {
+        // The private field is used in the overloading constructor that takes in a Shelf object
+        // This is to use the overriding method from the SQLObject that makes adding a product to a Shelf object possible
+        private Shelf Shelf;
+
         public static List<Product> products;
         public static void LoadProducts()
         {
@@ -23,7 +27,6 @@ namespace Warehouse_System
             }
             else Console.WriteLine("Cannot load shelves since there is no records");
         }
-        public int Id { get; set; }
         public string Name { get; set; }
         public int UnitPrice { get; set; }
         public int UnitSize { get; set; }
@@ -48,7 +51,16 @@ namespace Warehouse_System
             this.UnitSize = unitSize;
             Saved = true;
         }
-        public void Remove()
+        public Product(string name, ProductCategory productCategory, int unitSize, int unitPrice, Shelf shelf)
+        {
+            this.Name = name;
+            this.UnitSize = unitSize;
+            this.UnitPrice = unitPrice;
+            this.Category = productCategory;
+            this.UnitSize = unitSize;
+            this.Shelf = shelf;
+        }
+        public override void Remove()
         {
             if (Saved)
             {
@@ -62,6 +74,10 @@ namespace Warehouse_System
             else Console.WriteLine($"{this.Name} has to be saved in the database before removal");
         }
 
+        public override void Save()
+        {
+            Shelf.AddProduct(this);
+        }
         public override string ToString()
         {
             return $"{this.Id}, {this.Name}, {this.Category.Name}, {this.UnitSize}";

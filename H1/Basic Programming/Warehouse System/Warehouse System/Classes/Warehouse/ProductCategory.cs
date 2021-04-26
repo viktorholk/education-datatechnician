@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Warehouse_System
 {
-    class ProductCategory
+    class ProductCategory : SQLObject
     {
         private bool Saved = false;
 
@@ -25,7 +25,6 @@ namespace Warehouse_System
             }
             else Console.WriteLine("Cannot load product categories since there is no records");
         }
-        public int Id { get; set; }
         public string Name { get; set; }
         public ProductCategory(string name)
         {
@@ -39,7 +38,7 @@ namespace Warehouse_System
             Saved = true;
         }
 
-        public void Save()
+        public override void Save()
         {
             if (!Saved)
             {
@@ -58,7 +57,7 @@ namespace Warehouse_System
             else Console.WriteLine($"{this.Name} category has already been saved");
         }
 
-        public void Remove()
+        public override void Remove()
         {
             if (Saved)
             {

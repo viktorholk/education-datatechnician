@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Warehouse_System
 {
-    class Shelf
+    class Shelf : SQLObject
     {
         private bool Saved = false;
         private char GetIdentifier()
@@ -51,7 +51,6 @@ namespace Warehouse_System
             }
             else Console.WriteLine("Cannot load shelves since there is no records");
         }
-        public int Id { get; set; }
         public char Identifier { get; set; }
         public string Description { get; set; }
         public int MaxUnitStorageSize { get; set; }
@@ -75,7 +74,7 @@ namespace Warehouse_System
             Saved = true;
         }
 
-        public void Save()
+        public override void Save()
         {
             if (!Saved)
             {
@@ -94,7 +93,7 @@ namespace Warehouse_System
             else Console.WriteLine($"shelf {this.Identifier} has already been saved");
         }
 
-        public void Remove()
+        public override void Remove()
         {
             if (Saved)
             {
