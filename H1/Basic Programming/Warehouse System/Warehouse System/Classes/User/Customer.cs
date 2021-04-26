@@ -6,24 +6,20 @@ namespace Warehouse_System
 {
     class Customer : User
     {
-        private bool Saved = false;
-
         private void GetOrders()
         {
             Records orderRecords = Database.GetRecords(@$"SELECT * FROM orders
                                                     WHERE customer_id = {this.Id}");
-
             // Initialize the list
             orders = new List<Order>();
             if (orderRecords.Count > 0)
             {
                 foreach (var order in orderRecords)
                 {
-                    Order m_order = new Order(this);
+                    Order m_order = new Order(Convert.ToInt32(order["id"]), this);
 
                     Records orderLines = Database.GetRecords($@"SELECT * FROM orderlines
                                                             WHERE order_id = {order["id"]}");
-                    List<Orderline> m_orderlines = new List<Orderline>();
                     foreach (var orderline in orderLines)
                     {
                         Dictionary<string, string> product = Database.GetRecords($@"SELECT * FROM products
@@ -31,6 +27,8 @@ namespace Warehouse_System
                         Orderline m_orderline = new Orderline(Convert.ToInt32(product["id"]));
                         m_order.Orderlines.Add(m_orderline);
                     }
+                    orders.Add(m_order);
+
                 }
             }
         }
@@ -50,7 +48,6 @@ namespace Warehouse_System
                 }
             }
         }
-        public int Id { get; set; }
         public string Address { get; set; }
         public int ZipCode { get; set; }
         public List<Order> orders = new List<Order>();
