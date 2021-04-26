@@ -4,13 +4,11 @@ using System.Text;
 
 namespace Warehouse_System
 {
-    abstract class User
+    abstract class User : SQLObject
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public DateTime CreationDate = DateTime.Now;
 
-        public abstract void Save();
-        public abstract void Remove();
+        public DateTime CreationDate = DateTime.Now;
     }
 }

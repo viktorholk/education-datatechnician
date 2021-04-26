@@ -7,7 +7,6 @@ namespace Warehouse_System
 {
     class Shelf : SQLObject
     {
-        private bool Saved = false;
         private char GetIdentifier()
         {
             if (shelves.Count > 0)

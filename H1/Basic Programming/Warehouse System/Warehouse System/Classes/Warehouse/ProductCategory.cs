@@ -6,7 +6,6 @@ namespace Warehouse_System
 {
     class ProductCategory : SQLObject
     {
-        private bool Saved = false;
 
         public static List<ProductCategory> categories;
 
