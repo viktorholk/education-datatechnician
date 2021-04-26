@@ -32,7 +32,6 @@ namespace Warehouse_System
         public int UnitSize { get; set; }
 
         public ProductCategory Category;
-        public bool Saved = false;
         public Product(string name, ProductCategory category, int unitSize, int unitPrice )
         {
             this.Name = name;
@@ -60,6 +59,10 @@ namespace Warehouse_System
             this.UnitSize = unitSize;
             this.Shelf = shelf;
         }
+        public new bool Saved {
+            get { return base.Saved; }
+            set { base.Saved = value;  }
+        }
         public override void Remove()
         {
             if (Saved)
@@ -76,7 +79,11 @@ namespace Warehouse_System
 
         public override void Save()
         {
-            Shelf.AddProduct(this);
+            if (Shelf != null)
+            {
+                Shelf.AddProduct(this);
+            }
+            else Console.WriteLine("Product class needs to have a shelf assigned to it before you can save it");
         }
         public override string ToString()
         {
