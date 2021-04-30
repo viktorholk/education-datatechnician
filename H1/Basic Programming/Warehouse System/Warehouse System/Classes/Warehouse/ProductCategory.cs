@@ -1,79 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Warehouse_System.Classes.SQL;
 
-namespace Warehouse_System
+namespace Warehouse_System.Classes.Warehouse
 {
     class ProductCategory : SQLObject
     {
-
-        public static List<ProductCategory> categories;
-
-        public static void LoadCategories()
-        {
-            Records records = Database.GetRecords("SELECT * FROM product_categories");
-            // Initialize the list
-            categories = new List<ProductCategory>();
-            if (records.Count > 0)
-            {
-                foreach (var record in records)
-                {
-                    ProductCategory productCategory = new ProductCategory(Convert.ToInt32(record["id"]), record["name"]);
-                    categories.Add(productCategory);
-                }
-            }
-            else Console.WriteLine("Cannot load product categories since there is no records");
+        private void LoadCategories() {
+            Database.Load(ProductCategory.categories, "SELECT * FROM product_categories");
         }
+
+        public static List<ProductCategory> categories = new List<ProductCategory>();
         public string Name { get; set; }
         public ProductCategory(string name)
         {
-            this.Name = name;
+            this.Name   = name;
         }
 
-        public ProductCategory(int id, string name)
+        public ProductCategory(string id, string name)
         {
-            this.Id = id;
-            this.Name = name;
-            Saved = true;
+            this.Id     = Convert.ToInt32(id);
+            this.Name   = name;
+            base.Saved  = true;
         }
-
-        public override void Save()
+        public void Save()
         {
-            if (!Saved)
-            {
-                // Add it to the database
-                Database.Execute(@$"
-                    INSERT INTO product_categories 
-                    (name) 
-                    VALUES ('{Name}')
-                ");
-                Console.WriteLine($"Saved product category {this.Name}");
-                this.Saved = true;
-                // Load products from the database into the list
-                LoadCategories();
-
-            }
-            else Console.WriteLine($"{this.Name} category has already been saved");
+            base.Insert($@" INSERT INTO product_categories
+                            (name)
+                            VALUES ('{this.Name}')");
+            Console.WriteLine($"Saved category {this.Name}");
+            LoadCategories();
+            
         }
-
-        public override void Remove()
+        public void Remove()
         {
-            if (Saved)
-            {
-                // Remove it to the database
-                Database.Execute(@$"
-                    DELETE FROM product_categories
-                    WHERE id = {Id}
-                ");
-                Console.WriteLine($"Removed product category {this.Name}");
-                LoadCategories();
-
-            }
-            else Console.WriteLine($"{this.Name} category has to be saved in the database before removal");
+            base.Delete($@" DELETE FROM product_categories
+                            WHERE id = {this.Id}");
+            Console.WriteLine($"Deleted category {this.Name}");
+            LoadCategories();
         }
-
-
-
         public override string ToString()
         {
             return $"{this.Id}, {this.Name}";

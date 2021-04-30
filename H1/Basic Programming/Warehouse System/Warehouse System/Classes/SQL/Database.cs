@@ -1,54 +1,81 @@
 ﻿using System;
 using System.Data;
 using System.Collections.Generic;
-using Microsoft.Data.Sqlite;
-
-namespace Warehouse_System
+using System.Data.SQLite;
+using Warehouse_System.Classes.Warehouse;
+namespace Warehouse_System.Classes.SQL
 {
-    public class Records : List<Dictionary<string,string>> {
+    public class Records : List<Dictionary<string, string>>
+    {
         public string TableName;
     }
     class Database
     {
-        private static readonly SqliteConnection Instance = new SqliteConnection($"Data Source=warehouse.db");
-
+        private static readonly SQLiteConnection Instance = new SQLiteConnection($"Data Source=warehouse.db");
+        public static void Load<T>(List<T> list, string query) where T : class
+        {
+            list.Clear();
+            foreach (DataRow row in GetDataTable(query).Rows)
+            {
+                T instance = (T)Activator.CreateInstance(typeof(T), row.ItemArray);
+                list.Add(instance);
+            }
+        }
         public static int Execute(string query)
         {
-            Instance.Open();
+            if (Instance.State != ConnectionState.Open)
+                Instance.Open();
 
             var cmd = Instance.CreateCommand();
             cmd.CommandText = query;
             return cmd.ExecuteNonQuery();
         }
-        public static Records GetRecords(string query)
+        public static int ExecuteAndGetId(string query)
         {
-            Instance.Open();
+            if (Instance.State != ConnectionState.Open)
+                Instance.Open();
 
-            Records records = null;
+            SQLiteTransaction transaction;
+            transaction = Instance.BeginTransaction();
+            Execute(query);
+            int id = Convert.ToInt32(GetDataTable("SELECT last_insert_rowid() as id").Rows[0]["id"]);
+            transaction.Commit();
+            return id;
+        }
+        public static DataTable GetDataTable(string query)
+        {
+            if (Instance.State != ConnectionState.Open)
+                Instance.Open();
 
+            DataTable entries = new DataTable();
             var cmd = Instance.CreateCommand();
             cmd.CommandText = query;
 
             using (var reader = cmd.ExecuteReader())
             {
-                records = new Records
+                if (reader.HasRows)
                 {
-                    TableName = reader.GetSchemaTable().Rows[0]["BaseTableName"].ToString()
-                };
-                while (reader.Read())
-                {
-                    var record = new Dictionary<string, string>();
-
-                    for (var i = 0; i < reader.FieldCount; i++)
+                    for (int i = 0; i < reader.FieldCount; i++)
                     {
-                        record[reader.GetName(i)] = reader.IsDBNull(i) ? "NULL" : reader.GetString(i);
+                        entries.Columns.Add(new DataColumn(reader.GetName(i)));
                     }
-                    records.Add(record);
+
+                    int j = 0;
+                    while (reader.Read())
+                    {
+                        DataRow row = entries.NewRow();
+                        entries.Rows.Add(row);
+
+                        for (int i = 0; i < reader.FieldCount; i++)
+                        {
+                            entries.Rows[j][i] = reader.GetValue(i);
+                        }
+                        j++;
+                    }
                 }
             }
-            return records;
+            return entries;
         }
-
         public static void Initialize()
         {
             // Shelves Table
@@ -105,27 +132,10 @@ namespace Warehouse_System
                 FOREIGN KEY('order_id') REFERENCES 'orders'('id') ON DELETE CASCADE,
                 PRIMARY KEY('id' AUTOINCREMENT)
             ); ");
-
-            LoadData();
-        }
-        public static void LoadData()
-        {
-            ProductCategory.LoadCategories();
-            Product.LoadProducts();
-            Shelf.LoadShelves();
-            Customer.LoadCustomers();
+            // Add data from the database to the lists
+            Load(ProductCategory.categories, "SELECT * FROM product_categories");
+            Load(Shelf.shelves, "SELECT * FROM shelves");
         }
 
-        public static void PrettyPrint(Records records)
-        {
-            Records tableInfo = GetRecords($"pragma table_info('{records.TableName}')");
-            foreach (var item in tableInfo)
-            {
-                foreach (var i in item.Values)
-                {
-                    Console.WriteLine(i);
-                }
-            }
-        }
     }
- }
+}

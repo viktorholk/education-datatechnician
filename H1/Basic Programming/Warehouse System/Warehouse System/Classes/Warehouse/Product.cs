@@ -1,90 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-
-namespace Warehouse_System
+using Warehouse_System.Classes.SQL;
+using System.Linq;
+namespace Warehouse_System.Classes.Warehouse
 {
     class Product : SQLObject
     {
-        // The private field is used in the overloading constructor that takes in a Shelf object
-        // This is to use the overriding method from the SQLObject that makes adding a product to a Shelf object possible
-        private Shelf Shelf;
-
-        public static List<Product> products;
-        public static void LoadProducts()
-        {
-            Records records = Database.GetRecords("SELECT * FROM products");
-            // Initialize the list
-            products = new List<Product>();
-            if (records.Count > 0)
-            {
-                foreach (var record in records)
-                {
-                    Product product = new Product(Convert.ToInt32(record["id"]), record["name"], Convert.ToInt32(record["category_id"]), Convert.ToInt32(record["unitSize"]), Convert.ToInt32(record["unitPrice"]));
-                    products.Add(product);
-                }
-            }
-            else Console.WriteLine("Cannot load shelves since there is no records");
-        }
         public string Name { get; set; }
         public int UnitPrice { get; set; }
         public int UnitSize { get; set; }
-
         public ProductCategory Category;
-        public Product(string name, ProductCategory category, int unitSize, int unitPrice )
+
+        public new bool Saved
+        {
+            get         { return base.Saved; }
+            private set { base.Saved = value; }
+        }
+
+        public Product(string name, ProductCategory category, int unitSize, int unitPrice)
         {
             this.Name = name;
             this.UnitSize = unitSize;
             this.UnitPrice = unitPrice;
             this.Category = category;
-
         }
-        public Product(int id, string name, int categoryId, int unitSize, int unitPrice)
+        public Product(string id, string name, string categoryId, string unitSize, string unitPrice, string shelfId)
         {
-            this.Id = id;
+            this.Id = Convert.ToInt32(id);
             this.Name = name;
-            this.UnitSize = unitSize;
-            this.UnitPrice = unitPrice;
-            this.Category = ProductCategory.categories.Single(c => c.Id == categoryId);
-            this.UnitSize = unitSize;
+            this.Category = ProductCategory.categories.Single(i => i.Id == Convert.ToInt32(categoryId));
+            this.UnitSize = Convert.ToInt32(unitSize);
+            this.UnitPrice = Convert.ToInt32(unitPrice);
             Saved = true;
         }
-        public Product(string name, ProductCategory productCategory, int unitSize, int unitPrice, Shelf shelf)
+
+        public void Save(int shelfId)
         {
-            this.Name = name;
-            this.UnitSize = unitSize;
-            this.UnitPrice = unitPrice;
-            this.Category = productCategory;
-            this.UnitSize = unitSize;
-            this.Shelf = shelf;
+            base.Insert($@" INSERT INTO products
+                            (name, category_id, unitSize, unitPrice, shelf_id)
+                            VALUES ('{this.Name}',{this.Category.Id},{this.UnitSize}, {this.UnitPrice}, {shelfId})");
+            Console.WriteLine($"Saved product {this.Name}");
+
         }
-        public new bool Saved {
-            get { return base.Saved; }
-            set { base.Saved = value;  }
-        }
-        public override void Remove()
+        public void Remove()
         {
-            if (Saved)
-            {
-                // Remove it to the database
-                Database.Execute(@$"
-                    DELETE FROM products
-                    WHERE id = {Id}
-                ");
-                Console.WriteLine($"Removed product {this.Name}");
-            }
-            else Console.WriteLine($"{this.Name} has to be saved in the database before removal");
+            base.Delete($@" DELETE FROM products
+                            WHERE id = {this.Id}");
+            Console.WriteLine($"Deleted product {this.Name}");
         }
 
-        public override void Save()
-        {
-            if (Shelf != null)
-            {
-                Shelf.AddProduct(this);
-            }
-            else Console.WriteLine("Product class needs to have a shelf assigned to it before you can save it");
-        }
         public override string ToString()
         {
             return $"{this.Id}, {this.Name}, {this.Category.Name}, {this.UnitSize}";
