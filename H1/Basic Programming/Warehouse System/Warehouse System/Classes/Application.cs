@@ -2,135 +2,171 @@
 using System.Collections.Generic;
 using System.Text;
 using Warehouse_System.Classes.SQL;
+using Warehouse_System.Classes.Warehouse;
 using System.Data;
+using System.Linq;
+using System.Reflection;
+
 namespace Warehouse_System.Classes
 {
     class Application
     {
-        private readonly ConsoleColor DefaultColor = ConsoleColor.White;
-        private readonly ConsoleColor HighlightColor = ConsoleColor.Yellow;
-        private readonly ConsoleColor SuccessColor = ConsoleColor.Green;
-        private readonly ConsoleColor ErrorColor = ConsoleColor.Red;
+        private readonly ConsoleColor InfoColor    = ConsoleColor.Yellow;
+        private readonly ConsoleColor SuccessColor      = ConsoleColor.Green;
+        private readonly ConsoleColor ErrorColor        = ConsoleColor.Red;
 
-
-        private readonly string[] header = new string[]
+        public enum StatusCodes
         {
-            "WAREHOUSE SYSTEM",
-            "By viktorholk"
-        };
-        private void PrintHeader()
-        {
-            Console.Clear();
-            CenterWrite(header);
+            INFO,
+            SUCCESS,
+            ERROR
         }
-        private void CenterWrite(string[] strings)
+        public void SetStatus(StatusCodes code, string message)
         {
-            for (int i = 0; i < strings.Length; i++)
+
+            // Get current cursor so we can revert
+            int previousLeft = Console.CursorLeft;
+            int previousTop = Console.CursorTop;
+
+            // Set the color of the code
+            switch (code)
             {
-                Console.SetCursorPosition((Console.WindowWidth - strings[i].Length) / 2, Console.CursorTop);
-                Console.WriteLine(strings[i]);
+                case StatusCodes.INFO:
+                    Console.ForegroundColor = InfoColor;
+                    break;
+                case StatusCodes.SUCCESS:
+                    Console.ForegroundColor = SuccessColor;
+                    break;
+                case StatusCodes.ERROR:
+                    Console.ForegroundColor = ErrorColor;
+                    break;
+                default:
+                    break;
             }
+            Console.SetCursorPosition(0, 0);
+            // Erase the status line so we dont get fragments of other status codes
+            Console.Write(new string(' ', Console.WindowWidth));
+            Console.SetCursorPosition(0, 0);
+            Console.WriteLine($"STATUS: {message}");
+            // Reset foregroundColor
+            Console.ResetColor();
+            // Rewert cursor
+            Console.SetCursorPosition(previousLeft, previousTop);
         }
-        private void ColorWrite(string text, ConsoleColor type, ConsoleColor color, bool newLine = true)
+        private void WriteColor(string message, ConsoleColor color, bool newLine = true)
         {
-            ConsoleColor previousForeground = Console.ForegroundColor;
-            ConsoleColor previousBackground = Console.BackgroundColor;
-
-            if (type.Equals(Console.ForegroundColor))
-                Console.ForegroundColor = color;
-            else if (type.Equals(Console.BackgroundColor))
-                Console.BackgroundColor = color;
-
-            // Write the text
+            Console.ForegroundColor = color;
             if (newLine)
-                Console.WriteLine(text);
+                Console.WriteLine(message);
             else
-                Console.Write(text);
+                Console.Write(message);
+            Console.ResetColor();
 
-            // Reset the colors to the previous
-            Console.ForegroundColor = previousForeground;
-            Console.BackgroundColor = previousBackground;
         }
-        private string[] FormatDataTable(string query)
+
+        private int GetIntegerInput()
         {
-            // All the lines that we are going to return
-            List<string> stringLines = new List<string>();
-
-            // The records of the datatable
-            DataTable table = Database.GetDataTable(query);
-
-            // First we are going to make a dictonary that contains the column names and their max length, for formatting
-            Dictionary<string, int> columns = new Dictionary<string, int>();
-            string columnsString = "";
-
-            // Go through all the columns and for each column we will get the longest data length in the rows for the max length
-            foreach (var column in table.Columns)
+            while (true)
             {
-                string columnName = column.ToString();
-                int maxLength = 0;
-                foreach (DataRow row in table.Rows)
+                if (Int32.TryParse(Console.ReadLine(), out int _integer))
                 {
-                    if (row[columnName].ToString().Length > maxLength)
-                        maxLength = row[columnName].ToString().Length;
+                    return _integer;
                 }
-                columns[columnName] = maxLength;
-                columnsString += $"{columnName.PadRight(maxLength)} ";
+                else
+                {
+                    Console.WriteLine("Please enter a valid number");
+                }
             }
-            stringLines.Add(columnsString);
-
-            foreach (DataRow row in table.Rows)
-            {
-                
-            }
-
-            return stringLines.ToArray();
         }
+
+        private T SelectFromList<T>(List<T> list, int id) where T : class
+        {
+            while (true)
+            {
+                PropertyInfo[] properties = typeof(T).GetProperties();
+                foreach (var item in list)
+                {
+                    int genericObjectId = Convert.ToInt32(properties.Single(i => i.Name == "Id").GetValue(item));
+                    if (genericObjectId == id)
+                    {
+                        return item;
+                    }
+
+                }
+                Console.WriteLine("Please enter a valid Id");
+            }
+
+        }
+
+
         public Application(string title, (int, int) dimensions)
         {
             Console.Title           = title;
-            Console.SetWindowSize(dimensions.Item1, dimensions.Item2);
+            //Console.SetWindowSize(dimensions.Item1, dimensions.Item2);
             //// Removes the scrollbars
             //Console.SetBufferSize(dimensions.Item1, dimensions.Item2);
+            Database.Initialize();
         }
 
         public void Run()
         {
             while (true)
             {
+                Console.Clear();
+                SetStatus(StatusCodes.INFO, "Ok");
                 ConsoleKeyInfo keyboardPress;
-                PrintHeader();
-                // print main menu
-                CenterWrite(new string[]
-                {
-                    "Navigate through the menus with keypresses",
-                    "Go back by pressing ESCAPE",
-                    "",
-                    "1. Show list of shelves",
-                    "2. Show list of products"
-                });
-                
+
                 do
                 {
+                    Console.SetCursorPosition(0, 2);
+                    Console.WriteLine("     -- W A R E H O U S E --");
+                    Console.WriteLine("     ----- S Y S T E M -----");
+                    Console.WriteLine();
+                    WriteColor("     1. ", InfoColor, false);
+                    Console.WriteLine("View Shelves");
+                    Console.WriteLine("     -----------------------");
+                    WriteColor("     ESC ", InfoColor, false);
+                    Console.WriteLine(" Go Back");
+                    Console.WriteLine();
+
                     keyboardPress = Console.ReadKey(true);
+
+
 
                     switch (keyboardPress.Key)
                     {
                         case ConsoleKey.D1:
-                            PrintHeader();
-                            CenterWrite(Database.GetDataTable("SELECT * FROM shelves").Print);
+                            SetStatus(StatusCodes.INFO, "Ok");
+
                             break;
-                        default: break;
+                        case ConsoleKey.D2:
+                            SetStatus(StatusCodes.SUCCESS, "AYYAYAYAY");
+                            break;
+                        case ConsoleKey.D3:
+                            SetStatus(StatusCodes.INFO, "HHEHEHEYAYAY");
+                            break;
+                        default:
+                            SetStatus(StatusCodes.ERROR, $"{keyboardPress.Key} is not a valid menu!");
+                            break;
 
                     }
-
 
                 } while (keyboardPress.Key != ConsoleKey.Escape);
                 Console.Clear();
                 Console.WriteLine("Are you sure you want to quit?");
-                Console.WriteLine("Press enter to quit");
+                Console.Write("Press ");
+                WriteColor("enter ", InfoColor, false);
+                Console.WriteLine("to quit");
+
+                Console.Write("Press ");
+                WriteColor("any ", InfoColor, false);
+                Console.WriteLine("key to go back");
+
                 keyboardPress = Console.ReadKey(true);
                 if (keyboardPress.Key == ConsoleKey.Enter) break;
+
             }
+
         }
     }
 }
