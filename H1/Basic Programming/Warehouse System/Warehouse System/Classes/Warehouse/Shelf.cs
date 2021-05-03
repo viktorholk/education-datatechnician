@@ -48,7 +48,7 @@ namespace Warehouse_System.Classes.Warehouse
         {
             this.Identifier         = CreateIdentifer();
             this.Description        = description;
-            this.MaxUnitStorageSize = MaxUnitStorageSize;
+            this.MaxUnitStorageSize = maxUnitStorageSize;
         }
         public Shelf(string id, string identifier, string description, string maxUnitStorageSize)
         {
