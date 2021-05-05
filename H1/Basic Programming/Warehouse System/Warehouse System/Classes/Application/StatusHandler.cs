@@ -45,6 +45,9 @@ namespace Warehouse_System.Classes.Application
             int previousLeft = Console.CursorLeft;
             int previousTop = Console.CursorTop;
 
+            // Get the previous foregroundColor so we can revert it
+            ConsoleColor previousColor = Console.ForegroundColor;
+
             // Set the color of the code
             Console.ForegroundColor = GetColor(status.Code);
             Console.SetCursorPosition(0, 0);
@@ -53,7 +56,7 @@ namespace Warehouse_System.Classes.Application
             Console.SetCursorPosition(0, 0);
             Console.WriteLine($"STATUS: {status.Message}");
             // Reset foregroundColor
-            Console.ResetColor();
+            Console.ForegroundColor = previousColor;
             // Rewert cursor
             Console.SetCursorPosition(previousLeft, previousTop);
         }
