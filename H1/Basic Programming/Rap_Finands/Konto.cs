@@ -9,7 +9,7 @@ namespace Rap_Finands {
         public Konto() {
             transaktioner = new List<Transaktion>();
             registreringsnr = Program.reginummer; //Sæt registreringsnummer på kontoen!
-            kontonr = Program.lavEtKontoNummer(); //Lav et nyt (tilfældigt shh!) kontonummer
+            kontonr = Program.LavEtKontoNummer(); //Lav et nyt (tilfældigt shh!) kontonummer
         }
         
     }
