@@ -98,14 +98,11 @@ namespace Rap_Finands {
 
         public void Udskriv()
         {
-            Console.WriteLine("Konto for " + Ejer + ": " + RegistreringsNr + " " + Kontonr);
             Console.WriteLine("================");
-            Console.WriteLine("Tekst\t\t\t\tBeløb\t\tSaldo");
+            Console.WriteLine($"{"Tekst",-30}{"Beløb",-15}{"Saldo",-15}");
             foreach (Transaktion t in Transaktioner)
             {
-                Console.Write(t.Tekst + "\t\t\t\t");
-                Console.Write(t.Amount + "\t\t");
-                Console.WriteLine(t.Saldo);
+                Console.WriteLine($"{t.Tekst,-30}{t.Amount,-15}{t.Saldo,-15}");
             }
             Console.WriteLine("================\n");
         }
