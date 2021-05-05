@@ -70,17 +70,15 @@ namespace Rap_Finands
         }
         public static void Gem() 
         {
-            File.WriteAllText(datafil,JsonConvert.SerializeObject(konti));
-            File.Delete(datafil); //Fjern debug fil
+            File.WriteAllText(Datafil,JsonConvert.SerializeObject(Konto.Konti));
         }
         public static void Hent()
         {
-            datafil = "debug_bank.json"; //Debug - brug en anden datafil til debug ~Konrad
-            if (File.Exists(datafil)) {
-                string json = File.ReadAllText(datafil);
-                konti = JsonConvert.DeserializeObject<List<Konto>>(json);
+            if (File.Exists(Datafil)) {
+                string json = File.ReadAllText(Datafil);
+                Konto.Konti = JsonConvert.DeserializeObject<List<Konto>>(json);
             } else {
-                konti = new List<Konto>();
+                Konto.Konti = new List<Konto>();
             }
         }
     }
