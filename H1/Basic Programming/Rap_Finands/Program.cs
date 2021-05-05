@@ -110,10 +110,6 @@ namespace Rap_Finands
             Gem();
             return k;
         }
-        public static Konto lavKonto() {
-            return new Konto();
-        }
-
         /*
         fed metode til at lave helt nye kontonumre ~Konrad
         */
