@@ -7,10 +7,9 @@ namespace Rap_Finands {
         public float Amount { get; set; }
         public DateTime Dato { get; set; }
 
-        public Transaktion(string tekst, float saldo, float amount)
+        public Transaktion(string tekst, float amount)
         {
             this.Tekst = tekst;
-            this.Saldo = saldo;
             this.Amount = amount;
             this.Dato = DateTime.Now;
         }
