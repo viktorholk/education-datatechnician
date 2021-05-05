@@ -26,5 +26,10 @@ namespace Warehouse_System.Classes.SQL
             }
         }
 
+        protected void Update(string query)
+        {
+            Database.Execute(query);
+        }
+
     }
 }
