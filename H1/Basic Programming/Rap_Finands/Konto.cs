@@ -20,7 +20,7 @@ namespace Rap_Finands {
             return nr;
         }
 
-        public static List<Konto> Konti;
+        public static List<Konto> Konti = new List<Konto>();
         public static Konto OpretKonto()
         {
             Console.Write("Navn på kontoejer:");
@@ -33,7 +33,7 @@ namespace Rap_Finands {
 
         public static Konto FindKonto()
         {
-            for (var i = 0; i <= Konti.Count; i++)
+            for (var i = 0; i <= Konti.Count - 1; i++)
             {
                 Konto konto = Konti[i];
                 Console.WriteLine($"{i + 1} . {konto.RegistreringsNr} {konto.Kontonr} ejes af {konto.Ejer}");
@@ -65,8 +65,12 @@ namespace Rap_Finands {
 
         public float FindSaldo()
         {
-            Transaktion seneste = Transaktioner[^1];
-            return seneste.Saldo;
+            if (Transaktioner.Count > 0)
+            {
+                Transaktion seneste = Transaktioner[^1];
+                return seneste.Saldo;
+            }
+            return 0;
         }
         public void OpretTransaktion()
         {
