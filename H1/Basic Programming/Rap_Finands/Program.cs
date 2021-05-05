@@ -12,23 +12,19 @@ namespace Rap_Finands
     **/
     class Program
     {
-        public static string reginummer = "4242";
-        public static string datafil = "bank.json"; //Her ligger alt data i
-        public static List<Konto> konti;
-        public static float belob;
+        public static string Reginummer = "4242";
+        public static string Datafil = "bank.json"; //Her ligger alt data i
         static void Main(string[] args)
         {
             Console.WriteLine("Henter alt kontodata");
             
             Hent();
-            if (konti.Count == 0) {
-                var k = lavKonto();
-                k.ejer = "Ejvind Møller";
-                konti.Add(k);
+            if (Konto.Konti.Count == 0) {
+                var k = new Konto("Ejvind Møller");
 
-                GemTrans(k,"Opsparing",100);
-                GemTrans(konti[0],"Vandt i klasselotteriet",1000);
-                GemTrans(konti[0],"Hævet til Petuniaer",-50);
+                k.GemTrans("Opsparing",100);
+                k.GemTrans("Vandt i klasselotteriet",1000);
+                k.GemTrans("Hævet til Petuniaer",-50);
                 
                 Gem();
             }
@@ -52,13 +48,13 @@ namespace Rap_Finands
                 
                 switch (valg) {
                     case 1:
-                        OpretKonto();
+                        Konto.OpretKonto();
                         break;
                     case 2:
-                        OpretTransaktion(FindKonto());
+                        Konto.FindKonto().OpretTransaktion();
                         break;
                     case 3:
-                        UdskrivKonto(FindKonto());
+                        Konto.FindKonto().Udskriv();
                         break;
                     case 0:
                         blivVedOgVed = false;
@@ -71,99 +67,6 @@ namespace Rap_Finands
                 }
             }
             Console.Clear();
-        }
-        static Konto FindKonto() 
-        {
-            for (var i = 1; i <= konti.Count;i++)
-            {
-                Console.WriteLine(i+". "+konti[i-1].registreringsnr+" "+konti[i-1].kontonr+" ejes af "+konti[i-1].ejer);
-            }
-            Console.WriteLine("Vælg et tal fra 1 til "+konti.Count);
-            Console.Write(">");
-            int tal = int.Parse(Console.ReadLine());
-            if (tal < 1 || tal > konti.Count) {
-                Console.WriteLine("Ugyldigt valg");
-                Console.Clear();
-                return null;
-            }
-            return konti[tal-1];
-        }
-        static void OpretTransaktion(Konto k) 
-        {
-            Console.Write("Tekst: ");
-            string tekst = Console.ReadLine();
-            Console.Write("Beløb: ");
-            float amount = float.Parse(Console.ReadLine());
-            if (GemTrans(k,tekst,amount)) {
-                Console.WriteLine("Transkationen blev gemt. Ny saldo på kontoen: "+FindSaldo(k));
-                Gem();
-            } else
-                Console.WriteLine("Transaktionen kunne ikke gemmes (Der var sikkert ikke penge nok på kontoen)");
-        }
-        static Konto OpretKonto() 
-        {
-            Konto k = lavKonto();
-            Console.Write("Navn på kontoejer:");
-            k.ejer = Console.ReadLine();
-            Console.WriteLine("Konto oprettet!");
-            konti.Add(k);
-            Gem();
-            return k;
-        }
-        /*
-        fed metode til at lave helt nye kontonumre ~Konrad
-        */
-        public static string LavEtKontoNummer() {
-            Random tilfael = new Random();
-            string nr = tilfael.Next(1,9).ToString();
-            for (var i = 1; i <= 9; i++) {
-                nr = nr + tilfael.Next(0,9).ToString();
-                if (i == 3) nr = nr + " ";
-                if (i == 6) nr = nr + " ";
-            }
-            return nr;
-        }
-        static void UdskrivKonti() {
-            Console.WriteLine("================");
-            foreach (Konto k in konti) {
-                Console.WriteLine(k.registreringsnr+" "+k.kontonr+" ejes af "+k.ejer);
-            }
-        }
-        static void UdskrivKonto(Konto k) {
-            Console.WriteLine("Konto for "+k.ejer+": "+k.registreringsnr+" "+k.kontonr);
-            Console.WriteLine("================");
-            Console.WriteLine("Tekst\t\t\t\tBeløb\t\tSaldo");
-            foreach (Transaktion t in k.transaktioner) {
-                Console.Write(t.tekst+"\t\t\t\t");
-                Console.Write(t.amount+"\t\t");
-                Console.WriteLine(t.saldo);
-            }
-            Console.WriteLine("================\n");
-
-        }
-        
-        public static bool GemTrans(Konto konto, string tekst, float beløb) {
-            var saldo = FindSaldo(konto);
-            if (saldo + beløb < 0) return false;
-            var t = new Transaktion();
-            t.tekst = tekst;
-            t.amount = belob;
-            t.saldo = t.amount + saldo;
-            t.dato = DateTime.Now;
-            
-            konto.transaktioner.Add(t);
-            return true;
-        }
-        public static float FindSaldo(Konto k) {
-            Transaktion seneste = new Transaktion();
-            DateTime senesteDato = DateTime.MinValue;
-            foreach(var t in k.transaktioner) {
-                if (t.dato > senesteDato) {
-                    senesteDato = t.dato;
-                    seneste = t;
-                }
-            }
-            return seneste.saldo;
         }
         public static void Gem() 
         {
