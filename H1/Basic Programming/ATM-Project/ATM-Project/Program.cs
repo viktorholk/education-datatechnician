@@ -171,9 +171,8 @@ namespace ATM_Project
             // Get a double datatype from a console.readline string
             while (true)
             {
-                double number;
                 string input = Console.ReadLine();
-                if (double.TryParse(input, out number))
+                if (double.TryParse(input, out double number))
                 {
                     return number;
                 }

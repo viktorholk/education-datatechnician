@@ -1,0 +1,13 @@
+c:\Users\sinb\Documents\Opgave med rap finands\bin\Debug\netcoreapp3.0\Rap Finands.exe
+C:\Users\sinb\Documents\Opgave med rap finands\bin\Debug\netcoreapp3.0\Rap Finands.deps.json
+C:\Users\sinb\Documents\Opgave med rap finands\bin\Debug\netcoreapp3.0\Rap Finands.runtimeconfig.json
+C:\Users\sinb\Documents\Opgave med rap finands\bin\Debug\netcoreapp3.0\Rap Finands.runtimeconfig.dev.json
+c:\Users\sinb\Documents\Opgave med rap finands\bin\Debug\netcoreapp3.0\Rap Finands.dll
+c:\Users\sinb\Documents\Opgave med rap finands\bin\Debug\netcoreapp3.0\Rap Finands.pdb
+c:\Users\sinb\Documents\Opgave med rap finands\bin\Debug\netcoreapp3.0\Newtonsoft.Json.dll
+c:\Users\sinb\Documents\Opgave med rap finands\obj\Debug\netcoreapp3.0\Rap Finands.csprojAssemblyReference.cache
+c:\Users\sinb\Documents\Opgave med rap finands\obj\Debug\netcoreapp3.0\Rap Finands.AssemblyInfoInputs.cache
+c:\Users\sinb\Documents\Opgave med rap finands\obj\Debug\netcoreapp3.0\Rap Finands.AssemblyInfo.cs
+C:\Users\sinb\Documents\Opgave med rap finands\obj\Debug\netcoreapp3.0\Rap Finands.csproj.CopyComplete
+c:\Users\sinb\Documents\Opgave med rap finands\obj\Debug\netcoreapp3.0\Rap Finands.dll
+c:\Users\sinb\Documents\Opgave med rap finands\obj\Debug\netcoreapp3.0\Rap Finands.pdb

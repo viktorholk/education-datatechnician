@@ -13,7 +13,7 @@ namespace Warehouse_System
 
         static void Main(string[] args)
         {
-            Application application = new Application("Warehouse System", (120,20));
+            Application application = new Application("Warehouse System", 120, 25);
             application.Run();
         }
     }
