@@ -77,7 +77,7 @@ namespace Rap_Finands {
             Console.Write("Tekst: ");
             string tekst = Console.ReadLine();
             Console.Write("Beløb: ");
-            float amount = float.Parse(Console.ReadLine());
+            float amount = Program.GetInputFloat();
             if (GemTrans(tekst, amount))
             {
                 Console.WriteLine("Transkationen blev gemt. Ny saldo på kontoen: " + FindSaldo());

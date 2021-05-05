@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Rap_Finands
 {
@@ -14,8 +15,34 @@ namespace Rap_Finands
     {
         public static string Reginummer = "4242";
         public static string Datafil = "bank.json"; //Her ligger alt data i
+
+        public static int GetInputInteger()
+        {
+            while (true)
+            {
+                string input = Console.ReadLine();
+                if (!int.TryParse(input, out int number))
+                {
+                    Console.WriteLine($"'{input}' er ikke et gyldigt tal!");
+                }
+                else return number;
+            }
+        }
+        public static float GetInputFloat()
+        {
+            while (true)
+            {
+                string input = Console.ReadLine();
+                if (!float.TryParse(input, out float number))
+                {
+                    Console.WriteLine($"'{input}' er ikke et gyldigt tal!");
+                }
+                else return number;
+            }
+        }
         static void Main(string[] args)
         {
+            Console.WriteLine(Datafil);
             Console.WriteLine("Henter alt kontodata");
             
             Hent();
@@ -44,7 +71,7 @@ namespace Rap_Finands
                 Console.WriteLine("0. Afslut");
 
                 Console.Write(">");
-                int valg = int.Parse(Console.ReadLine());
+                int valg = GetInputInteger();
                 
                 switch (valg) {
                     case 1:
@@ -77,8 +104,6 @@ namespace Rap_Finands
             if (File.Exists(Datafil)) {
                 string json = File.ReadAllText(Datafil);
                 Konto.Konti = JsonConvert.DeserializeObject<List<Konto>>(json);
-            } else {
-                Konto.Konti = new List<Konto>();
             }
         }
     }
