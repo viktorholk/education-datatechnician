@@ -2,14 +2,13 @@ using System;
 using System.Collections.Generic;
 namespace Rap_Finands {
     class Konto {
-        public string registreringsnr;
-        public string kontonr;
-        public string ejer;
-        public List<Transaktion> transaktioner;
+        public string RegistreringsNr { get; set; }
+        public string Kontonr   { get; set; }
+        public string Ejer      { get; set; }
+        public List<Transaktion> Transaktioner = new List<Transaktion>();
         public Konto() {
-            transaktioner = new List<Transaktion>();
-            registreringsnr = Program.reginummer; //Sæt registreringsnummer på kontoen!
-            kontonr = Program.LavEtKontoNummer(); //Lav et nyt (tilfældigt shh!) kontonummer
+            this.RegistreringsNr = Program.reginummer; //Sæt registreringsnummer på kontoen!
+            this.Kontonr = Program.LavEtKontoNummer(); //Lav et nyt (tilfældigt shh!) kontonummer
         }
         
     }
