@@ -41,40 +41,92 @@ namespace SQL_Program
                     switch (inputArgs[0])
                     {
                         case "show":
-                            Records records = Database.GetRecords($"SELECT * FROM {inputArgs[1]}");
-                            PrettyPrintRecords(records);
+                            string showQuery = "";
+                            switch (inputArgs[1])
+                            {
+                                case "items":
+                                    showQuery = @"SELECT items.id, items.name, categories.name as 'category'
+                                                    FROM items
+                                                    INNER JOIN categories
+                                                    ON categories.id = items.category_id";
+                                    break;
+                                case "categories":
+                                    showQuery = @"SELECT * from categories";
+                                    break;
+                                case "customers":
+                                    showQuery = @"SELECT * from customers";
+                                    break;
+                                case "basket":
+                                    showQuery = @"SELECT baskets.id, customers.firstName || ' ' ||customers.lastName as Customer
+                                                    FROM baskets
+                                                    INNER JOIN customers
+                                                    ON customers.id = baskets.customer_id";
+                                    break;
+                                case "basket_items":
+                                    showQuery = @"SELECT basket_items.id, baskets.id as basketId, customers.firstName || ' ' || customers.lastName as Customer, items.name as itemName
+                                                    FROM basket_items
+                                                        INNER JOIN baskets
+                                                            ON baskets.id = basket_items.basket_id
+                                                        INNER JOIN customers
+                                                            ON customers.id = basket_items.customer_id
+                                                        INNER JOIN items
+                                                            ON items.id == basket_items.item_id";
+                                    break;
+                                case "sub":
+                                    showQuery = @"SELECT * FROM items,
+                                                    (SELECT * FROM categories),
+                                                    (SELECT * FROM customers),
+                                                    (SELECT * FROM baskets),
+                                                    (SELECT * FROM basket_items)";
+                                    break;
+                                case "view":
+                                    showQuery = @"SELECT * FROM v_customers";
+                                    break;
+                                default:
+                                    Console.WriteLine("Invalid table");
+                                    break;
+                            }
+
+
+                            Records records = Database.GetRecords(showQuery);
+                            if (records != null)
+                                PrettyPrintRecords(records);
                             break;
                         case "add":
                             // Get all the fields that has to be added and what datatypes they have
                             Records tableInfo = Database.GetRecords($"pragma table_info('{inputArgs[1]}')");
-                            if (tableInfo.Count > 0)
+                            if (tableInfo != null)
                             {
-                                List<TableData> tableDatas = new List<TableData>();
-                                foreach (var record in tableInfo)
+                                if (tableInfo.Count > 0)
                                 {
-                                    if (record["pk"] == "1") continue;
-                                    tableDatas.Add(new TableData(record["name"], record["type"]));
-                                }
-                                Console.WriteLine("Type in the values to be added");
-                                foreach (var item in tableDatas)
-                                {
-                                    Console.Write($"{item.Name} : ");
-                                    var dataInput = Console.ReadLine();
+                                    List<TableData> tableDatas = new List<TableData>();
+                                    foreach (var record in tableInfo)
+                                    {
+                                        if (record["pk"] == "1") continue;
+                                        tableDatas.Add(new TableData(record["name"], record["type"]));
+                                    }
+                                    Console.WriteLine("Type in the values to be added");
+                                    foreach (var item in tableDatas)
+                                    {
+                                        Console.Write($"{item.Name} : ");
+                                        var dataInput = Console.ReadLine();
 
-                                    item.Value = dataInput;
+                                        item.Value = dataInput;
+                                    }
+                                    string[] fields = tableDatas.Select(i => i.Name).ToArray();
+                                    string[] values = tableDatas.Select(i => i.Value).ToArray();
+                                    string query = $"INSERT INTO {inputArgs[1]} ({string.Join(", ", tableDatas.Select(i => i.Name).ToArray())}) VALUES (";
+                                    foreach (var item in tableDatas)
+                                    {
+                                        query += (item.DataType != "INTEGER") ? $"'{item.Value}'{((item != tableDatas.Last()) ? "," : "")}" : item.Value + ((item != tableDatas.Last()) ? "," : "");
+                                    }
+                                    query += ")";
+                                    Database.Execute(query);
+                                    Console.WriteLine("Successfully inserted data");
                                 }
-                                string[] fields = tableDatas.Select(i => i.Name).ToArray();
-                                string[] values = tableDatas.Select(i => i.Value).ToArray();
-                                string query = $"INSERT INTO {inputArgs[1]} ({string.Join(", ", tableDatas.Select(i => i.Name).ToArray())}) VALUES (";
-                                foreach (var item in tableDatas)
-                                {
-                                    query += (item.DataType != "INTEGER") ? $"'{item.Value}'," : item.Value + ((item != tableDatas.Last()) ? ",": "");
-                                }
-                                query += ")";
-                                Database.Execute(query);
-                                Console.WriteLine("Successfully inserted data");
+                                else Console.WriteLine($"No records for {inputArgs[1]}");
                             }
-                            else Console.WriteLine($"No records for {inputArgs[1]}");
+
                             break;
                         case "remove":
                             PrettyPrintRecords(Database.GetRecords($"SELECT * FROM {inputArgs[1]}"));

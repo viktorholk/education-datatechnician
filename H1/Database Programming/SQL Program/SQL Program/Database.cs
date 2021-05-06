@@ -25,23 +25,31 @@ namespace SQL_Program
 
             var cmd = Instance.CreateCommand();
             cmd.CommandText = query;
-
-            using (var reader = cmd.ExecuteReader())
+            try
             {
-                records = new Records();
-
-                while (reader.Read())
+                using (var reader = cmd.ExecuteReader())
                 {
-                    var record = new Dictionary<string, string>();
+                    records = new Records();
 
-                    for (var i = 0; i < reader.FieldCount; i++)
+                    while (reader.Read())
                     {
-                        record[reader.GetName(i)] = reader.IsDBNull(i) ? "NULL" : reader.GetString(i);
+                        var record = new Dictionary<string, string>();
+
+                        for (var i = 0; i < reader.FieldCount; i++)
+                        {
+                            record[reader.GetName(i)] = reader.IsDBNull(i) ? "NULL" : reader.GetString(i);
+                        }
+                        records.Add(record);
                     }
-                    records.Add(record);
                 }
+                return records;
+
+            } catch
+            {
+                Console.WriteLine($"SQL '{query}' returned error");
+                return null;
             }
-            return records;
+
         }
     }
 }
