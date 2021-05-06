@@ -5,10 +5,6 @@ using System.Data.SQLite;
 using Warehouse_System.Classes.Warehouse;
 namespace Warehouse_System.Classes.SQL
 {
-    public class Records : List<Dictionary<string, string>>
-    {
-        public string TableName;
-    }
     class Database
     {
         private static readonly SQLiteConnection Instance = new SQLiteConnection($"Data Source=warehouse.db");
