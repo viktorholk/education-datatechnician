@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Warehouse_System.Classes.SQL;
+using Warehouse_System.Classes.Application;
 namespace Warehouse_System.Classes.Warehouse
 {
     /// <summary>
@@ -65,7 +66,8 @@ namespace Warehouse_System.Classes.Warehouse
             base.Insert($@" INSERT INTO shelves
                             (identifier, description, maxUnitStorageSize)
                             VALUES ('{this.Identifier}','{this.Description}',{this.MaxUnitStorageSize})");
-            Console.WriteLine($"Saved shelf {this.Identifier}");
+
+            StatusHandler.Write($"Saved shelf {this.Identifier}", StatusHandler.Codes.SUCCESS);
             LoadShelves();
 
         }
@@ -73,7 +75,15 @@ namespace Warehouse_System.Classes.Warehouse
         {
             base.Delete($@" DELETE FROM shelves
                             WHERE id = {this.Id}");
-            Console.WriteLine($"Deleted shelf {this.Identifier}");
+            StatusHandler.Write($"Deleted shelf {this.Identifier}", StatusHandler.Codes.SUCCESS);
+            LoadShelves();
+        }
+        public void Edit(string description, int maxUnitStorageSize)
+        {
+            base.Update($@" UPDATE shelves
+                            SET description = '{description}', maxUnitStorageSize = {maxUnitStorageSize}
+                            WHERE id = {this.Id}");
+            StatusHandler.Write($"Edited shelf {this.Identifier}", StatusHandler.Codes.SUCCESS);
             LoadShelves();
         }
 
@@ -83,6 +93,7 @@ namespace Warehouse_System.Classes.Warehouse
             {
                 product.Save(this.Id);
                 LoadProducts();
+                StatusHandler.Write($"Added product {product.Name}", StatusHandler.Codes.SUCCESS);
 
             }
         }
@@ -92,9 +103,12 @@ namespace Warehouse_System.Classes.Warehouse
             {
                 product.Remove();
                 LoadProducts();
-                Console.WriteLine($"Removed {product}");
+                StatusHandler.Write($"Removed product {product.Name}", StatusHandler.Codes.SUCCESS);
+
             }
-            else Console.WriteLine($"{product}, does not exist in the shelf' product list");
+            else
+                StatusHandler.Write($"{product}, does not exist in the shelf' product list", StatusHandler.Codes.ERROR);
+
         }
         public override string ToString()
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Warehouse_System.Classes.SQL;
 using System.Linq;
+using Warehouse_System.Classes.Application;
 namespace Warehouse_System.Classes.Warehouse
 {
     class Product : SQLObject
@@ -40,14 +41,14 @@ namespace Warehouse_System.Classes.Warehouse
             base.Insert($@" INSERT INTO products
                             (name, category_id, unitSize, unitPrice, shelf_id)
                             VALUES ('{this.Name}',{this.Category.Id},{this.UnitSize}, {this.UnitPrice}, {shelfId})");
-            Console.WriteLine($"Saved product {this.Name}");
-
+            StatusHandler.Write($"Saved product {this.Name}", StatusHandler.Codes.SUCCESS);
         }
         public void Remove()
         {
             base.Delete($@" DELETE FROM products
                             WHERE id = {this.Id}");
-            Console.WriteLine($"Deleted product {this.Name}");
+            StatusHandler.Write($"Deleted product {this.Name}", StatusHandler.Codes.SUCCESS);
+
         }
 
         public override string ToString()
