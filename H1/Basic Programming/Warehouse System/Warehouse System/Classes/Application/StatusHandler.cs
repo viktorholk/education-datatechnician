@@ -7,9 +7,9 @@ namespace Warehouse_System.Classes.Application
     class Status : ApplicationContext
     {
         public string Message { get; set; }
-        public StatusCodes Code { get; set; }
+        public StatusHandler.Codes Code { get; set; }
 
-        public Status(string message, StatusCodes code)
+        public Status(string message, StatusHandler.Codes code)
         {
             this.Message = message;
             this.Code = code;
@@ -17,14 +17,20 @@ namespace Warehouse_System.Classes.Application
     }
     class StatusHandler : ApplicationContext
     {
+        public enum Codes
+        {
+            INFO,
+            SUCCESS,
+            ERROR
+        }
         public static List<Status> StatusLogs = new List<Status>();
-        private static ConsoleColor GetColor(StatusCodes code)
+        private static ConsoleColor GetColor(Codes code)
         {
             return code switch
             {
-                StatusCodes.INFO => InfoColor,
-                StatusCodes.SUCCESS => SuccessColor,
-                StatusCodes.ERROR => ErrorColor,
+                Codes.INFO => InfoColor,
+                Codes.SUCCESS => SuccessColor,
+                Codes.ERROR => ErrorColor,
                 _ => ConsoleColor.White,
             };
         }
@@ -36,7 +42,7 @@ namespace Warehouse_System.Classes.Application
                 Write(previous.Message, previous.Code);
             }
         }
-        public static void Write(string message, StatusCodes code)
+        public static void Write(string message, Codes code)
         {
             // Initialize status object
             Status status = new Status(message, code);
