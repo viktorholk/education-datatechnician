@@ -130,6 +130,25 @@ namespace Warehouse_System.Classes.Application
                                         }
                                         if (edited) break;
                                     }
+                                } else if (MenuShelfKeyPress.Key == ConsoleKey.D6)
+                                {
+                                    Console.SetCursorPosition(0, 15);
+                                    Product product = GetObject<Product>();
+                                    bool removed = false;
+                                    foreach (var shelf in Shelf.shelves)
+                                    {
+                                        foreach (var _product in shelf.products)
+                                        {
+                                            if (_product.Equals(product))
+                                            {
+                                                if (ConfirmDialog())
+                                                    shelf.RemoveProduct(_product);
+                                                removed = true;
+                                                break;
+                                            }
+                                        }
+                                        if (removed) break;
+                                    }
                                 }
 
                             } while (MenuShelfKeyPress.Key != ConsoleKey.Escape);
