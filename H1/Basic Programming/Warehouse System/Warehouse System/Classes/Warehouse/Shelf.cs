@@ -106,6 +106,8 @@ namespace Warehouse_System.Classes.Warehouse
             if (this.products.Contains(product))
             {
                 product.Edit(name, category, unitSize, unitPrice, shelf);
+                // Load shelves incase the shelf of the product has changed
+                LoadShelves();
                 LoadProducts();
 
             }
