@@ -48,6 +48,13 @@ namespace Warehouse_System.Classes.Warehouse
             base.Delete($@" DELETE FROM products
                             WHERE id = {this.Id}");
             StatusHandler.Write($"Deleted product {this.Name}", StatusHandler.Codes.SUCCESS);
+        }
+        public void Edit(string name, ProductCategory category, int unitSize, int unitPrice, Shelf shelf)
+        {
+            base.Update($@"UPDATE products
+                            SET name = '{name}', category_id = {category.Id}, unitSize = {unitSize}, unitPrice = {unitPrice}, shelf_id = {shelf.Id}
+                            WHERE id = {this.Id}");
+            StatusHandler.Write($"Edited product {this.Name}", StatusHandler.Codes.SUCCESS);
 
         }
 

@@ -73,6 +73,12 @@ namespace Warehouse_System.Classes.Warehouse
         }
         public  void Remove()
         {
+            // Delete all products first
+            foreach (var product in products)
+            {
+                Database.Execute($"DELETE FROM products WHERE id = {product.Id}");
+            }
+
             base.Delete($@" DELETE FROM shelves
                             WHERE id = {this.Id}");
             StatusHandler.Write($"Deleted shelf {this.Identifier}", StatusHandler.Codes.SUCCESS);
@@ -93,9 +99,19 @@ namespace Warehouse_System.Classes.Warehouse
             {
                 product.Save(this.Id);
                 LoadProducts();
-                StatusHandler.Write($"Added product {product.Name}", StatusHandler.Codes.SUCCESS);
+            }
+        }
+        public void EditProduct(Product product, string name, ProductCategory category, int unitSize, int unitPrice, Shelf shelf)
+        {
+            if (this.products.Contains(product))
+            {
+                product.Edit(name, category, unitSize, unitPrice, shelf);
+                LoadProducts();
 
             }
+            else
+                StatusHandler.Write($"{product}, does not exist in the shelf' product list", StatusHandler.Codes.ERROR);
+
         }
         public void RemoveProduct(Product product)
         {
