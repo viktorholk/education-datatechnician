@@ -42,7 +42,7 @@ namespace Warehouse_System.Classes.Warehouse
         }
         public override string ToString()
         {
-            return $"{this.Id}, {this.Name}";
+            return this.Name;
         }
     }
 }

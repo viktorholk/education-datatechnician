@@ -11,7 +11,7 @@ namespace Warehouse_System.Classes.Warehouse
         public string Name { get; set; }
         public int UnitPrice { get; set; }
         public int UnitSize { get; set; }
-        public ProductCategory Category;
+        public ProductCategory Category { get; set; }
 
         public new bool Saved
         {
