@@ -14,7 +14,141 @@ namespace Warehouse_System.Classes.Application
         protected static readonly ConsoleColor InfoColor = ConsoleColor.Yellow;
         protected static readonly ConsoleColor SuccessColor = ConsoleColor.Green;
         protected static readonly ConsoleColor ErrorColor = ConsoleColor.Red;
-        private Dictionary<string, int> GetPropertiesLength<T>(List<T> list)
+        private     T SelectFromList<T>(List<T> list, int id) where T : class
+        {
+            PropertyInfo[] properties = typeof(T).GetProperties();
+            foreach (var item in list)
+            {
+                int genericObjectId = Convert.ToInt32(properties.Single(i => i.Name == "Id").GetValue(item));
+                if (genericObjectId == id)
+                {
+                    return item;
+                }
+
+            }
+            return null;
+        }
+        protected   T GetInput<T>(string inputType)
+        {
+            Type type = typeof(T);
+            WriteColor($"   {inputType}:", InfoColor, false);
+
+            int previousLeft = Console.CursorLeft;
+            int previousTop = Console.CursorTop;
+            if (type == typeof(int))
+            {
+                int number;
+                while (!int.TryParse(Console.ReadLine(), out number))
+                {
+                    StatusHandler.Write($"Please enter a valid number", StatusHandler.Codes.ERROR);
+                    Console.SetCursorPosition(previousLeft, previousTop);
+                }
+
+                return (T)Convert.ChangeType(number, typeof(T));
+            }
+            else if (type == typeof(string))
+            {
+                string input = Console.ReadLine();
+                return (T)Convert.ChangeType(input, typeof(T));
+            }
+            return default;
+
+        }
+        protected   T CreateObject<T>()
+        {
+            Type type = typeof(T);
+
+            if (type == typeof(Shelf))
+            {
+                string description = GetInput<string>("Description");
+                int maxUnitStorageSize = GetInput<int>("MaxUnitStorageSize");
+
+                return (T)Activator.CreateInstance(type, description, maxUnitStorageSize);
+
+            }
+            else if (type == typeof(Product))
+            {
+                string name = GetInput<string>("Name");
+
+                Console.WriteLine($"    {"Id",-4} Category Name");
+                foreach (var _category in ProductCategory.categories)
+                {
+                    WriteColor($"   {_category.Id,-4}", InfoColor, false);
+                    Console.Write($"{_category.Name}\n");
+                }
+                ProductCategory category = GetObject<ProductCategory>();
+                int unitSize = GetInput<int>("Unit Size");
+                int unitPrice = GetInput<int>("Unit Price");
+
+                return (T)Activator.CreateInstance(type, name, category, unitSize, unitPrice);
+
+            }
+            return default;
+        }
+        protected   T GetObject<T>()
+        {
+            int previousLeft = Console.CursorLeft;
+            int previousTop = Console.CursorTop;
+            Type type = typeof(T);
+
+            while (true)
+            {
+                // Get the id of the object
+                int id = GetInput<int>($"{type.Name} Id");
+
+                if (type == typeof(Shelf))
+                {
+                    Shelf shelf = SelectFromList(Shelf.shelves, id);
+                    if (shelf != null)
+                        return (T)Convert.ChangeType(shelf, typeof(T));
+                    else
+                    {
+                        StatusHandler.Write($"No shelf has given id {id}", StatusHandler.Codes.ERROR);
+                        Console.SetCursorPosition(previousLeft, previousTop);
+
+                    }
+
+                }
+                else if (type == typeof(ProductCategory))
+                {
+
+                    ProductCategory category = SelectFromList(ProductCategory.categories, id);
+                    if (category != null)
+                        return (T)Convert.ChangeType(category, typeof(T));
+                    else
+                    {
+                        StatusHandler.Write($"No category has given id {id}", StatusHandler.Codes.ERROR);
+                        Console.SetCursorPosition(previousLeft, previousTop);
+
+                    }
+
+                }
+                else if (type == typeof(Product))
+                {
+                    Product product = null;
+                    foreach (var shelf in Shelf.shelves)
+                    {
+                        foreach (var _product in shelf.products)
+                        {
+                            if (_product.Id == id)
+                            {
+                                product = _product;
+                            }
+                        }
+                    }
+                    if (product != null)
+                    {
+                        return (T)Convert.ChangeType(product, typeof(T));
+                    }
+                    else
+                    {
+                        StatusHandler.Write($"No product has given id {id}", StatusHandler.Codes.ERROR);
+                        Console.SetCursorPosition(previousLeft, previousTop);
+                    }
+                }
+            }
+        }
+        protected   Dictionary<string, int> GetPropertiesLength<T>(List<T> list)
         {
             string[] hiddenProps = new string[]
             {
@@ -51,141 +185,30 @@ namespace Warehouse_System.Classes.Application
             }
             return propertiesLength;
         }
-        private T SelectFromList<T>(List<T> list, int id) where T : class
-        {
-            PropertyInfo[] properties = typeof(T).GetProperties();
-            foreach (var item in list)
-            {
-                int genericObjectId = Convert.ToInt32(properties.Single(i => i.Name == "Id").GetValue(item));
-                if (genericObjectId == id)
-                {
-                    return item;
-                }
-
-            }
-            return null;
-        }
-        protected T GetInput<T>(string inputType)
-        {
-            Type type = typeof(T);
-            WriteColor($"   {inputType}:", InfoColor, false);
-
-            int previousLeft = Console.CursorLeft;
-            int previousTop = Console.CursorTop;
-            if (type == typeof(int))
-            {
-                int number;
-                while (!int.TryParse(Console.ReadLine(), out number))
-                {
-                    StatusHandler.Write($"Please enter a valid number", StatusHandler.Codes.ERROR);
-                    Console.SetCursorPosition(previousLeft, previousTop);
-                }
-
-                return (T)Convert.ChangeType(number, typeof(T));
-            } else if (type == typeof(string))
-            {
-                string input = Console.ReadLine();
-                return (T)Convert.ChangeType(input, typeof(T));
-            }
-            return default;
-
-        }
-        protected T CreateObject<T>()
-        {
-            Type type = typeof(T);
-
-            if (type == typeof(Shelf))
-            {
-                string description = GetInput<string>("Description");
-                int maxUnitStorageSize = GetInput<int>("MaxUnitStorageSize");
-
-                return (T)Activator.CreateInstance(type, description, maxUnitStorageSize);
-
-            } else if (type == typeof(Product))
-            {
-                string name = GetInput<string>("Name");
-
-                Console.WriteLine($"    {"Id", -4} Category Name");
-                foreach (var _category in ProductCategory.categories)
-                {
-                    WriteColor($"   {_category.Id,-4}", InfoColor, false);
-                    Console.Write($"{_category.Name}\n");
-                }
-                ProductCategory category = GetObject<ProductCategory>();
-                int unitSize = GetInput<int>("Unit Size");
-                int unitPrice = GetInput<int>("Unit Price");
-
-                return (T)Activator.CreateInstance(type, name, category, unitSize, unitPrice);
-
-            }
-            return default;
-        }
-        protected T GetObject<T>()
+        protected bool ConfirmDialog()
         {
             int previousLeft = Console.CursorLeft;
             int previousTop = Console.CursorTop;
-            Type type = typeof(T);
-
-            while (true)
-            {
-                // Get the id of the object
-                int id = GetInput<int>($"{type.Name} Id");
-
-                if (type == typeof(Shelf))
-                {
-                    Shelf shelf = SelectFromList(Shelf.shelves, id);
-                    if (shelf != null)
-                        return (T)Convert.ChangeType(shelf, typeof(T));
-                    else
-                    {
-                        StatusHandler.Write($"No shelf has given id {id}", StatusHandler.Codes.ERROR);
-                        Console.SetCursorPosition(previousLeft, previousTop);
-
-                    }
-
-                } else if (type == typeof(ProductCategory)){
-
-                    ProductCategory category = SelectFromList(ProductCategory.categories, id);
-                    if (category != null)
-                        return (T)Convert.ChangeType(category, typeof(T));
-                    else
-                    {
-                        StatusHandler.Write($"No category has given id {id}", StatusHandler.Codes.ERROR);
-                        Console.SetCursorPosition(previousLeft, previousTop);
-
-                    }
-
-                } else if (type == typeof(Product))
-                {
-                    Product product = null;
-                    foreach (var shelf in Shelf.shelves)
-                    {
-                        foreach (var _product in shelf.products)
-                        {
-                            if (_product.Id == id)
-                            {
-                                product = _product;
-                            }
-                        }
-                    }
-                    if (product != null)
-                    {
-                        return (T)Convert.ChangeType(product, typeof(T));
-                    }
-                    else
-                    {
-                        StatusHandler.Write($"No product has given id {id}", StatusHandler.Codes.ERROR);
-                        Console.SetCursorPosition(previousLeft, previousTop);
-                    }
-                }
-            }
+            Console.SetCursorPosition(0, Console.CursorTop + 2);
+            WriteColor("Confirm Action", InfoColor, true);
+            WriteColor("Enter ", InfoColor, false);
+            Console.Write(" to confirm");
+            Console.WriteLine();
+            WriteColor("Any key", InfoColor, false);
+            Console.Write(" to cancel");
+            ConsoleKeyInfo keypress = Console.ReadKey(true);
+            Console.SetCursorPosition(previousLeft, previousTop);
+            if (keypress.Key == ConsoleKey.Enter)
+                return true;
+            StatusHandler.Write($"Cancelled action", StatusHandler.Codes.INFO);
+            return false;
         }
         protected void ClearConsole()
         {
             Console.Clear();
             StatusHandler.WritePrevious();
         }
-        protected void PrintMenu(Dictionary<int, string> options)
+        protected   void PrintMenu(Dictionary<int, string> options)
         {
             const int menukeyPadding = 4;
             Console.SetCursorPosition(0, 2);
@@ -216,7 +239,7 @@ namespace Warehouse_System.Classes.Application
             WriteColor($"     {"ESC",-menukeyPadding} ", InfoColor, false);
             Console.Write("Go Back\n");
         }
-        protected void WriteColor(string message, ConsoleColor color, bool newLine = true)
+        protected   void WriteColor(string message, ConsoleColor color, bool newLine = true)
         {
             ConsoleColor previousColor = Console.ForegroundColor;
             Console.ForegroundColor = color;
@@ -227,34 +250,12 @@ namespace Warehouse_System.Classes.Application
             Console.ForegroundColor = previousColor;
 
         }
-        protected bool ConfirmDialog()
-        {
-            int previousLeft = Console.CursorLeft;
-            int previousTop = Console.CursorTop;
-            Console.SetCursorPosition(0, Console.CursorTop + 2);
-            WriteColor("Confirm Action", InfoColor, true);
-            WriteColor("Enter ", InfoColor, false);
-            Console.Write(" to confirm");
-            Console.WriteLine();
-            WriteColor("Any key", InfoColor, false);
-            Console.Write(" to cancel");
-            ConsoleKeyInfo keypress = Console.ReadKey(true);
-            Console.SetCursorPosition(previousLeft, previousTop);
-            if (keypress.Key == ConsoleKey.Enter)
-                return true;
-            StatusHandler.Write($"Cancelled action", StatusHandler.Codes.INFO);
-            return false;
-        }
-        protected void PrintTableData<T>(List<T> list, int cursorLeft = 40, int cursorTop = 2, bool recursiveFields = false)
+        protected   void PrintTableData<T>(List<T> list, int cursorLeft = 40, int cursorTop = 2, bool recursiveFields = false)
         {
             // The properties names and their max length
             Dictionary<string, int> propertiesLength;
             propertiesLength = GetPropertiesLength(list);
-            foreach (var item in propertiesLength)
-            {
-                Console.WriteLine(item.Key);
-            }
-            Console.ReadLine();
+
             Console.SetCursorPosition(cursorLeft, cursorTop);
             WriteColor($"{list.GetType().GetGenericArguments()[0].Name.ToUpper()}(s)", highlightColor, false);
             // Print the id field first
