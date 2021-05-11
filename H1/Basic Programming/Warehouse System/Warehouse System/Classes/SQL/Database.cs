@@ -101,33 +101,7 @@ namespace Warehouse_System.Classes.SQL
                 FOREIGN KEY('category_id') REFERENCES 'product_categories'('id') ON DELETE CASCADE,
                 PRIMARY KEY('id' AUTOINCREMENT)
             );");
-            // Customer table
-            Execute(@"CREATE TABLE IF NOT EXISTS 'customers' (
-                'id'    INTEGER NOT NULL,
-                'firstName' TEXT NOT NULL,
-                'lastName'  TEXT,
-	            'address'	TEXT NOT NULL,
-                'zipCode'   TEXT,
-                PRIMARY KEY('id' AUTOINCREMENT)
-            );");
-            // Orders table
-            Execute(@"CREATE TABLE IF NOT EXISTS 'orders' (
 
-                'id'    INTEGER NOT NULL,
-                'customer_id'   INTEGER NOT NULL,
-                'date'  TEXT NOT NULL,
-                FOREIGN KEY('customer_id') REFERENCES 'customers'('id') ON DELETE CASCADE,
-                PRIMARY KEY('id' AUTOINCREMENT)
-            ); ");
-            // Order Lines table
-            Execute(@"CREATE TABLE IF NOT EXISTS 'orderlines'(
-                'id'    INTEGER NOT NULL,
-                'order_id' INTEGER NOT NULL,
-                'product_id'    INTEGER NOT NULL,
-                FOREIGN KEY('product_id') REFERENCES 'products'('id') ON DELETE CASCADE,
-                FOREIGN KEY('order_id') REFERENCES 'orders'('id') ON DELETE CASCADE,
-                PRIMARY KEY('id' AUTOINCREMENT)
-            ); ");
             // Add data from the database to the lists
             Load(ProductCategory.categories, "SELECT * FROM product_categories");
             Load(Shelf.shelves, "SELECT * FROM shelves");
