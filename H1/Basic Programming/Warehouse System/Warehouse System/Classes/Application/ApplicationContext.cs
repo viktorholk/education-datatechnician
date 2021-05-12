@@ -7,7 +7,7 @@ using Warehouse_System.Classes.Warehouse;
 
 namespace Warehouse_System.Classes.Application
 {
-    class ApplicationContext
+    public class ApplicationContext
     {
         protected static readonly ConsoleColor defaultColor = ConsoleColor.White;
         protected static readonly ConsoleColor highlightColor = ConsoleColor.Gray;
