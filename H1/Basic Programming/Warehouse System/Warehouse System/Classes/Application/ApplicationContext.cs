@@ -285,14 +285,15 @@ namespace Warehouse_System.Classes.Application
             int previousLeft = Console.CursorLeft;
             int previousTop = Console.CursorTop;
             // Set the cursor below our latest print
-            Console.SetCursorPosition(0, Console.CursorTop + 2);
+            Console.SetCursorPosition(3, Console.CursorTop + 1);
             // Print message
             WriteColor("Confirm Action", InfoColor, true);
+            Console.SetCursorPosition(3, Console.CursorTop);
             WriteColor("Enter ", InfoColor, false);
             Console.Write(" to confirm");
 
             Console.WriteLine();
-
+            Console.SetCursorPosition(3, Console.CursorTop);
             WriteColor("Any key", InfoColor, false);
             Console.Write(" to cancel");
 

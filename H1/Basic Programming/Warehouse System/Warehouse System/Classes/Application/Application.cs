@@ -37,14 +37,16 @@ namespace Warehouse_System.Classes.Application
         /// </summary>
         public void Run()
         {
+            // Set startup status message
+            StatusHandler.Write("Ok", StatusHandler.Codes.INFO);
+
             // Program loop
             // if this loop breaks the game quits
             while (true)
             {
 
                 ConsoleKeyInfo mainMenuKeyPress;
-                // Set startup status message
-                StatusHandler.Write("Ok", StatusHandler.Codes.INFO);
+
                 // Do while loop until user presses escape button to go back
                 do
                 {
@@ -64,7 +66,6 @@ namespace Warehouse_System.Classes.Application
                     {
                         // Manage stock
                         case ConsoleKey.D1:
-                            StatusHandler.Write("Ok", StatusHandler.Codes.INFO);
                             
                             ConsoleKeyInfo MenuStockKeyPress;
                             do
@@ -210,17 +211,15 @@ namespace Warehouse_System.Classes.Application
 
                             break;
                         case ConsoleKey.D2:
-                            StatusHandler.Write("Ok", StatusHandler.Codes.INFO);
-
                             Console.SetCursorPosition(40, 2);
-                            Console.WriteLine($"Warehouse Infomation");
+                            WriteColor($"Warehouse Infomation", InfoColor);
 
                             Console.SetCursorPosition(40, Console.CursorTop);
-                            Console.Write($"{"Number of shelves:", -25}");
+                            Console.Write($"{"Number of shelves:", -30}");
                             WriteColor(Shelf.shelves.Count.ToString(), InfoColor, true);
 
                             Console.SetCursorPosition(40, Console.CursorTop);
-                            Console.Write($"{"Number of products:", -25}");
+                            Console.Write($"{"Number of products:", -30}");
                             int products = 0;
                             foreach (var shelf in Shelf.shelves)
                             {
@@ -229,7 +228,7 @@ namespace Warehouse_System.Classes.Application
                             WriteColor(products.ToString(), InfoColor, true);
 
                             Console.SetCursorPosition(40, Console.CursorTop + 1);
-                            Console.Write($"{"Used storage:",-25}");
+                            Console.Write($"{"Used unit storage:",-30}");
                             int usedStorage = 0;
                             int maxStorage = 0;
                             foreach (var shelf in Shelf.shelves)
@@ -243,7 +242,7 @@ namespace Warehouse_System.Classes.Application
                             WriteColor($"{usedStorage} / {maxStorage}", InfoColor, true);
 
                             Console.SetCursorPosition(40, Console.CursorTop);
-                            Console.Write($"{"Total product value:",-25}");
+                            Console.Write($"{"Total product unit value:",-30}");
                             int productValue = 0;
                             foreach (var shelf in Shelf.shelves)
                             {
@@ -253,6 +252,12 @@ namespace Warehouse_System.Classes.Application
                                 }
                             }
                             WriteColor(productValue.ToString(), InfoColor, true);
+                            Console.WriteLine();
+                            foreach (var statusLog in StatusHandler.StatusLogs)
+                            {
+                                Console.SetCursorPosition(40, Console.CursorTop);
+                                WriteColor($"{statusLog.TimeString} - {statusLog.Message}", StatusHandler.GetColor(statusLog.Code));
+                            }
 
 
                             Console.ReadKey(true);
