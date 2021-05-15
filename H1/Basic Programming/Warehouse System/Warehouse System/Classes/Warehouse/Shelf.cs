@@ -28,6 +28,20 @@ namespace Warehouse_System.Classes.Warehouse
             // No shelves has been set yet. Return the start of the shelves with the identifier of A
             return 'A';
         }
+        /// <summary>
+        /// UsedStorage method
+        /// This method returns the sum of all the unitSize in the products list
+        /// </summary>
+        /// <returns></returns>
+        private int UsedStorage()
+        {
+            int usedStorage = 0;
+            foreach (var product in products)
+            {
+                usedStorage += product.UnitSize;
+            }
+            return usedStorage;
+        }
         private void LoadShelves()
         {
             // Get all products associated to the shelf and add it to he list
@@ -38,6 +52,7 @@ namespace Warehouse_System.Classes.Warehouse
             // Get all products associated to the shelf and add it to he list
             Database.Load(this.products, $"SELECT * FROM products WHERE shelf_id = {this.Id}");
         }
+
         public static List<Shelf> shelves = new List<Shelf>();
 
         public char Identifier { get; set; }
@@ -110,8 +125,13 @@ namespace Warehouse_System.Classes.Warehouse
         {
             if (!product.Saved)
             {
-                product.Save(this.Id);
-                LoadProducts();
+                if (product.UnitSize <= (this.MaxUnitStorageSize - UsedStorage()))
+                {
+                    product.Save(this.Id);
+                    LoadProducts();
+
+                }
+                else StatusHandler.Write($"Insufficient shelf-{this.Identifier} storage {UsedStorage()}/{MaxUnitStorageSize}", StatusHandler.Codes.ERROR);
             }
         }
         /// <summary>
