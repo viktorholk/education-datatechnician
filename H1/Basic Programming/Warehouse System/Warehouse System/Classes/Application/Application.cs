@@ -90,6 +90,8 @@ namespace Warehouse_System.Classes.Application
 
                                 if (MenuStockKeyPress.Key == ConsoleKey.D1)
                                 {
+                                    StatusHandler.Write("Adding new shelf", StatusHandler.Codes.INFO);
+
                                     Console.SetCursorPosition(0, 15);
                                     // Create the object shelf and save it to the db
                                     Shelf shelf = CreateObject<Shelf>();
@@ -99,6 +101,8 @@ namespace Warehouse_System.Classes.Application
 
                                 } else if (MenuStockKeyPress.Key == ConsoleKey.D2)
                                 {
+                                    StatusHandler.Write("Editing shelf", StatusHandler.Codes.INFO);
+
                                     Console.SetCursorPosition(0, 15);
                                     // Get the object by id input in the getobject method
                                     Shelf shelf = GetObject<Shelf>();
@@ -111,6 +115,8 @@ namespace Warehouse_System.Classes.Application
                                 }
                                 else if (MenuStockKeyPress.Key == ConsoleKey.D3)
                                 {
+                                    StatusHandler.Write("Removing shelf", StatusHandler.Codes.INFO);
+
                                     Console.SetCursorPosition(0, 15);
                                     // Get the shelf by id and remove
                                     Shelf shelf = GetObject<Shelf>();
@@ -120,6 +126,8 @@ namespace Warehouse_System.Classes.Application
                                 }
                                 else if (MenuStockKeyPress.Key == ConsoleKey.D4)
                                 {
+                                    StatusHandler.Write("Adding new product", StatusHandler.Codes.INFO);
+
                                     Console.SetCursorPosition(0, 15);
                                     // Get the shelf where the product should be added
                                     Shelf shelf = GetObject<Shelf>();
@@ -131,6 +139,8 @@ namespace Warehouse_System.Classes.Application
 
                                 } else if (MenuStockKeyPress.Key == ConsoleKey.D5)
                                 {
+                                    StatusHandler.Write("Editing product", StatusHandler.Codes.INFO);
+
                                     Console.SetCursorPosition(0, 15);
                                     // Get the product by the id
                                     Product product = GetObject<Product>();
@@ -171,6 +181,8 @@ namespace Warehouse_System.Classes.Application
                                     }
                                 } else if (MenuStockKeyPress.Key == ConsoleKey.D6)
                                 {
+                                    StatusHandler.Write("Removing product", StatusHandler.Codes.INFO);
+
                                     Console.SetCursorPosition(0, 15);
                                     // Get the product id
                                     Product product = GetObject<Product>();
