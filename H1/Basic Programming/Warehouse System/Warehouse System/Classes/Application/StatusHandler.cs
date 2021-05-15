@@ -14,6 +14,19 @@ namespace Warehouse_System.Classes.Application
         public string Message { get; set; }
         public StatusHandler.Codes Code { get; set; }
 
+        private string timeString;
+        public string TimeString
+        {
+            get
+            {
+                return timeString;
+            }
+            private set
+            {
+                this.timeString = value;
+            }
+        }
+
         /// <summary>
         /// Sets the message and statuscode of the object
         /// </summary>
@@ -23,6 +36,9 @@ namespace Warehouse_System.Classes.Application
         {
             this.Message = message;
             this.Code = code;
+
+            this.TimeString = DateTime.Now.ToString("HH:mm:ss");
+            StatusHandler.StatusLogs.Add(this);
         }
     }
     /// <summary>
@@ -44,7 +60,7 @@ namespace Warehouse_System.Classes.Application
         /// </summary>
         /// <param name="code">StatusHandler Code</param>
         /// <returns>ConsoleColor</returns>
-        private static ConsoleColor GetColor(Codes code)
+        public static ConsoleColor GetColor(Codes code)
         {
 
             return code switch
@@ -64,7 +80,7 @@ namespace Warehouse_System.Classes.Application
             if (StatusLogs.Count > 0)
             {
                 Status previous = StatusLogs.Last();
-                Write(previous.Message, previous.Code);
+                Write(previous.Message, previous.Code, true);
             }
         }
         /// <summary>
@@ -73,11 +89,9 @@ namespace Warehouse_System.Classes.Application
         /// </summary>
         /// <param name="message">Status message</param>
         /// <param name="code">The statuscode</param>
-        public static void Write(string message, Codes code)
+        public static void Write(string message, Codes code, bool instantiated = false)
         {
-            // Initialize status object
-            Status status = new Status(message, code);
-            StatusLogs.Add(status);
+
             // Get current cursor so we can revert
             int previousLeft = Console.CursorLeft;
             int previousTop = Console.CursorTop;
@@ -86,16 +100,22 @@ namespace Warehouse_System.Classes.Application
             ConsoleColor previousColor = Console.ForegroundColor;
 
             // Set the color of the code
-            Console.ForegroundColor = GetColor(status.Code);
+            Console.ForegroundColor = GetColor(code);
             Console.SetCursorPosition(0, 0);
             // Erase the status line so we dont get fragments of other status codes
             Console.Write(new string(' ', Console.WindowWidth));
             Console.SetCursorPosition(0, 0);
-            Console.WriteLine($"STATUS: {status.Message}");
+            Console.WriteLine($"STATUS: {message}");
             // Reset foregroundColor
             Console.ForegroundColor = previousColor;
             // Rewert cursor
             Console.SetCursorPosition(previousLeft, previousTop);
+
+            // Initialize status object
+            if (!instantiated)
+            {
+                new Status(message, code);
+            }
         }
     }
 }
