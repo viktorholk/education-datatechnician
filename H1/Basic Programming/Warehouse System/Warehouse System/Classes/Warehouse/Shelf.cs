@@ -171,7 +171,6 @@ namespace Warehouse_System.Classes.Warehouse
                 // Remove the product
                 product.Remove();
                 LoadProducts();
-                StatusHandler.Write($"Removed product {product.Name}", StatusHandler.Codes.SUCCESS);
 
             }
             else
