@@ -53,7 +53,7 @@ namespace Warehouse_System.Classes.Application
                     PrintMenu(new Dictionary<int, string>()
                     {
                         {1, "Manage Stock" },
-                        {2, "View Statistics" },
+                        {2, "View Information" },
                     });                    
 
                     // Wait for keypress by user
@@ -200,6 +200,50 @@ namespace Warehouse_System.Classes.Application
                         case ConsoleKey.D2:
                             StatusHandler.Write("Ok", StatusHandler.Codes.INFO);
 
+                            Console.SetCursorPosition(40, 2);
+                            Console.WriteLine($"Warehouse Infomation");
+
+                            Console.SetCursorPosition(40, Console.CursorTop);
+                            Console.Write($"{"Number of shelves:", -25}");
+                            WriteColor(Shelf.shelves.Count.ToString(), InfoColor, true);
+
+                            Console.SetCursorPosition(40, Console.CursorTop);
+                            Console.Write($"{"Number of products:", -25}");
+                            int products = 0;
+                            foreach (var shelf in Shelf.shelves)
+                            {
+                                products += shelf.products.Count;
+                            }
+                            WriteColor(products.ToString(), InfoColor, true);
+
+                            Console.SetCursorPosition(40, Console.CursorTop + 1);
+                            Console.Write($"{"Used storage:",-25}");
+                            int usedStorage = 0;
+                            int maxStorage = 0;
+                            foreach (var shelf in Shelf.shelves)
+                            {
+                                maxStorage += shelf.MaxUnitStorageSize;
+                                foreach (var product in shelf.products)
+                                {
+                                    usedStorage += product.UnitSize;
+                                }
+                            }
+                            WriteColor($"{usedStorage} / {maxStorage}", InfoColor, true);
+
+                            Console.SetCursorPosition(40, Console.CursorTop);
+                            Console.Write($"{"Total product value:",-25}");
+                            int productValue = 0;
+                            foreach (var shelf in Shelf.shelves)
+                            {
+                                foreach (var product in shelf.products)
+                                {
+                                    productValue += product.UnitPrice;
+                                }
+                            }
+                            WriteColor(productValue.ToString(), InfoColor, true);
+
+
+                            Console.ReadKey(true);
                             break;
                         default:
                             break;
