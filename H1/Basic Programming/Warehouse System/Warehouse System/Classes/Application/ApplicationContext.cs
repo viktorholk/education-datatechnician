@@ -453,7 +453,7 @@ namespace Warehouse_System.Classes.Application
                         {
                             List<Product> products = (List<Product>)field.Value;
                             if (products.Count > 0)
-                                PrintTableData((List<Product>)field.Value, 50, Console.CursorTop + 1);
+                                PrintTableData((List<Product>)field.Value, 43, Console.CursorTop + 1);
                         }
                     }
                 }
