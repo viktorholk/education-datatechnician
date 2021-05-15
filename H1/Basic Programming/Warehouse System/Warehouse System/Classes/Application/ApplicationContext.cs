@@ -7,16 +7,41 @@ using Warehouse_System.Classes.Warehouse;
 
 namespace Warehouse_System.Classes.Application
 {
+    /// <summary>
+    /// ApplicationContext Class
+    /// This class handles all of the context that is going on in the Application
+    /// It has methods for printing colors to the screen 
+    /// and handling generic object handling whether we want to get or create an object
+    /// 
+    /// The class is the parent class of both Application and StatusHandler
+    /// StatusHandler class needs the class as a parent to know the different colorcodes that we use
+    /// </summary>
     public class ApplicationContext
     {
+        // The different colorcodes that we use in the application
+
         protected static readonly ConsoleColor defaultColor = ConsoleColor.White;
         protected static readonly ConsoleColor highlightColor = ConsoleColor.Gray;
         protected static readonly ConsoleColor InfoColor = ConsoleColor.Yellow;
         protected static readonly ConsoleColor SuccessColor = ConsoleColor.Green;
         protected static readonly ConsoleColor ErrorColor = ConsoleColor.Red;
+
+        /// <summary>
+        /// SelectFromList method
+        /// With this we check for the property "Id" of the list<object> passed into the method
+        /// we compare the Ids and if they equals we will return the object
+        /// </summary>
+        /// <typeparam name="T">Generic class</typeparam>
+        /// <param name="list">The list we will look through</param>
+        /// <param name="id">The id of the object we want to find</param>
+        /// <returns>T object</returns>
         private     T SelectFromList<T>(List<T> list, int id) where T : class
         {
+            // All of the properties given from the T class
             PropertyInfo[] properties = typeof(T).GetProperties();
+            //Go through all of the items in the list
+            // if the property "Id" equals to the id parameter, return the item in the list
+            // else return null
             foreach (var item in list)
             {
                 int genericObjectId = Convert.ToInt32(properties.Single(i => i.Name == "Id").GetValue(item));
@@ -28,13 +53,26 @@ namespace Warehouse_System.Classes.Application
             }
             return null;
         }
+        /// <summary>
+        /// GetInput method
+        /// This is a generic method that takes in a <datatype> and handles how we are going to handle the input
+        /// if its an integer the method makes sure to return an integer from the console.readline string
+        /// if its a string it just return the string
+        /// </summary>
+        /// <typeparam name="T">Datatype</typeparam>
+        /// <param name="inputType">What message should we prompt the user?</param>
+        /// <returns>Returns the datatype giving in T</returns>
         protected   T GetInput<T>(string inputType)
         {
             Type type = typeof(T);
+            // Write the inputtype with color
             WriteColor($"   {inputType}:", InfoColor, false);
-
+            // Save the previous cursor
             int previousLeft = Console.CursorLeft;
             int previousTop = Console.CursorTop;
+
+            // If the type is integer
+            // we are going to tryparse it, until it returns true and we will convert the type to int and return it
             if (type == typeof(int))
             {
                 int number;
@@ -46,20 +84,33 @@ namespace Warehouse_System.Classes.Application
 
                 return (T)Convert.ChangeType(number, typeof(T));
             }
+            // If the type is string we simply just return the Readline, since we dont have to do anything else
             else if (type == typeof(string))
             {
                 string input = Console.ReadLine();
                 return (T)Convert.ChangeType(input, typeof(T));
             }
+            // Return default T, if none of the types are met
             return default;
 
         }
+        /// <summary>
+        /// CreateObject method
+        /// This creates a object from what type of class we have passed into the method
+        /// It will go through the input of different parameters that the class constructors needs to instantiate
+        /// it will return an instanitated object of the T
+        /// </summary>
+        /// <typeparam name="T">Class</typeparam>
+        /// <returns>Object</returns>
         protected   T CreateObject<T>()
         {
+            // Store the type of the Object provided
             Type type = typeof(T);
+
 
             if (type == typeof(Shelf))
             {
+                // Get the input and create the instance
                 string description = GetInput<string>("Description");
                 int maxUnitStorageSize = GetInput<int>("MaxUnitStorageSize");
 
@@ -68,29 +119,46 @@ namespace Warehouse_System.Classes.Application
             }
             else if (type == typeof(Product))
             {
+                // Get the input and create the instance
+
                 string name = GetInput<string>("Name");
 
                 Console.WriteLine($"    {"Id",-4} Category Name");
+                // Print all valid categories so the user can see which to pick
                 foreach (var _category in ProductCategory.categories)
                 {
                     WriteColor($"   {_category.Id,-4}", InfoColor, false);
                     Console.Write($"{_category.Name}\n");
                 }
+                // Create the category object
                 ProductCategory category = GetObject<ProductCategory>();
                 int unitSize = GetInput<int>("Unit Size");
                 int unitPrice = GetInput<int>("Unit Price");
-
+                // return instance
                 return (T)Activator.CreateInstance(type, name, category, unitSize, unitPrice);
 
             }
             return default;
         }
+        /// <summary>
+        /// GetObject method
+        /// This method returns an existing object from the corrosponding type list
+        /// it will go through the different types, since we are going to differnet lists depending on the class type
+        /// </summary>
+        /// <typeparam name="T">Class</typeparam>
+        /// <returns>Object</returns>
         protected   T GetObject<T>()
         {
+            // Save previous cursor
             int previousLeft = Console.CursorLeft;
             int previousTop = Console.CursorTop;
+            // Get the typeof T
             Type type = typeof(T);
 
+            // We are going to do this in a while true, 
+            // since the GetInput can pass whenever a valid integer has been given
+            // But we will still make sure that the int id also matches a valid object from the list
+            // So we will keep prompting the user to type in a correct id
             while (true)
             {
                 // Get the id of the object
@@ -148,30 +216,50 @@ namespace Warehouse_System.Classes.Application
                 }
             }
         }
+        /// <summary>
+        /// GetPropertiesLength method
+        /// This method takes in a list of objects
+        /// and goes through each properties and compares the length of the value 
+        /// to other objects to get the longest value spread over the list
+        /// It is used when we need to format the tables with the correct data lengths
+        /// </summary>
+        /// <typeparam name="T">Class</typeparam>
+        /// <param name="list">The list with the objects</param>
+        /// <returns>Dictionary string, int, the key is the name of the prop and the integer is the maximum length of the values</returns>
         protected   Dictionary<string, int> GetPropertiesLength<T>(List<T> list)
         {
+            // We dont want to print out the Saved property
             string[] hiddenProps = new string[]
             {
                 "Saved"
             };
 
+            // We create the dictonary that we are going to return, with the already key item Id
+            // Since this is universal for all of our SQL object, we want it to be the first property when we print out the data
             Dictionary<string, int> propertiesLength = new Dictionary<string, int>
             {
                 // With this line we manipulate the Id field to be first everytime
                 ["Id"] = 0
             };
+            // Get all properties of the object
             PropertyInfo[] properties = typeof(T).GetProperties();
 
             foreach (var property in properties)
             {
+                // If the hiddenprops contains the propertyname skip
                 if (hiddenProps.Contains(property.Name)) continue;
+                // We set the maxDataLength to be the property.name.length by default for formatting purposes
                 int fieldMaxDataLength = property.Name.Length;
 
+                // Go through all of the objects and match the property to see how long the longest value is
                 foreach (var item in list)
                 {
+                    // Get the property from the item
                     PropertyInfo _property = item.GetType().GetProperty(property.Name);
+
                     if (property.Equals(_property))
                     {
+                        // Compare the dataLength and if it is longer than our previous max length we will overwrite it
                         int fieldDataLength = _property.GetValue(item).ToString().Length;
                         if (fieldDataLength > fieldMaxDataLength)
                         {
@@ -180,52 +268,83 @@ namespace Warehouse_System.Classes.Application
                     }
 
                 }
-
+                // Set the key and value in the dictonary with the name of the property and the value of the max length
                 propertiesLength[property.Name] = fieldMaxDataLength;
             }
             return propertiesLength;
         }
-        protected bool ConfirmDialog()
+        /// <summary>
+        /// ConfirmDialog method
+        /// This method can be called whether or not we want to make the user of the application sure of his decision on his actions
+        /// that can be the user wants to save, edit or delete an object.
+        /// </summary>
+        /// <returns>Boolean whether or not the user wants to confirm action</returns>
+        protected   bool ConfirmDialog()
         {
+            // Save previous cursor
             int previousLeft = Console.CursorLeft;
             int previousTop = Console.CursorTop;
+            // Set the cursor below our latest print
             Console.SetCursorPosition(0, Console.CursorTop + 2);
+            // Print message
             WriteColor("Confirm Action", InfoColor, true);
             WriteColor("Enter ", InfoColor, false);
             Console.Write(" to confirm");
+
             Console.WriteLine();
+
             WriteColor("Any key", InfoColor, false);
             Console.Write(" to cancel");
+
+            // Wait for keypress, and if it is enter we will return true, else false.
             ConsoleKeyInfo keypress = Console.ReadKey(true);
             Console.SetCursorPosition(previousLeft, previousTop);
             if (keypress.Key == ConsoleKey.Enter)
                 return true;
+
             StatusHandler.Write($"Cancelled action", StatusHandler.Codes.INFO);
             return false;
         }
-        protected void ClearConsole()
+        /// <summary>
+        /// ClearConsole method
+        /// Clears the console and sets the previous statusmessage
+        /// </summary>
+        protected   void ClearConsole()
         {
             Console.Clear();
             StatusHandler.WritePrevious();
         }
+        /// <summary>
+        /// PrintMenu method
+        /// This makes it easier when we want to print a new menu
+        /// 
+        /// </summary>
+        /// <param name="options">
+        /// A dictonary<string,int> 
+        /// is passed and the int is the key that is supposed to be press
+        /// the string is the title of the menu
+        /// 
+        /// </param>
         protected   void PrintMenu(Dictionary<int, string> options)
         {
             const int menukeyPadding = 4;
+            // Where to print the menu
             Console.SetCursorPosition(0, 2);
-            // Clear the menu first
+            // Clear the menu first, 
             for (int i = 0; i < 25; i++)
             {
                 Console.WriteLine("                            ");
             }
+
             Console.SetCursorPosition(0, 2);
 
             //Print header 
             Console.WriteLine("     -- W A R E H O U S E --");
             Console.WriteLine("     ----- S Y S T E M -----");
-            // Print options with whitespaces, so it overwrites each time we call the method
+
             foreach (var opt in options)
             {
-                // Create a space 
+                // Create a space  if the key is 0
                 if (opt.Key == 0)
                 {
                     Console.WriteLine();
@@ -239,17 +358,37 @@ namespace Warehouse_System.Classes.Application
             WriteColor($"     {"ESC",-menukeyPadding} ", InfoColor, false);
             Console.Write("Go Back\n");
         }
+        /// <summary>
+        /// WriteColor method
+        /// We use this method whenever we want to print color to the application
+        /// </summary>
+        /// <param name="message">What to print</param>
+        /// <param name="color">What color to print in</param>
+        /// <param name="newLine">Whether or not we want to write it on a new line</param>
         protected   void WriteColor(string message, ConsoleColor color, bool newLine = true)
         {
+            // Store the previous color
             ConsoleColor previousColor = Console.ForegroundColor;
+            // Set the color from the parameter
             Console.ForegroundColor = color;
+            // Print newline if true
             if (newLine)
                 Console.WriteLine(message);
             else
                 Console.Write(message);
+            // reset to previous color
             Console.ForegroundColor = previousColor;
 
         }
+        /// <summary>
+        /// PrintTableData generic method
+        /// This method prints the data in the list that is provivded in the parameters
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list">List of objects</param>
+        /// <param name="cursorLeft">Left positiion to print </param>
+        /// <param name="cursorTop">Top positition to print</param>
+        /// <param name="recursiveFields">boolean whether or not recursive is allowed</param>
         protected   void PrintTableData<T>(List<T> list, int cursorLeft = 40, int cursorTop = 2, bool recursiveFields = false)
         {
             // The properties names and their max length
@@ -308,7 +447,5 @@ namespace Warehouse_System.Classes.Application
                 }
             }
         }
-    
-        
     }
 }

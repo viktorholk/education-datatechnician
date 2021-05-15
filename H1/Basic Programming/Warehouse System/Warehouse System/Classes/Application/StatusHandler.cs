@@ -4,18 +4,33 @@ using System.Text;
 using System.Linq;
 namespace Warehouse_System.Classes.Application
 {
+    /// <summary>
+    /// Status Class
+    /// This is the object that there is going to be instantiated everytime we create a new status message
+    /// We do it with objects because if we want to rewert to the latest statusmessage after we have cleared the console we can retrive the status.
+    /// </summary>
     class Status : ApplicationContext
     {
         public string Message { get; set; }
         public StatusHandler.Codes Code { get; set; }
 
+        /// <summary>
+        /// Sets the message and statuscode of the object
+        /// </summary>
+        /// <param name="message">Status message</param>
+        /// <param name="code">Status code</param>
         public Status(string message, StatusHandler.Codes code)
         {
             this.Message = message;
             this.Code = code;
         }
     }
-    class StatusHandler : ApplicationContext
+    /// <summary>
+    /// StatusHandler abstract class
+    /// This class handles the status messages whenever we want to write a new status message 
+    /// It can not be instantiated since this just handles the status messages
+    /// </summary>
+    abstract class StatusHandler : ApplicationContext
     {
         public enum Codes
         {

@@ -5,6 +5,10 @@ using System.Data.SQLite;
 using Warehouse_System.Classes.Warehouse;
 namespace Warehouse_System.Classes.SQL
 {
+    /// <summary>
+    /// Database class
+    /// This class handles everything that we have to use whenever we want to communicate to the SQLite database
+    /// </summary>
     class Database
     {
         private static readonly SQLiteConnection Instance = new SQLiteConnection($"Data Source=warehouse.db");

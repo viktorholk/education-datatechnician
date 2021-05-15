@@ -9,15 +9,24 @@ using Warehouse_System.Classes.Warehouse;
 
 namespace Warehouse_System.Classes.Application
 {
+    /// <summary>
+    /// Application class
+    /// This class handles the the menues
+    /// The class only have one method which is the Run Method
+    /// All the other code is from the parent class ApplicationContext
+    /// </summary>
     class Application : ApplicationContext
     {
-        public Application(string title, int width, int height)
+        /// <summary>
+        /// Application class constructor
+        /// This just sets the title of the console application on new
+        /// </summary>
+        /// <param name="title">The title of the console application</param>
+        public Application(string title)
         {
             Console.Title = title;
-            //Console.SetWindowSize(width, height);
-            //// Removes the scrollbars
-            //Console.SetBufferSize(dimensions.Item1, dimensions.Item2);
             Database.Initialize();
+
             Console.ForegroundColor = defaultColor;
         }
 
