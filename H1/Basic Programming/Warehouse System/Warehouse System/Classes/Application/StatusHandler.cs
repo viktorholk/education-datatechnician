@@ -39,8 +39,14 @@ namespace Warehouse_System.Classes.Application
             ERROR
         }
         public static List<Status> StatusLogs = new List<Status>();
+        /// <summary>
+        /// Get the console color from the StatusCode provided
+        /// </summary>
+        /// <param name="code">StatusHandler Code</param>
+        /// <returns>ConsoleColor</returns>
         private static ConsoleColor GetColor(Codes code)
         {
+
             return code switch
             {
                 Codes.INFO => InfoColor,
@@ -49,6 +55,10 @@ namespace Warehouse_System.Classes.Application
                 _ => ConsoleColor.White,
             };
         }
+        /// <summary>
+        /// Write the previous status message
+        /// This is used when we clear the console application for text
+        /// </summary>
         public static void WritePrevious()
         {
             if (StatusLogs.Count > 0)
@@ -57,6 +67,12 @@ namespace Warehouse_System.Classes.Application
                 Write(previous.Message, previous.Code);
             }
         }
+        /// <summary>
+        /// Writes a status message to the top left of the application
+        /// 
+        /// </summary>
+        /// <param name="message">Status message</param>
+        /// <param name="code">The statuscode</param>
         public static void Write(string message, Codes code)
         {
             // Initialize status object

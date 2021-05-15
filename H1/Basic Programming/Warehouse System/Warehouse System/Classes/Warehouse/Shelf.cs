@@ -60,8 +60,10 @@ namespace Warehouse_System.Classes.Warehouse
             this.Saved = true;
             LoadProducts();
         }
-
-        public  void Save()
+        /// <summary>
+        /// Saves the shelf from the database
+        /// </summary>
+        public void Save()
         {
             base.Insert($@" INSERT INTO shelves
                             (identifier, description, maxUnitStorageSize)
@@ -71,7 +73,10 @@ namespace Warehouse_System.Classes.Warehouse
             LoadShelves();
 
         }
-        public  void Remove()
+        /// <summary>
+        /// Removes the shelf from the database
+        /// </summary>
+        public void Remove()
         {
             // Delete all products first
             foreach (var product in products)
@@ -84,6 +89,9 @@ namespace Warehouse_System.Classes.Warehouse
             StatusHandler.Write($"Deleted shelf {this.Identifier}", StatusHandler.Codes.SUCCESS);
             LoadShelves();
         }
+        /// <summary>
+        /// Edits the shelf from the database
+        /// </summary>
         public void Edit(string description, int maxUnitStorageSize)
         {
             base.Update($@" UPDATE shelves
@@ -93,6 +101,11 @@ namespace Warehouse_System.Classes.Warehouse
             LoadShelves();
         }
 
+        /// <summary>
+        /// AddProduct method
+        /// This method adds a product to the instance of the shelf and checks if the product first has been saved in the database
+        /// </summary>
+        /// <param name="product"></param>
         public void AddProduct(Product product)
         {
             if (!product.Saved)
@@ -101,8 +114,19 @@ namespace Warehouse_System.Classes.Warehouse
                 LoadProducts();
             }
         }
+        /// <summary>
+        /// EditProduct method
+        /// This methods makes it possible to edit a product through the shelf
+        /// </summary>
+        /// <param name="product">The product instance we want to edit</param>
+        /// <param name="name">Edited name</param>
+        /// <param name="category">Edited category</param>
+        /// <param name="unitSize">Edited unitSize</param>
+        /// <param name="unitPrice">Edited unitPrice</param>
+        /// <param name="shelf">Edited shelf</param>
         public void EditProduct(Product product, string name, ProductCategory category, int unitSize, int unitPrice, Shelf shelf)
         {
+            // First check if the product contains the the list of products
             if (this.products.Contains(product))
             {
                 product.Edit(name, category, unitSize, unitPrice, shelf);
@@ -115,10 +139,16 @@ namespace Warehouse_System.Classes.Warehouse
                 StatusHandler.Write($"{product}, does not exist in the shelf' product list", StatusHandler.Codes.ERROR);
 
         }
+        /// <summary>
+        /// Removes a product from the shelf
+        /// </summary>
+        /// <param name="product">Product to be removed</param>
         public void RemoveProduct(Product product)
         {
+            // Check if the shelf contains the product before removal
             if (this.products.Contains(product))
             {
+                // Remove the product
                 product.Remove();
                 LoadProducts();
                 StatusHandler.Write($"Removed product {product.Name}", StatusHandler.Codes.SUCCESS);

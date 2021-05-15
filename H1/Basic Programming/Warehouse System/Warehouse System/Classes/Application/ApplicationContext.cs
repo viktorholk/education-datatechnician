@@ -317,7 +317,6 @@ namespace Warehouse_System.Classes.Application
         /// <summary>
         /// PrintMenu method
         /// This makes it easier when we want to print a new menu
-        /// 
         /// </summary>
         /// <param name="options">
         /// A dictonary<string,int> 
@@ -396,36 +395,48 @@ namespace Warehouse_System.Classes.Application
             propertiesLength = GetPropertiesLength(list);
 
             Console.SetCursorPosition(cursorLeft, cursorTop);
+            // Print the type of class before the data
             WriteColor($"{list.GetType().GetGenericArguments()[0].Name.ToUpper()}(s)", highlightColor, false);
-            // Print the id field first
-            // Print the rest of the propertiesLength
+            // Print all of the column names in the top before we print out the data
             Console.SetCursorPosition(cursorLeft, Console.CursorTop + 1);
             foreach (var prop in propertiesLength)
             {
+                // propString with padding the length of the longest data value in the property
                 string propString = $"{prop.Key.PadRight(prop.Value)} ";
                 WriteColor(propString, InfoColor, false);
             }
+            // Go through all of the data in the list provided in the method
             foreach (var item in list)
             {
                 Console.SetCursorPosition(cursorLeft, Console.CursorTop + 1);
+                // Go through all the props givin and get their value
                 foreach (var prop in propertiesLength)
                 {
+                    // Get the property of the item
                     PropertyInfo property = item.GetType().GetProperty(prop.Key);
+                    // Get the value tostring
                     var value = property.GetValue(item).ToString();
+                    // Add padding to the data
                     string dataString = $"{value.PadRight(prop.Value)} ";
+                    // If the property name is Id we want to print it with color
                     if (property.Name == "Id")
                         WriteColor(dataString, InfoColor, false);
                     else
                         Console.Write(dataString);
                 }
+                // If recursiveFields we are going to loop through the lists in the class
+                // This makes it possible to show all of the products for each shelf
+                // Because we loop through the shelf class and they each have a product list we can iterate through
                 if (recursiveFields)
                 {
                     // We are now going to check for fields for each item 
                     // if perhaps the shelf class has a list called products, we want to print those too
+                    // Since fields can have different object types we are going to add the fieldinfo to a dictonary
                     Dictionary<string, object> fields = new Dictionary<string, object>();
                     FieldInfo[] _fields = item.GetType().GetFields();
                     foreach (var field in _fields)
                     {
+                        // We are going to skip static fields
                         if (!field.IsStatic)
                         {
                             object value = field.GetValue(item);
@@ -435,8 +446,9 @@ namespace Warehouse_System.Classes.Application
 
                     foreach (var field in fields)
                     {
+                        // Get the field datatype
                         Type fieldType = field.Value.GetType().GetGenericArguments()[0];
-
+                        // If the fieldtype is product then we want to print out all of the products that there is in the list
                         if (fieldType == typeof(Product))
                         {
                             List<Product> products = (List<Product>)field.Value;

@@ -14,7 +14,6 @@ namespace Warehouse_System
     /// </summary>
     class Program
     {
-
         /// <summary>
         /// Main method
         /// We make an instance of the application class which will start the application
