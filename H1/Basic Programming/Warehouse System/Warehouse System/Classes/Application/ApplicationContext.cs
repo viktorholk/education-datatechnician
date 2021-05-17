@@ -127,7 +127,7 @@ namespace Warehouse_System.Classes.Application
                 // Print all valid categories so the user can see which to pick
                 foreach (var _category in ProductCategory.categories)
                 {
-                    WriteColor($"   {_category.Id,-4}", InfoColor, false);
+                    WriteColor($"    {_category.Id,-4} ", InfoColor, false);
                     Console.Write($"{_category.Name}\n");
                 }
                 // Create the category object

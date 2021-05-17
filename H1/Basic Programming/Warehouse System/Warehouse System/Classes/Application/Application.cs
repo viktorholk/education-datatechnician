@@ -162,7 +162,7 @@ namespace Warehouse_System.Classes.Application
                                                 // Print valid categories
                                                 foreach (var _category in ProductCategory.categories)
                                                 {
-                                                    WriteColor($"   {_category.Id,-4}", InfoColor, false);
+                                                    WriteColor($"    {_category.Id,-4}", InfoColor, false);
                                                     Console.Write($"{_category.Name}\n");
                                                 }
                                                 // Get the category by id input
@@ -172,7 +172,8 @@ namespace Warehouse_System.Classes.Application
                                                 int unitPrice = GetInput<int>("Unit Price");
                                                 // Get the shelf of where the product should be listed
                                                 Shelf shelf = GetObject<Shelf>();
-                                                _shelf.EditProduct(_product, name, category, unitSize, unitPrice, shelf);
+                                                if (ConfirmDialog())
+                                                    _shelf.EditProduct(_product, name, category, unitSize, unitPrice, shelf);
                                                 edited = true;
                                                 break;
                                             }
