@@ -1,0 +1,27 @@
+ [
+  {
+    "url": "www.dr.dk",
+    "text": "Danmarks Radio",
+    "countrycode":  "DK"
+  },
+  {
+    "url": "www.tv2.dk",
+    "text": "TV2",
+    "countrycode": "DK"
+  },
+  {
+    "url": "www.youtube.com",
+    "text": "YouTube",
+    "countrycode": "US"
+  },
+  {
+    "url": "www.cnn.com",
+    "text": "CNN",
+    "countrycode": "US"
+  },
+  {
+    "url": "www.nbc.com",
+    "text": "NBC",
+    "countrycode": "US"
+  }
+]
