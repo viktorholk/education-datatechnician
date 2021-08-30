@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Array_of_Strings"
         mc:Ignorable="d"
-        Title="Array of Strings" Height="250" Width="400">
+        Title="Array of Strings" Height="250" Width="400" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen">
     <StackPanel
         Name="StackMain">
         

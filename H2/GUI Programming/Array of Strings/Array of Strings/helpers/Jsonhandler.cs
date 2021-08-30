@@ -7,6 +7,7 @@ namespace Array_of_Strings.helpers
 {
     public class Jsonhandler
     {
+        // The class from which the Load method will create the objects
         public class Item
         {
             public string URL { get; set; }
@@ -16,13 +17,13 @@ namespace Array_of_Strings.helpers
 
         public static Item[] Load(string file)
         {
-            List<Item> items;
             using (StreamReader r = new StreamReader(file))
             {
+                // Read the file into a string
                 string json = r.ReadToEnd();
-                items = JsonConvert.DeserializeObject<List<Item>>(json);
+                // Convert the string to the array of items and return it
+                return JsonConvert.DeserializeObject<Item[]>(json);
             };
-            return items.ToArray();
         }
     }
 }

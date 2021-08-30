@@ -22,7 +22,7 @@ namespace Array_of_Strings
     /// </summary>
     public partial class MainWindow : Window
     {
-        TextBox webpageTextBox;
+        TextBox WebpageTextBox;
 
         public MainWindow()
         {
@@ -36,9 +36,29 @@ namespace Array_of_Strings
                 Button button = new Button
                 {
                     Content = item.Text,
-                    Name = $"Button{item.Text.Replace(" ", "")}"
+                    Name = $"Button{item.Text.Replace(" ", "")}",
+                    // Store the URL in the tag of the button so we can refer to it later
+                    Tag  = item.URL
                 };
-                button.Click += (sender, EventArgs) => { ButtonClick    (sender, EventArgs, item.URL); };
+                // Create the event as a lambda function
+                button.Click += (sender, RoutedEventArgs) => {
+                    string url = button.Tag.ToString();
+                    // Update the text box
+                    WebpageTextBox.Text = url;
+
+                    // Create a message box if the user wants to open the webpage
+                    MessageBoxResult result = MessageBox.Show($"Would you like to open this webpage?\n{url}", "Array of Strings", MessageBoxButton.YesNo);
+
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        // Create the process of opening the webpage
+                        ProcessStartInfo process = new ProcessStartInfo();
+                        process.FileName = url;
+                        process.UseShellExecute = true;
+                        // Start the process
+                        Process.Start(process);
+                    }
+                };
 
                 // Assign a color to the button dependent on the webpage country
                 if (item.CountryCode == "DK")
@@ -48,7 +68,7 @@ namespace Array_of_Strings
                 {
                     button.Background = Brushes.BlueViolet;
                 }
-                // Position and alignment
+                // Position, style and alignment.
                 button.Width = 125;
                 Thickness btnMargin = button.Margin;
                 btnMargin.Top = 5;
@@ -56,39 +76,17 @@ namespace Array_of_Strings
                 StackMain.Children.Add(button);
             }
             // Create the text box
-            webpageTextBox = new TextBox();
-            webpageTextBox.Name = "textBox";
-            webpageTextBox.TextAlignment = TextAlignment.Center;
-            webpageTextBox.HorizontalAlignment = HorizontalAlignment.Center;
-            webpageTextBox.Width = 125;
+            WebpageTextBox = new TextBox();
+            WebpageTextBox.Name = "textBox";
+            WebpageTextBox.TextAlignment = TextAlignment.Center;
+            WebpageTextBox.HorizontalAlignment = HorizontalAlignment.Center;
+            WebpageTextBox.Width = 125;
             // Set the margin
-            Thickness margin = webpageTextBox.Margin;
+            Thickness margin = WebpageTextBox.Margin;
             margin.Top = 10;
-            webpageTextBox.Margin = margin;
+            WebpageTextBox.Margin = margin;
             // Add to the stack panel
-            StackMain.Children.Add(webpageTextBox);
-
-        }
-
-        public void ButtonClick(object sender, RoutedEventArgs args, string url)
-        {
-            // Update the text box
-            webpageTextBox.Text = url;
-
-            // Create a message box if the user wants to open the webpage
-            MessageBoxResult result = MessageBox.Show($"Would you like to open the webpage?\n{url}", "Array of Strings" ,MessageBoxButton.YesNo);
-            
-            switch (result)
-            {
-                case MessageBoxResult.Yes:
-                    // Create the process of opening the webpage
-                    ProcessStartInfo process = new ProcessStartInfo();
-                    process.FileName = url;
-                    process.UseShellExecute = true;
-                    // Start the process
-                    Process.Start(process);
-                    break;
-            }
+            StackMain.Children.Add(WebpageTextBox);
         }
     }
 }
