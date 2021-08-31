@@ -2,26 +2,36 @@
   {
     "url": "www.dr.dk",
     "text": "Danmarks Radio",
-    "countrycode":  "DK"
+    "color":  "red"
   },
   {
     "url": "www.tv2.dk",
     "text": "TV2",
-    "countrycode": "DK"
+    "color": "red"
+  },
+  {
+    "url": "www.bt.dk",
+    "text": "B.T.",
+    "color": "red"
+  },
+  {
+    "url": "www.ekstrabladet.dk",
+    "text": "Ekstra Bladet",
+    "color": "red"
   },
   {
     "url": "www.youtube.com",
     "text": "YouTube",
-    "countrycode": "US"
+    "color": "violet"
   },
   {
     "url": "www.cnn.com",
     "text": "CNN",
-    "countrycode": "US"
+    "color": "violet"
   },
   {
     "url": "www.nbc.com",
     "text": "NBC",
-    "countrycode": "US"
+    "color": "blue"
   }
 ]

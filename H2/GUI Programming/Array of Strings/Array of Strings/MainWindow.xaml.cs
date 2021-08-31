@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Array_of_Strings.helpers;
-
+using Array_of_Strings.classes;
 namespace Array_of_Strings
 {
     /// <summary>
@@ -22,71 +22,36 @@ namespace Array_of_Strings
     /// </summary>
     public partial class MainWindow : Window
     {
-        TextBox WebpageTextBox;
+        TextBox textBox;
 
         public MainWindow()
         {
             InitializeComponent();
 
             // Initialize the buttons
-            Jsonhandler.Item[] data = Jsonhandler.Load("data.json");
+            var data = Jsonhandler.Load<HomePage>("data.json");
 
-            foreach (Jsonhandler.Item item in data)
+            foreach (HomePage homePage in data)
             {
-                Button button = new Button
-                {
-                    Content = item.Text,
-                    Name = $"Button{item.Text.Replace(" ", "")}",
-                    // Store the URL in the tag of the button so we can refer to it later
-                    Tag  = item.URL
-                };
-                // Create the event as a lambda function
-                button.Click += (sender, RoutedEventArgs) => {
-                    string url = button.Tag.ToString();
-                    // Update the text box
-                    WebpageTextBox.Text = url;
-
-                    // Create a message box if the user wants to open the webpage
-                    MessageBoxResult result = MessageBox.Show($"Would you like to open this webpage?\n{url}", "Array of Strings", MessageBoxButton.YesNo);
-
-                    if (result == MessageBoxResult.Yes)
-                    {
-                        // Create the process of opening the webpage
-                        ProcessStartInfo process = new ProcessStartInfo();
-                        process.FileName = url;
-                        process.UseShellExecute = true;
-                        // Start the process
-                        Process.Start(process);
-                    }
-                };
-
-                // Assign a color to the button dependent on the webpage country
-                if (item.CountryCode == "DK")
-                {
-                    button.Background = Brushes.OrangeRed;
-                } else if (item.CountryCode == "US")
-                {
-                    button.Background = Brushes.BlueViolet;
-                }
-                // Position, style and alignment.
-                button.Width = 125;
-                Thickness btnMargin = button.Margin;
-                btnMargin.Top = 5;
-                button.Margin = btnMargin;
-                StackMain.Children.Add(button);
+                // Init the event of the button and pass the reference of the textbox
+                homePage.Button.Click += (sender, args) => { homePage.ButtonClick(sender, args, ref textBox); };
+                StackMain.Children.Add(homePage.Button);
             }
+
             // Create the text box
-            WebpageTextBox = new TextBox();
-            WebpageTextBox.Name = "textBox";
-            WebpageTextBox.TextAlignment = TextAlignment.Center;
-            WebpageTextBox.HorizontalAlignment = HorizontalAlignment.Center;
-            WebpageTextBox.Width = 125;
+            textBox = new TextBox
+            {
+                Name = "textBox",
+                TextAlignment = TextAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                Width = 125
+            };
             // Set the margin
-            Thickness margin = WebpageTextBox.Margin;
+            Thickness margin = textBox.Margin;
             margin.Top = 10;
-            WebpageTextBox.Margin = margin;
+            textBox.Margin = margin;
             // Add to the stack panel
-            StackMain.Children.Add(WebpageTextBox);
+            StackMain.Children.Add(textBox);
         }
     }
 }
