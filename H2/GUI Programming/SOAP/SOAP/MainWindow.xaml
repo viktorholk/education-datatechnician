@@ -1,0 +1,53 @@
+﻿<Window x:Class="SOAP.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SOAP"
+        mc:Ignorable="d"
+        ResizeMode="CanResize"
+        Title="SOAP" Height="500" Width="800">
+
+
+    <Grid>
+        <StackPanel
+        Name="StackLeft" Margin="0,0,400,0">
+            
+            <StackPanel Orientation="Horizontal"
+                >
+                <Button
+                x:Name="AddWebPage"
+                Content="Add new webpage"
+                Click="AddWebPage_Click"></Button>
+                <Button
+                x:Name="RefreshButton"
+                Content="Refresh"
+                Click="RefreshButton_Click"></Button>
+            </StackPanel>
+
+            <ScrollViewer
+                Height="350">
+
+                <StackPanel
+                    x:Name="ScrollStack">
+
+                </StackPanel>
+                
+            </ScrollViewer>
+            
+        </StackPanel>
+        <StackPanel
+        Name="StackRight" Margin="400,0,0,0">
+            <TextBox
+                Width="125"
+                Margin="0,10,0,0"
+                x:Name="webpageTextBox">
+            </TextBox>
+            <WebBrowser
+                Height="400" Margin="10,10,10,10"
+                x:Name="webpageBrowser">
+
+            </WebBrowser>
+        </StackPanel>
+    </Grid>
+</Window>
