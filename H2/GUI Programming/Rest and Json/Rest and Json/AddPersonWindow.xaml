@@ -1,0 +1,24 @@
+﻿<Window x:Class="Rest_and_Json.AddPersonWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Rest_and_Json"
+        mc:Ignorable="d"
+        Title="Add Person" Height="300" Width="200">
+    <StackPanel>
+        <Label Content="Name"></Label>
+        <TextBox x:Name="NameTextbox"></TextBox>
+        <Label Content="Age"></Label>
+        <TextBox x:Name="AgeTextbox"></TextBox>
+        <Label Content="URL"></Label>
+        <TextBox x:Name="UrlTextbox"></TextBox>
+        <Label Content="Description"></Label>
+        <TextBox x:Name="descriptionTextbox"></TextBox>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Active"></Label>
+            <CheckBox x:Name="ActiveCheckBox"></CheckBox>
+        </StackPanel>
+        <Button x:Name="AddButton" Click="AddButton_Click" Width="50" Content="Add"></Button>
+    </StackPanel>
+</Window>
