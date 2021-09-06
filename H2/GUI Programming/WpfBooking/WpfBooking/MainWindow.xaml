@@ -1,0 +1,28 @@
+﻿<Window x:Class="WpfBooking.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfBooking"
+        mc:Ignorable="d"
+        Closing="Window_Closing"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Canvas HorizontalAlignment="Left" Height="409" VerticalAlignment="Top" Width="590" Margin="90,0,0,0">
+            <Image x:Name="image1" MouseDown="Image1_MouseDown" Height="100" Canvas.Left="94" Canvas.Top="83" Width="100"  Source="images/SeatOpen.png"/>
+            <Image x:Name="image2" MouseDown="Image2_MouseDown" Height="100" Canvas.Left="198" Canvas.Top="83" Width="100" Source="images/SeatOpen.png"/>
+            <Image x:Name="image3" MouseDown="Image3_MouseDown" Height="100" Canvas.Left="304" Canvas.Top="83" Width="100" Source="images/SeatOpen.png"/>
+            <Image x:Name="image4" MouseDown="Image4_MouseDown" Height="100" Canvas.Left="408" Canvas.Top="83" Width="100" Source="images/SeatOpen.png"/>
+            <Image x:Name="image5" MouseDown="Image5_MouseDown" Height="100" Canvas.Left="94" Canvas.Top="189" Width="100" Source="images/SeatOpen.png"/>
+            <Image x:Name="image6" MouseDown="Image6_MouseDown" Height="100" Canvas.Left="198" Canvas.Top="189" Width="100" Source="images/SeatOpen.png"/>
+            <Image x:Name="image7" MouseDown="Image7_MouseDown" Height="100" Canvas.Left="304" Canvas.Top="189" Width="100" Source="images/SeatOpen.png"/>
+            <Image x:Name="image8" MouseDown="Image8_MouseDown" Height="100" Canvas.Left="408" Canvas.Top="189" Width="100" Source="images/SeatOpen.png"/>
+            <Image x:Name="image9" MouseDown="Image9_MouseDown" Height="100" Canvas.Left="94" Canvas.Top="297" Width="100" Source="images/SeatOpen.png"/>
+            <Image x:Name="image10" MouseDown="Image10_MouseDown" Height="100" Canvas.Left="198" Canvas.Top="297" Width="100" Source="images/SeatOpen.png"/>
+            <Image x:Name="image11" MouseDown="Image11_MouseDown" Height="100" Canvas.Left="304" Canvas.Top="297" Width="100" Source="images/SeatOpen.png"/>
+            <Image x:Name="image12" MouseDown="Image12_MouseDown" Height="100" Canvas.Left="408" Canvas.Top="297" Width="100" Source="images/SeatOpen.png"/>
+            <Image x:Name="image" Height="79" Width="414" Canvas.Left="94" Source="images/Stage.png"/>
+        </Canvas>
+
+    </Grid>
+</Window>
