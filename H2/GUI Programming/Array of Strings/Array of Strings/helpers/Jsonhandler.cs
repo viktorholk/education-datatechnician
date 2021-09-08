@@ -7,7 +7,6 @@ namespace Array_of_Strings.helpers
 {
     public class Jsonhandler
     {
-
         public static object[] Load<T>(string file) where T : class
         {
             using (StreamReader r = new StreamReader(file))
