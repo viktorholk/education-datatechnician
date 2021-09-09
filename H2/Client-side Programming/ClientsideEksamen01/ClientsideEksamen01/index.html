@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+    </script>
+    <script>
+        var RESTurl = "http://restpublic.junoeuro.dk/service1.svc/getListOfPersons/";
+
+        $(document).ready($.getJSON(RESTurl, function (data) {
+            for (var item of data) {
+                var markup = `<tr><td>${item.Name}</td><td>${item.Age}</td></tr>`;
+                $('#myTable').append(markup);
+            }
+        }));
+    </script>
+
+    <title></title>
+    <meta charset="utf-8" />
+
+    <style>
+        .wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+        }
+
+        table {
+            border: 1px solid;
+            border-color: grey;
+            border-radius: 1em;
+            padding: 1em;
+        }
+
+        table td {
+            transition: all 200ms ease-in-out;
+            cursor: default;
+            color: grey;
+            text-align: center;
+        }
+        table td:hover {
+            transform: scale(1.05);
+            color: darkslategrey;
+        }
+
+    </style>
+</head>
+    <body>
+        <div class="wrapper">
+            <table id="myTable">
+                <thead>
+                    <tr>
+                        <td style="font-weight: bold">NAME</td>
+                        <td style="font-weight: bold">AGE</td>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </body>
+</html>
