@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+    <script src="https://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+
+    <style type="text/css">
+        .auto-style1 {
+            width: 2%;
+            height: 71px;
+        }
+    </style>
+</head>
+<body>
+
+    <table class="auto-style1">
+        <tr>
+            <td>
+                <input onclick="buttonPress(this)" style="background-color: green" id="Button1" type="button" />
+            </td>
+            <td>
+                <input onclick="buttonPress(this)" style="background-color: green" id="Button2" type="button" />
+            </td>
+            <td>
+                <input onclick="buttonPress(this)" style="background-color: green" id="Button3" type="button" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input onclick="buttonPress(this)" style="background-color: green" id="Button4" type="button" />
+            </td>
+            <td>
+                <input onclick="buttonPress(this)" style="background-color: green" id="Button5" type="button" />
+            </td>
+            <td>
+                <input onclick="buttonPress(this)" style="background-color: green" id="Button6" type="button" />
+            </td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                <input onclick="buttonPress(this)" style="background-color: green" id="Button7" type="button" />
+            </td>
+            <td>
+                <input onclick="buttonPress(this)" style="background-color: green" id="Button8" type="button" />
+            </td>
+            <td>
+                <input onclick="buttonPress(this)" style="background-color: green" id="Button9" type="button" />
+            </td>
+        </tr>
+    </table>
+    <p>
+    </p>
+    <script>
+        // Update the booking colors by state
+        $.ajax({
+            type: "GET",
+            url: "AjaxReceiver.aspx/SerializeBookings",
+            contentType: 'application/json; charset=utf-8',
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Request: " + XMLHttpRequest.toString() + "\n\nStatus: " + textStatus + "\n\nError: " +
+                    errorThrown);
+            },
+            success: function (result) {
+                // Return the parsed JSON
+                const bookings = JSON.parse(result.d);
+                console.log(bookings);
+
+                for (let i = 0; i < bookings.length; i++) {
+                    // Get the booking and button object
+                    const booking = bookings[i];
+                    const button = document.getElementById(booking.Name);
+
+                    if (booking.State == 0) {
+                        button.style.backgroundColor = "green";
+                    } else {
+                        button.style.backgroundColor = "red";
+                    }
+                }
+            }
+        });
+
+        function buttonPress(btn) {
+            $.ajax({
+                type: "POST",
+                url: "AjaxReceiver.aspx/SetBooking",
+                contentType: 'application/json; charset=utf-8',
+                dataType: "json",
+                data: `{ name: "${btn.id}" }`,
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("Request: " + XMLHttpRequest.toString() + "\n\nStatus: " + textStatus + "\n\nError: " +
+                        errorThrown);
+                },
+
+                success: function (result) {
+                    // Get the updated state
+                    const state = result.d;
+                    console.log(state);
+                    if (state == "0") {
+                        btn.style.backgroundColor = "green";
+                    } else {
+                        btn.style.backgroundColor = "red";
+                    }
+                    
+                }
+            })
+        }
+    </script>
+</body>
+</html>
