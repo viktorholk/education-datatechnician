@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://wcfbooking.junoeuro.dk/Service1.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/WCF_BOOKING" />
+  <xs:element name="GetBookingDescription">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetBookingDescriptionResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetBookingDescriptionResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateBookingNumber">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="bookingNumber" type="xs:int" />
+        <xs:element minOccurs="0" name="numberOfBookingItems" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateBookingNumberResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="CreateBookingNumberResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeleteBookingNumber">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="bookingNumber" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeleteBookingNumberResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="DeleteBookingNumberResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetBookingItems">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="bookingNumber" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetBookingItemsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/WCF_BOOKING" minOccurs="0" name="GetBookingItemsResult" nillable="true" type="q1:ArrayOfBookingItem" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SetBookingItems">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="bookingNumber" type="xs:int" />
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/WCF_BOOKING" minOccurs="0" name="bookings" nillable="true" type="q2:ArrayOfBookingItem" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SetBookingItemsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="SetBookingItemsResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,132 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <script src="https://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+    <title></title>
+</head>
+<body>
+    <canvas id="myCanvas" width="350" height="350" style="border: 1px solid #d3d3d3;"></canvas>
+    <script>
+        var bookings = []; //Array med alle pladser
+        var ypos = 50;
+        var xpos = 1;
+        var c = document.getElementById("myCanvas");
+        var ctx = c.getContext("2d");
+        c.addEventListener("click", doKeyDown, false);
+
+        // Loading text
+        ctx.font = "10px Arial";
+        ctx.fillText("LOADING", 20, 20);
+
+        // ajax handler så vi ikke skal genskrive kode
+        function handleAJAX(settings, callback = null){
+            return $.ajax({
+                type: settings.type,
+                url: settings.url,
+                data: settings.data || '',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                error: (result) => {
+                    console.log(`AJAX ERROR: ${JSON.stringify(result)}`);
+                },
+                success: (result) => {
+                    if (callback)
+                        callback(result);
+                }
+            })
+        }
+
+        function draw() {
+            // Clear
+            ctx.clearRect(0, 0, c.width, c.height);
+
+            // Tegn lærred
+            ctx.fillStyle = "gray";
+            ctx.fillRect(25, 10, 125, 20);
+            ctx.fillStyle = "white";
+            ctx.font = "10px Arial";
+            ctx.fillText("LÆRRED", 65, 23);
+
+            //Sæderne tegnes her.........
+            for (var i = 0; i < bookings.length; i++) {
+                const booking = bookings[i];
+                ctx.fillStyle = booking.State === 0 ? "green" : "red";
+                ctx.fillRect(booking.X, booking.Y, 20, 20);
+            }
+        }
+        function doKeyDown(e) {
+            var mousePos = getMousePos(c, e);
+            var MouseClick = { X: mousePos.x, Y: mousePos.y }; //JavaScript Objekt
+            for (var i = 0; i < bookings.length; i++) {
+                let booking = bookings[i];
+                var PointFromList = { X: booking.X, Y: booking.Y };  //JavaScript Objekt
+                if (Collision(MouseClick, PointFromList, 20, 20)) {
+                    //alert(booking.navn);
+                    if (booking.State === 0) 
+                        booking.State = 1;
+                    else 
+                        booking.State = 0;
+
+                    // save the booking
+                    SaveBooking(booking);
+                    // Draw again
+                    draw();
+                }
+            }
+        }
+
+        function Collision(a, b, width, height) //JavaScript Collision functionen.
+        {
+            var svar = false;
+            if (a.X - b.X > 0 && a.X - b.X < width) {
+                if (a.Y - b.Y > 0 && a.Y - b.Y < height) {
+                    svar = true;
+                }
+            }
+            return svar; //SVARER TRUE eller FALSE.
+        }
+
+        //Denne function er nødvendig, fordi x og y fra museklikket ikke stemmer
+        // helt med det som man tegner på canvaset
+        function getMousePos(canvas, evt) {
+            var rect = canvas.getBoundingClientRect();
+            return {
+                x: evt.clientX - rect.left,
+                y: evt.clientY - rect.top
+            };
+        }
+
+        function SaveBooking(booking) {
+            handleAJAX({
+                    type: 'POST', url: 'AjaxReceiver.aspx/SaveBooking', data: ` { "id": ${booking.Id}  } `
+                });
+        }
+
+        // Get the bookings and save them
+        handleAJAX({
+            type: 'GET', url: 'AjaxReceiver.aspx/SerializeBookings'
+        }, (result) => {
+            // Parse the bookings to javascript objects
+            var data = JSON.parse(result.d);
+
+            for (let i = 0; i < data.length; i++) {
+                // Get the booking
+                let booking = data[i];
+
+                if (i % 10 == 0) {
+                    ypos += 25;
+                    xpos = 1
+                }
+                booking.X = xpos * 25;
+                booking.Y = ypos;
+                bookings[i] = booking;
+
+                xpos++;
+            }
+            // Draw the canvas
+            draw();
+        });
+    </script>
+</body>
+</html>
