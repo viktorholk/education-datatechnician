@@ -1,0 +1,21 @@
+body {
+    background-color: #1E232A !important;
+}
+h1 {
+    color: white;
+    font-weight: bold;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    text-align: center;
+}
+
+#game{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-items: center;
+}
+
+#gameCanvas {
+    border: white 2px solid;
+    background-color: black;
+}
