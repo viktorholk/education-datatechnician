@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RemoteExercise
+namespace Remote
 {
     class Button {
         public Action Push;

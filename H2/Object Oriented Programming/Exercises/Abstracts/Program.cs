@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-namespace AbstractsExercise
+namespace Abstracts
 {
 
     interface IExperience {
