@@ -1,0 +1,35 @@
+[
+  {
+    "Accounts": [
+      {
+        "Transactions": [
+          {
+            "Date": new Date(
+              1632468785342
+            ),
+            "TransactionType": 1,
+            "Amount": 1000.0
+          },
+          {
+            "Date": new Date(
+              1632468785342
+            ),
+            "TransactionType": 1,
+            "Amount": 500.0
+          }
+        ],
+        "CreationDate": new Date(
+          1632468785338
+        ),
+        "AccountType": 0
+      }
+    ],
+    "Login": "sample",
+    "Password": "1234"
+  },
+  {
+    "Accounts": [],
+    "Login": "other_sample",
+    "Password": "4321"
+  }
+]
