@@ -12,16 +12,18 @@ namespace BankSystemLib
             this.Accounts   = new List<Account>();
             this.Login      = login;
             this.Password   = password;
-        }
 
+        }
         public void AddAccount(Account account){
             this.Accounts.Add(account);
         }
+
 
         public override string ToString()
         {
             return $"{this.Login}";
         }
+
 
     }
 }

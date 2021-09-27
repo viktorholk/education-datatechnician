@@ -5,27 +5,16 @@ namespace BankSystemLib
 {
     public class Registry
     {
-        public static List<User> users = LoadUsers();
-
-        private static List<User> LoadUsers(){
-            // Load the users from the json file
-            return Jsonhandler.Read<List<User>>();
-        }
-
-        public static void SaveRegistry(){
-            // Write the current user list to the registry
-            Jsonhandler.Write<List<User>>(Registry.users);
-        }
-
-        public Registry() { }
+        public List<User> users;
+        
+        public Registry() {
+            this.users = new List<User>();
+         }
 
         public bool AddUser(User user){
             // Check if the user already exists
-            if (!Registry.users.Exists(i => i.Login == user.Login)){
-                Registry.users.Add(user);
-
-                // Update the json file with the appended user
-                Registry.SaveRegistry();
+            if (!this.users.Exists(i => i.Login == user.Login)){
+                this.users.Add(user);
                 return true;
             }
             return false;
@@ -37,7 +26,7 @@ namespace BankSystemLib
         }
 
         public User AuthenticateUser(string login, string password ){
-            foreach (User user in Registry.users)
+            foreach (User user in this.users)
             {
                 if (user.Login == login && user.Password == password)
                     return user;
