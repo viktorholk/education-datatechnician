@@ -41,26 +41,21 @@ namespace BankSystemLib
                     Console.ResetColor();
                     return false;
                 }
+
+
+
+            } else if (transactionType == TransactionTypes.Deposit) {
+                if ((GetBalance() + amount) < this.MinBalance)
+                    return false;
+
+                if (amount < this.MinDeposit) 
+                    return false;
             }
 
             this.Transactions.Add(new Transaction(transactionType, amount));
 
             return true;
         }
-
-        
-        public async Task PayInterest(int delay) {
-            while (true){
-                if (GetBalance() > 0){
-                    // Calculate the interest
-                    double interestAmount = GetBalance() * this.Interest;
-                    // Wait the delay and add the interst amount to the balance
-                    await Task.Delay(delay);
-                    CreateTransaction(TransactionTypes.Interest, interestAmount);
-                }
-            }
-        }
-
 
         public override bool CreateTransaction(TransactionTypes transactionType, double amount, ref Account sender, ref Account receiver){
             if (transactionType == TransactionTypes.Send) {
@@ -70,6 +65,13 @@ namespace BankSystemLib
                     Console.ResetColor();
                     return false;
                 }
+
+                if ((GetBalance() + amount) < this.MinBalance)
+                    return false;
+
+                if (amount < this.MinDeposit) 
+                    return false;
+
                 this.Transactions.Add(new Transaction(TransactionTypes.Send, amount, sender, receiver));
                 receiver.Transactions.Add(new Transaction(TransactionTypes.Receive, amount, sender, receiver));
                 return true;
