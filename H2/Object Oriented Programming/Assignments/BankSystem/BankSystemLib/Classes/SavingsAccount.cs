@@ -7,13 +7,15 @@ namespace BankSystemLib
         public double Interest { get; set; }
         public double MinBalance { get; set;}
         public double MinDeposit { get; set;}
+
+        public Task InterestTask { get; set; }
         public SavingsAccount(double interest, double minBalance, double minDeposit) : base(AccountTypes.Savings) {
             this.Interest = interest;
             this.MinBalance = minBalance;
             this.MinDeposit = minDeposit;
 
             // Start the interest task
-            Task.Run(async () => {
+            this.InterestTask = new Task(async () => {
                 while (true)
                 {
                     if (GetBalance() > 0){
@@ -22,10 +24,12 @@ namespace BankSystemLib
                         // Wait the delay and add the interst amount to the balance
                         // System.Console.WriteLine($"{GetBalance()} - {interestAmount}");
                         CreateTransaction(TransactionTypes.Interest, interestAmount);
-                        await Task.Delay(20000);
+                        await Task.Delay(10000);
                     }
                 }
             });
+
+            this.InterestTask.Start();
 
         }
 

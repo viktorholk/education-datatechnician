@@ -125,15 +125,7 @@ namespace ATM
                                     }
                                 }
                                 System.Console.WriteLine();
-
                             }
-
-
-
-                            foreach (Account account in loggedInUser.Accounts){
-
-                            }
-
                         } else System.Console.WriteLine("There is currently no accounts to the user.");
                     } else {
                         Console.ForegroundColor = ConsoleColor.Red;

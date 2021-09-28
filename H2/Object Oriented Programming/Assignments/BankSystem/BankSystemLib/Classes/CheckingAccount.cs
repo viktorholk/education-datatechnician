@@ -6,15 +6,14 @@ namespace BankSystemLib
     {
         public double Interest { get; set;}
 
+        public Task InterestTask { get; set; }
+
         // Set the type of account to checking by calling the parent constructor
         public CheckingAccount(double interest) : base(AccountTypes.Checking){
             this.Interest = interest;
 
             // Start the interest task
-
-            Task.Run(async () => {
-                await Task.Delay(1000);
-                System.Console.WriteLine($"{this} STARTED");
+            this.InterestTask = new Task(async () => {
                 while (true)
                 {
                     if (GetBalance() > 0){
@@ -27,6 +26,8 @@ namespace BankSystemLib
                     }
                 }
             });
+
+            this.InterestTask.Start();
         }
 
         public override bool CreateTransaction(TransactionTypes transactionType, double amount){

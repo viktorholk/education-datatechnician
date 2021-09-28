@@ -5,6 +5,8 @@ namespace BankSystemLib
 {
     public interface IBankInterest{
         double Interest { get; set; }
+
+        Task InterestTask { get; set; }
     }
 
     public interface IBankMinimum {
@@ -42,31 +44,36 @@ namespace BankSystemLib
 
             // Set the account number
             this.AccountNumber = $"{registrationNumber} {accountNumber}";
+
         }
 
         public double GetBalance(){
             double total = 0.0;
 
-            foreach (Transaction transaction in Transactions){
-                switch (transaction.TransactionType) {
+            for (int i = 0; i < Transactions.Count; i++)
+            {
+                TransactionTypes type   = Transactions[i].TransactionType;
+                double amount           = Transactions[i].Amount;
+
+                switch (type) {
                     case TransactionTypes.Deposit:
-                        total += transaction.Amount;
+                        total += amount;
                         break;
 
                     case TransactionTypes.Withdraw:
-                        total -= transaction.Amount;
+                        total -= amount;
                         break;
 
                     case TransactionTypes.Send:
-                        total -= transaction.Amount;
+                        total -= amount;
                         break;
 
                     case TransactionTypes.Receive:
-                        total += transaction.Amount;
+                        total += amount;
                         break;
 
                     case TransactionTypes.Interest:
-                        total += transaction.Amount;
+                        total += amount;
                         break;
                 }
             }
