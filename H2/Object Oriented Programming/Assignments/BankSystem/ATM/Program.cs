@@ -59,7 +59,6 @@ namespace ATM
                     System.Console.WriteLine("List of commands:");
                     System.Console.WriteLine("- login           ( Authenticate a valid bank user )");
                     System.Console.WriteLine("- logout          ( Logout an authenticated bank user )");
-                    System.Console.WriteLine("- save            ( Saves the registry of users )");
                     System.Console.WriteLine("- quit            ( Quits the program )");
 
                     System.Console.WriteLine();
@@ -191,6 +190,10 @@ namespace ATM
                                 System.Console.WriteLine($"Successfully deposited ${amount}");
                                 Console.ResetColor();
 
+                            } else {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                System.Console.WriteLine($"Something went wrong creating the transaction");
+                                Console.ResetColor();
                             }
                         }
 
@@ -228,6 +231,10 @@ namespace ATM
                                 System.Console.WriteLine($"Successfully withdrew ${amount}");
                                 Console.ResetColor();
 
+                            } else {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                System.Console.WriteLine($"Something went wrong creating the transaction");
+                                Console.ResetColor();
                             }
                         }
                     } else {
@@ -298,8 +305,11 @@ namespace ATM
                                                 Console.ForegroundColor = ConsoleColor.Green;
                                                 System.Console.WriteLine($"Successfully sended ${amount} to ${receiverAccount}");
                                                 Console.ResetColor();
+                                            } else {
+                                                Console.ForegroundColor = ConsoleColor.Red;
+                                                System.Console.WriteLine($"Something went wrong creating the transaction");
+                                                Console.ResetColor();
                                             }
-
                                         }
                                     } else {
                                         Console.ForegroundColor = ConsoleColor.Red;
