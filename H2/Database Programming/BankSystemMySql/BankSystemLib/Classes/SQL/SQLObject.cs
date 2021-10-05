@@ -45,7 +45,7 @@ namespace BankSystemLib {
                     columnData.Add(name, value);
             }
 
-            // If the object already has an ID it means it is already saved in the data base, so we will use a UPDATE query instead
+            // If the object is already saved we want to update it
             if (!Saved) {
                 // Create the query
                 string columns  = string.Join(", ", columnData.Keys);
@@ -105,9 +105,9 @@ namespace BankSystemLib {
         private string GetColumnName(string property){
             object[] attributes = this.GetType().GetProperty(property).GetCustomAttributes(true);
 
-            foreach (ColumnAttribute item in attributes)
-            {
-                return item.ColumnName;
+            if (attributes.Length > 0) {
+                ColumnAttribute columnAttribute = (ColumnAttribute)attributes[0];
+                return columnAttribute.ColumnName;
             }
             return null;
         }
