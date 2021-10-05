@@ -83,12 +83,11 @@ BEGIN
     INSERT INTO users (login, password, admin) VALUES ('admin', 'admin', true);
     INSERT INTO users (login, password) VALUES ('sample', 'password');
     INSERT INTO users (login, password) VALUES ('sample2', 'password');
-    INSERT INTO users (login, password) VALUES ('sample3', 'password');
 
-    INSERT INTO accounts (user_id, account_number, account_type) VALUES (1, '1234 5678900', 1);
-    INSERT INTO accounts (user_id, account_number, account_type) VALUES (1, '9943 5553212', 2);
+    INSERT INTO accounts (user_id, account_number, account_type) VALUES (2, '1234 5678900', 1);
+    INSERT INTO accounts (user_id, account_number, account_type) VALUES (2, '9943 5553212', 2);
 
-    INSERT INTO accounts (user_id, account_number, account_type) VALUES (2, '1234 1234123', 1);
+    INSERT INTO accounts (user_id, account_number, account_type) VALUES (3, '1234 1234123', 1);
     INSERT INTO accounts (user_id, account_number, account_type) VALUES (3, '5555 1234567', 1);
 
     INSERT INTO transactions (account_id, transaction_type, date, amount) VALUES (1, 1, NOW(), 500);

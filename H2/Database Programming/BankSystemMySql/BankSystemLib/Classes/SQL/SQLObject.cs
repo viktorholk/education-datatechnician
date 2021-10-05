@@ -62,13 +62,26 @@ namespace BankSystemLib {
                 }
 
                 string query = $"INSERT INTO {GetTableName()} ({columns}) VALUES ({values})";
+                Console.ForegroundColor = ConsoleColor.Magenta;
                 System.Console.WriteLine(query);
+                Console.ResetColor();
 
                 // Get the new ID and save it
                 int id = Database.QueryGetId(query);
 
                 this.Id = id;
                 this.Saved = true;
+
+                // Update  the registry
+                Type type = this.GetType();
+
+                if (type == typeof(User)) {
+                    Registry.Users.Add((User)this);
+                } else if (type == typeof(Account)) {
+                    Registry.Accounts.Add((Account)this);
+                } else if (type == typeof(Transaction)) {
+                    Registry.Transactions.Add((Transaction)this);
+                }
 
             } else {
                 string setters = "SET ";
@@ -81,7 +94,11 @@ namespace BankSystemLib {
                 }
 
                 string query = $"UPDATE users {setters} WHERE id = {this.Id}";
+
+                Console.ForegroundColor = ConsoleColor.Magenta;
                 System.Console.WriteLine(query);
+                Console.ResetColor();
+
                 Database.Query(query);
             }
         }
