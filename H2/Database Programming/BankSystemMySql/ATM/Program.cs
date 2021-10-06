@@ -36,15 +36,16 @@ namespace ATM
 
                     System.Console.WriteLine();
 
-                    if (loggedInUser != null){
+                    if (loggedInUser != null && !loggedInUser.Admin){
                         System.Console.WriteLine("- accounts        ( Show list of available accounts )");
                         System.Console.WriteLine("- create account  ( Create a new bank account )");
                         System.Console.WriteLine("- deposit         ( Deposit money into a bank account )");
                         System.Console.WriteLine("- withdraw        ( Withdraw money from a bank account )");
                         System.Console.WriteLine("- send            ( Send money to another bank account )");
-                    } else {
+                    } else if (loggedInUser.Admin) {
+                        System.Console.WriteLine("- sql             ( Query the database with SQL )");
+                    } else
                         System.Console.WriteLine("Login for additonal commands.");
-                    }
                 } 
                 else if (input == "login") {
                     if (loggedInUser == null) {
@@ -313,6 +314,35 @@ namespace ATM
                         System.Console.WriteLine($"{input} is not a valid command!"); 
                 }
             }
+                else if (input == "sql") {
+                    if (loggedInUser.Admin) {
+                        string sqlInput = "";
+                        System.Console.WriteLine("Type '.views' to see a list of available views");
+                        System.Console.WriteLine("Type '.quit' to quit the sql prompt");
+
+                        while (sqlInput != ".quit" ) {
+
+                            sqlInput = GetInput(">");
+
+                            if (sqlInput == ".views") {
+                                System.Console.WriteLine("Available views:");
+                                System.Console.WriteLine("- system_flags                ( Get all flagged users and the reason )");
+                                System.Console.WriteLine("- user_accounts               ( Get all accounts for each user )");
+                                System.Console.WriteLine("- user_transactions           ( Get all transactions to each account )");
+                                System.Console.WriteLine("- account_transactions_count  ( Show count of transactions on each account )");
+                            } else {
+                                // Run the query
+                                var records = Database.QueryRecords(sqlInput);
+
+                                Console.ForegroundColor = ConsoleColor.Magenta;
+                                Database.PrettyPrintRecords(records);
+                                Console.ResetColor();
+                            }
+                        }
+                    } else {
+                        System.Console.WriteLine("You need to be an admin to use this command");
+                    }
+                }
             }
 
         }
@@ -356,9 +386,9 @@ namespace ATM
             return null;
         }
 
-        static string GetInput(){
+        static string GetInput(string prefix = "$"){
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write(" $ ");
+            Console.Write($" {prefix} ");
             Console.ResetColor();
             // RETURN the input as lower string
             return Console.ReadLine().ToLower();

@@ -84,7 +84,7 @@ namespace BankSystemLib {
                 }
 
             } else {
-                string setters = "SET ";
+                string setters = "";
 
                 foreach (var data in columnData)
                 {
@@ -93,7 +93,7 @@ namespace BankSystemLib {
                     setters += comma + $" {data.Key} = {ValueParser(data.Value)}";
                 }
 
-                string query = $"UPDATE users {setters} WHERE id = {this.Id}";
+                string query = $"UPDATE users SET {setters} WHERE id = {this.Id}";
 
                 Console.ForegroundColor = ConsoleColor.Magenta;
                 System.Console.WriteLine(query);

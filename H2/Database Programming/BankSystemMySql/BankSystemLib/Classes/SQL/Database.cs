@@ -6,6 +6,8 @@ using MySql.Data.MySqlClient;
 
 namespace BankSystemLib{
 
+    public class Records : List<Dictionary<string, object>> {}
+    public class Record : Dictionary<string, object> {}
     public class Database {
 
         private static readonly string database         = "bank_system";
@@ -104,5 +106,65 @@ namespace BankSystemLib{
 
             return data;
         }
+        public static Records QueryRecords(string query) {
+           if (Connection.State != System.Data.ConnectionState.Open)
+                Connection.Open();
+
+            var records = new Records();
+
+           try {
+                using (var cmd = new MySqlCommand(query, Connection)) {
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader()) {
+
+                        while (reader.Read()) {
+                            var record = new Record();
+                            for (int i = 0; i < reader.FieldCount; i++)
+                            {
+                                record[reader.GetName(i)] = reader.IsDBNull(i) ? "NULL" : reader.GetString(i);
+                            }
+                            records.Add(record);
+                        }
+                    }
+                }
+            } catch (MySqlException exception) {
+                Console.ForegroundColor = ConsoleColor.Red;
+                System.Console.WriteLine(exception.ToString());
+                Console.ResetColor();
+            }
+            return records;
+        }
+
+
+
+        public static void PrettyPrintRecords(Records records){
+            // For padding we want the record with the longest value 
+            // Default 15
+            int padding = 15;
+
+            foreach (var record in records)
+            {
+                foreach (var value in record.Values)
+                {
+                    int length = value.ToString().Length;
+                    if (length > padding) 
+                        padding = length + 1;
+                }
+            }
+
+            //  Print the columns
+            foreach (string column in records[0].Keys) 
+                System.Console.Write($"{column.PadRight(padding)}");
+            System.Console.WriteLine();
+
+            foreach (var record in records) {
+
+                foreach (object value in record.Values)
+                    System.Console.Write($"{value.ToString().PadRight(padding)}");
+                System.Console.WriteLine();
+            }
+        }
+    
+
     }
 }
