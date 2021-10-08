@@ -132,7 +132,7 @@ CREATE VIEW IF NOT EXISTS user_accounts AS
     INNER JOIN account_types ON accounts.account_type = account_types.id;
 
 CREATE VIEW IF NOT EXISTS user_transactions AS
-    SELECT transactions.id, accounts.account_number, transaction_types.name as 'type', transactions.date, transactions.amount FROM transactions
+    SELECT transactions.id, (SELECT users.login FROM users WHERE users.id = accounts.user_id) as 'user', accounts.account_number, transaction_types.name as 'type', transactions.date, transactions.amount FROM transactions
     INNER JOIN accounts ON transactions.account_id = accounts.id
     INNER JOIN transaction_types ON transactions.transaction_type = transaction_types.id;
 

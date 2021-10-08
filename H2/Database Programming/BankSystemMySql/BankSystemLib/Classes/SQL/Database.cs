@@ -138,30 +138,33 @@ namespace BankSystemLib{
 
 
         public static void PrettyPrintRecords(Records records){
-            // For padding we want the record with the longest value 
-            // Default 15
-            int padding = 15;
+            if (records.Count > 0){
+                // For padding we want the record with the longest value 
+                // Default 15
+                int padding = 15;
 
-            foreach (var record in records)
-            {
-                foreach (var value in record.Values)
+                foreach (var record in records)
                 {
-                    int length = value.ToString().Length;
-                    if (length > padding) 
-                        padding = length + 1;
+                    foreach (var value in record.Values)
+                    {
+                        int length = value.ToString().Length;
+                        if (length > padding) 
+                            padding = length + 1;
+                    }
                 }
-            }
 
-            //  Print the columns
-            foreach (string column in records[0].Keys) 
-                System.Console.Write($"{column.PadRight(padding)}");
-            System.Console.WriteLine();
-
-            foreach (var record in records) {
-
-                foreach (object value in record.Values)
-                    System.Console.Write($"{value.ToString().PadRight(padding)}");
+                //  Print the columns
+                foreach (string column in records[0].Keys) 
+                    System.Console.Write($"{column.PadRight(padding)}");
                 System.Console.WriteLine();
+
+                foreach (var record in records) {
+
+                    foreach (object value in record.Values)
+                        System.Console.Write($"{value.ToString().PadRight(padding)}");
+                    System.Console.WriteLine();
+                }
+
             }
         }
     
