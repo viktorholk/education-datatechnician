@@ -63,7 +63,7 @@ CREATE TRIGGER IF NOT EXISTS flags_deposit
         BEGIN
             IF NEW.amount > 25000
             THEN
-                INSERT INTO flags (flag_type_id, text) VALUES (1, CONCAT((
+                INSERT INTO flags (flag_type_id, text) VALUES (2, CONCAT((
                     SELECT users.login FROM users WHERE users.id = (SELECT accounts.user_id FROM accounts WHERE accounts.id = NEW.account_id)), 
                     " just deposited $",
                     NEW.amount));
