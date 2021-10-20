@@ -11,7 +11,7 @@ namespace ATM
 
         static void Main(string[] args)
         {
-            Database.Initialize(true);
+            Database.Initialize();
 
 
             // Print welcome message
