@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API;
 using API.Models;
+using IronPdf;
 
 namespace API.Controllers
 {
@@ -78,6 +79,26 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<Document>> PostDocument(Document document)
         {
+            string GetAttribute(string name)
+            {
+                return document.Atributes.First(i => i.Name == name).Value;
+            }
+
+            if (document.Atributes.Count == 0)
+            {
+                return BadRequest();
+            }
+
+            var html = @$"
+                    <h1>{GetAttribute("title")}</h1>
+                    <p>{GetAttribute("description")}</p>
+                ";
+
+            var Renderer = new IronPdf.ChromePdfRenderer();
+            using PdfDocument Pdf = Renderer.RenderHtmlAsPdf(html);
+
+            document.EncodedData = Convert.ToBase64String(Pdf.BinaryData);
+
             _context.Documents.Add(document);
             await _context.SaveChangesAsync();
 
