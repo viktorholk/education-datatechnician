@@ -1,0 +1,17 @@
+.container {
+  min-height: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container .panel {
+  display: flex;
+  flex-direction: column;
+
+  height:20em;
+  width:20em;
+
+  margin: 2em;
+}
