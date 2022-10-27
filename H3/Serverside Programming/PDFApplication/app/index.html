@@ -24,15 +24,56 @@
 
     <div class="container">
 
-        <div class="panel">
-            <label>Select a client</label>
-            <select id="clientSelector" class="form-select" aria-label="Default select example">
-                <option selected>No client selected</option>
-            </select>
-        </div>
 
-        <div class="panel">
 
+        <div class="row align-items-center mt-5">
+            <div class="col-4">
+
+                <h4>Select a client</h4>
+            
+                <select id="clientSelector" class="form-select">
+                </select>
+
+                <br>
+
+                <div id="myDocuments" class="disabled">
+                    <h4>My Documents</h4>
+            
+                    <select id="documentSelector" class="form-select">
+                    </select>
+                    <br>
+
+                    <div class="row text-center">
+                        <div class="col">
+                            <button class="btn btn-primary" id="deleteDocumentBtn">Delete Document</button>
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+
+                <h4>Create new document</h4>
+                <form id="documentForm">
+                    <label for="title">Title</label>
+                    <input class="form-control" type="text" name="title" id="title">
+                    <label for="description">Description</label>
+                    <textarea class="form-control" id="description" name="description" rows="4" cols="50"></textarea>
+                    <br>
+                    
+                    <div class="text-center">
+                        <input class=" btn btn-primary" type="submit" value="Create">
+                    </div>
+        
+                </form>
+
+
+            </div>
+
+            <div class="col">
+                <object id="pdfViewer" type="application/pdf">
+                    <div>No online PDF viewer installed</div>
+                </object>
+            </div>
         </div>
     </div>
     </div>

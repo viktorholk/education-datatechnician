@@ -17,30 +17,6 @@ namespace API.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.10");
 
-            modelBuilder.Entity("API.Models.AdditionalAtrribute", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("DocumentId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DocumentId");
-
-                    b.ToTable("AdditionalAtrribute");
-                });
-
             modelBuilder.Entity("API.Models.Client", b =>
                 {
                     b.Property<int>("Id")
@@ -53,12 +29,30 @@ namespace API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Clients");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Username = "Viktor"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Username = "Hugo"
+                        });
                 });
 
             modelBuilder.Entity("API.Models.Document", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Attributes")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("ClientId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("EncodedData")
@@ -69,19 +63,23 @@ namespace API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Documents");
-                });
+                    b.HasIndex("ClientId");
 
-            modelBuilder.Entity("API.Models.AdditionalAtrribute", b =>
-                {
-                    b.HasOne("API.Models.Document", null)
-                        .WithMany("Atributes")
-                        .HasForeignKey("DocumentId");
+                    b.ToTable("Documents");
                 });
 
             modelBuilder.Entity("API.Models.Document", b =>
                 {
-                    b.Navigation("Atributes");
+                    b.HasOne("API.Models.Client", "Client")
+                        .WithMany("Documents")
+                        .HasForeignKey("ClientId");
+
+                    b.Navigation("Client");
+                });
+
+            modelBuilder.Entity("API.Models.Client", b =>
+                {
+                    b.Navigation("Documents");
                 });
 #pragma warning restore 612, 618
         }

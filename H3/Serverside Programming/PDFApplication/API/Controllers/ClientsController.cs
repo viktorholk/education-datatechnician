@@ -25,7 +25,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Client>>> GetClients()
         {
-            return await _context.Clients.ToListAsync();
+            return await _context.Clients.Include(e => e.Documents).ToListAsync();
         }
 
         // GET: api/Clients/5

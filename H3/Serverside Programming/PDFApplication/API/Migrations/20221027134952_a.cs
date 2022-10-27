@@ -4,7 +4,7 @@
 
 namespace API.Migrations
 {
-    public partial class Initial : Migration
+    public partial class a : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -27,22 +27,44 @@ namespace API.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    ClientId = table.Column<int>(type: "INTEGER", nullable: true),
                     Title = table.Column<string>(type: "TEXT", nullable: true),
-                    EncodedData = table.Column<string>(type: "TEXT", nullable: true)
+                    EncodedData = table.Column<string>(type: "TEXT", nullable: true),
+                    Attributes = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Documents", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Documents_Clients_ClientId",
+                        column: x => x.ClientId,
+                        principalTable: "Clients",
+                        principalColumn: "Id");
                 });
+
+            migrationBuilder.InsertData(
+                table: "Clients",
+                columns: new[] { "Id", "Username" },
+                values: new object[] { 1, "Viktor" });
+
+            migrationBuilder.InsertData(
+                table: "Clients",
+                columns: new[] { "Id", "Username" },
+                values: new object[] { 2, "Hugo" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Documents_ClientId",
+                table: "Documents",
+                column: "ClientId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Clients");
+                name: "Documents");
 
             migrationBuilder.DropTable(
-                name: "Documents");
+                name: "Clients");
         }
     }
 }

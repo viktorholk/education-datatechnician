@@ -79,15 +79,26 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<Document>> PostDocument(Document document)
         {
-            string GetAttribute(string name)
-            {
-                return document.Atributes.First(i => i.Name == name).Value;
-            }
 
-            if (document.Atributes.Count == 0)
+            if (string.IsNullOrEmpty(document.Attributes))
             {
                 return BadRequest();
             }
+
+
+            string GetAttribute(string key)
+            {
+                Dictionary<string, string> attributes = new Dictionary<string, string>();
+
+                foreach (var atribute in document.Attributes.Split("$"))
+                {
+                    string[] keyValuePair = atribute.Split("=");
+                    attributes[keyValuePair[0]] = keyValuePair[1];
+                }
+
+                return attributes[key];
+            }
+
 
             var html = @$"
                     <h1>{GetAttribute("title")}</h1>
@@ -96,6 +107,8 @@ namespace API.Controllers
 
             var Renderer = new IronPdf.ChromePdfRenderer();
             using PdfDocument Pdf = Renderer.RenderHtmlAsPdf(html);
+
+            Pdf.MetaData.Title = GetAttribute("title");
 
             document.EncodedData = Convert.ToBase64String(Pdf.BinaryData);
 
