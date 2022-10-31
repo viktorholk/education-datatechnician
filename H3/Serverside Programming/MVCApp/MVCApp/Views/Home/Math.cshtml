@@ -1,0 +1,14 @@
+﻿@model MVCApp.Models.Calculation
+
+@{
+    ViewData["Title"] = "Math Page";
+}
+
+<div class="text-center">
+    <label>What is @Model.Values[0] @Model.Operator @Model.Values[1] </label>
+    <form asp-controller="Home" asp-action="MathValidate" method="post">
+        <label asp-for="Answer">Answer</label>
+        <input asp-for="Answer" class="form-control" />
+        <input type="submit" value="Submit" class="btn btn-primary"/>
+    </form>
+</div>
