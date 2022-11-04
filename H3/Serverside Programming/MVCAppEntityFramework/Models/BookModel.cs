@@ -9,21 +9,21 @@ public class BookModel
     [Required]
     [RegularExpression("^(?:ISBN(?:-13)?:?\\ )?(?=[0-9]{13}$|(?=(?:[0-9]+[-\\ ]){4})[-\\ 0-9]{17}$)97[89][-\\ ]?[0-9]{1,5}[-\\ ]?[0-9]+[-\\ ]?[0-9]+[-\\ ]?[0-9]$",
        ErrorMessage = "{0} must be a valid ISBN code")]
-    public string ISBN { get; set; }
+    public string? ISBN { get; set; }
 
     [Required]
     [StringLength(maximumLength: 50)]
-    public string Title { get; set; }
+    public string? Title { get; set; }
 
     [Required]
     [StringLength(maximumLength: 50)]
-    public string Author { get; set; }
+    public string? Author { get; set; }
 
     [Required]
-    public string Publisher { get; set; }
+    public string? Publisher { get; set; }
 
     [Required]
-    public string Description { get; set; }
+    public string? Description { get; set; }
 
     public string? Category { get; set; }
 

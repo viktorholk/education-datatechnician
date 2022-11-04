@@ -1,64 +1,65 @@
 ﻿@model MVCApp.Models.Calculation
 
 @{
-    ViewData["Title"] = "Math Page";
+ViewData["Title"] = "Math Page";
 }
-  <div class="tooltip">
-        Hover over me
-        <span class="tooltiptext">Tooltip text</span>
-    </div>
+<div class="tooltip">
+    Hover over me
+    <span class="tooltiptext">Tooltip text</span>
+</div>
 <div class="d-inline-flex flex-column text-center">
     <p>What is</p>
     <h1>@Model.Values[0] @Model.OperatorAsSymbol() @Model.Values[1] </h1>
+
     <form asp-controller="Home" asp-action="MathValidate">
-        <label asp-for="Answer">Answer</label>
+        <label  asp-for="Answer">Answer</label>
         <input asp-for="Answer" class="form-control" />
-            <br/>
-        <input type="submit" value="Submit" class="btn btn-primary"/>
+        <br />
+        <input type="submit" value="Submit" class="btn btn-primary" />
     </form>
-    <br/>
+    <br />
 
     <button onClick="showHints()" class="btn">Show Hints</button>
     <ul id="hints" style="display: none;">
 
     </ul>
 
-   
+
 </div>
 
 
 @section Scripts{
-    <script>
-        function shuffle(array) {
-            let currentIndex = array.length,  randomIndex;
+<script>
+    function shuffle(array) {
+        let currentIndex = array.length, randomIndex;
 
-            // While there remain elements to shuffle.
-            while (currentIndex != 0) {
+        // While there remain elements to shuffle.
+        while (currentIndex != 0) {
 
-                // Pick a remaining element.
-                randomIndex = Math.floor(Math.random() * currentIndex);
-                currentIndex--;
+            // Pick a remaining element.
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
 
-                // And swap it with the current element.
-                [array[currentIndex], array[randomIndex]] = [
-                    array[randomIndex], array[currentIndex]];
-            }
-
-            return array;
+            // And swap it with the current element.
+            [array[currentIndex], array[randomIndex]] = [
+                array[randomIndex], array[currentIndex]];
         }
 
-        function showHints(event) {
-            document.getElementById("hints").style.display = "block";
-        }
+        return array;
+    }
 
-        const result = @Model.Result();
+    function showHints(event) {
+        document.getElementById("hints").style.display = "block";
+    }
 
-        const hints = shuffle([result, result + 1, result - 1])
+    const result = @Model.Result();
 
-        for(const i of hints) {
+    const hints = shuffle([result, result + 1, result - 1])
 
-            document.getElementById('hints').innerHTML += `<li style="color: red">${i}</li>`;
-        }
+    for (const i of hints) {
 
-    </script>
+        document.getElementById('hints').innerHTML += `<li style="color: red">${i}</li>`;
+    }
+
+</script>
 }

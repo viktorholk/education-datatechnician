@@ -27,23 +27,45 @@ namespace MVCApp.Controllers
 
         public IActionResult Math()
         {
+            _logger.LogInformation("Math() action called");
             Random random = new Random();
             _calculation = new(new int[] { random.Next(1, 11), random.Next(1, 11) }, (Operator)random.Next(3));
+
+            _logger.LogDebug(_calculation.ToString());
 
             return View(_calculation);
         }
 
         public IActionResult MathValidate(IFormCollection keyValuePairs)
         {
-            if (_calculation is null)
-                RedirectToAction("Math");
 
-            int answer = Convert.ToInt32(keyValuePairs["Answer"]);
+            _logger.LogInformation("MathValidate() action called");
 
-            _calculation.Answer = answer;
+            //int answer = Convert.ToInt32(keyValuePairs["Answer"]);
 
-            _logger.LogInformation(_calculation.ToString());
+            //_calculation.Answer = answer;
 
+            //_logger.LogInformation(_calculation.ToString());
+
+            //return View(_calculation);
+
+
+            try
+            {
+                int answer = Convert.ToInt32(keyValuePairs["Answer"]);
+
+                _calculation.Answer = answer;
+
+
+                _logger.LogInformation(_calculation.ToString());
+
+                return View(_calculation);
+
+            } catch (NullReferenceException exception){
+                _logger.LogError(exception.Message);
+            }
+
+            _logger.LogDebug(_calculation.ToString());
             return View(_calculation);
         }
 

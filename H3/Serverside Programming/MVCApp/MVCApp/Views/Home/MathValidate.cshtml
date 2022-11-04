@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Validate Math";
 }
+@if (@Model != null) {
 
 <div class="text-center">
     @if (Model.Validate()){
@@ -16,3 +17,7 @@
 
 
 </div>
+} else {
+<h1 class="text-danger">Something went wrong</h1>
+}
+
