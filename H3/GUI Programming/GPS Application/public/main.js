@@ -38,7 +38,7 @@ function toggleLogin() {
   }
 }
 
-function updateClient() {
+function update() {
   if (isLoggedIn()) {
     navigator.geolocation.getCurrentPosition(function(position) {
       client.position.latitude = position.coords.latitude;
@@ -50,16 +50,12 @@ function updateClient() {
         $("#myPos").html(
           `Latitude: <b>${client.position.latitude}</b><br>Longitude: <b>${client.position.longitude}`
         );
-      });
-    });
-  }
-}
 
-function getClients() {
-  if (isLoggedIn()) {
-    request("GET", "clients").then((response) => {
-      clients = response;
-      $("#data").html(JSON.stringify(clients, null, 2));
+        request("GET", "clients").then((response) => {
+          clients = response;
+          $("#data").html(JSON.stringify(clients, null, 2));
+        });
+      });
     });
   }
 }
@@ -68,20 +64,19 @@ $(document).ready(function() {
   toggleLogin();
 
   setInterval(function() {
-    updateClient();
-    getClients();
+    update();
   }, 2500);
 
   $("#loginForm").submit(function(e) {
     client.identifier = $("#clientIdentifier").val();
 
-    updateClient();
+    update();
     toggleLogin();
     e.preventDefault();
   });
 
-  $('#logoutButton').click(function(e){
+  $("#logoutButton").click(function(e) {
     client.identifier = null;
     toggleLogin();
-  })
+  });
 });
