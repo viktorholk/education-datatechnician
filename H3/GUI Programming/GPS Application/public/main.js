@@ -1,5 +1,5 @@
 function request(type, endpoint, data = {}) {
-  url = "http://localhost:3000/" + endpoint;
+  url = "/" + endpoint;
 
   return new Promise((resolve, reject) => {
     $.ajax({
@@ -14,44 +14,74 @@ function request(type, endpoint, data = {}) {
   });
 }
 
-let client = null;
+let client = {
+  identifier: null,
+  position: {
+    latitude: null,
+    longitude: null,
+  },
+};
+
+function isLoggedIn() {
+  return client.identifier !== null;
+}
+
+let clients = [];
 
 function toggleLogin() {
-  if (client == null) {
-    $("#content").hide();
-    $("#loginForm").show();
-  } else {
+  if (isLoggedIn()) {
     $("#content").show();
     $("#loginForm").hide();
+  } else {
+    $("#content").hide();
+    $("#loginForm").show();
   }
 }
 
-function getGeoLocationPosition() {
-  navigator.geolocation.getCurrentPosition(updateGeoLocationPosition);
+function updateClient() {
+  if (isLoggedIn()) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      client.position.latitude = position.coords.latitude;
+      client.position.longitude = position.coords.longitude;
+
+      request("POST", "clients", client).then((_) => {
+        console.log(`Client: ${client.identifier} updated.`);
+
+        $("#myPos").html(
+          `Latitude: <b>${client.position.latitude}</b><br>Longitude: <b>${client.position.longitude}`
+        );
+      });
+    });
+  }
 }
 
-function updateGeoLocationPosition(position) { 
-  $('#coords').html(`Latitude: ${position.coords.latitude}<br/>Longitude: ${position.coords.longitude}`) 
+function getClients() {
+  if (isLoggedIn()) {
+    request("GET", "clients").then((response) => {
+      clients = response;
+      $("#data").html(JSON.stringify(clients, null, 2));
+    });
+  }
 }
 
 $(document).ready(function() {
   toggleLogin();
-  getGeoLocationPosition();
 
-  navigator.geolocation.getCurrentPosition(function(data) {
-    console.log(data);
-  });
+  setInterval(function() {
+    updateClient();
+    getClients();
+  }, 2500);
 
   $("#loginForm").submit(function(e) {
-    const clientIdentifier = $("#clientIdentifier").val();
+    client.identifier = $("#clientIdentifier").val();
 
-    request("POST", "clients", {
-      identifier: clientIdentifier,
-    }).then((response) => {
-      client = response;
-      toggleLogin();
-    });
-
+    updateClient();
+    toggleLogin();
     e.preventDefault();
   });
+
+  $('#logoutButton').click(function(e){
+    client.identifier = null;
+    toggleLogin();
+  })
 });

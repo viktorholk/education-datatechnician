@@ -1,5 +1,19 @@
 .container{
   display: flex;
+  flex-direction: column;
   justify-content: center;
   margin-top:1em;
+}
+
+
+#loginForm{
+  width:20rem;
+  margin: 0 auto;
+}
+
+#logoutButton{
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  margin:1em;
 }
