@@ -61,7 +61,7 @@ app.listen(port, () => {
       const lastUpdate = Date.now() - client.updated_at;
 
       if (lastUpdate >= 5000) {
-        console.log(`Client: ${client.identifier} removed`)
+        console.log(`Client: ${client.identifier} removed`);
         clients.splice(index, 1);
       }
     }
