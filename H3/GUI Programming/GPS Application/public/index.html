@@ -12,6 +12,8 @@
   <link href="style.css" rel="stylesheet" />
   <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
     crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"
+    integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -23,6 +25,9 @@
       <form class="form">
         <label for="client" class="form-label">Client</label>
         <input type="text" class="form-control" name="client" id="clientIdentifier" placeholder="Identifier" required />
+        <label for="colorPicker" class="form-label">Pick a color</label>
+        <input type="color" class="form-control form-control-color" name="colorPicker" id="colorPicker"
+          value="#0000ff" />
         <div class="d-flex justify-content-end mt-1">
           <input type="submit" class="btn btn-primary" value="Login" />
         </div>
@@ -32,15 +37,17 @@
     <div id="content">
       <div id="map">
         <canvas id="canvasMap" height="500" width="500"></canvas>
-        <label>Range</label>
-        <input type="range" min="1" max="5" value="1" class="slider" id="range" />
+        <label id="rangeText">Range: <b>1500</b>m</label>
+        <input type="range" min="100" max="10000" value="1500" class="slider" id="range-slider" list="range-snaps" />
+        <datalist id="range-snaps">
+        </datalist>
       </div>
 
       <h2 class="text-center text-secondary">My Location</h2>
       <p id="myPos"></p>
 
       <h3 class="text-center text-secondary">Connected Clients</h3>
-      <pre id="data"></pre>
+      <pre id="json-data"></pre>
       <button id="logoutButton" class="btn btn-secondary">Logout</button>
     </div>
   </div>

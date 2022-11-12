@@ -8,7 +8,24 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static("public"));
 
-let clients = [];
+let clients = [
+  {
+    identifier: "Alanya Pizza",
+    color: "red",
+    position: {
+      latitude: 56.16594770658154,
+      longitude: 9.535972537460449,
+    },
+  },
+  {
+    identifier: "Netto",
+    color: "Yellow",
+    position: {
+      latitude: 56.171221610042195,
+      longitude: 9.551184146300569,
+    },
+  },
+];
 
 function getClientIndex(identifier) {
   for (let i = 0; i < clients.length; i++) {
@@ -58,11 +75,13 @@ app.listen(port, () => {
 
     while (index--) {
       const client = clients[index];
-      const lastUpdate = Date.now() - client.updated_at;
+      if (client.updated_at) {
+        const lastUpdate = Date.now() - client.updated_at;
 
-      if (lastUpdate >= 5000) {
-        console.log(`Client: ${client.identifier} removed`);
-        clients.splice(index, 1);
+        if (lastUpdate >= 5000) {
+          console.log(`Client: ${client.identifier} removed`);
+          clients.splice(index, 1);
+        }
       }
     }
   }, 1000);
