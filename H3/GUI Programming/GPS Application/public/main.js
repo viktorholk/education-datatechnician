@@ -1,5 +1,5 @@
 let current = {
-  identifier: "Me",
+  identifier: null,
   color: "#0000ff",
   position: {
     latitude: 56.16501871755641,
@@ -7,32 +7,7 @@ let current = {
   },
 };
 
-let connections = [
-  {
-    identifier: "Me",
-    color: "#0000ff",
-    position: {
-      latitude: 56.16501871755641,
-      longitude: 9.537014096178655,
-    },
-  },
-  {
-    identifier: "Alanya Pizza",
-    color: "Red",
-    position: {
-      latitude: 56.16594770658154,
-      longitude: 9.535972537460449,
-    },
-  },
-  {
-    identifier: "Netto",
-    color: "Yellow",
-    position: {
-      latitude: 56.171221610042195,
-      longitude: 9.551184146300569,
-    },
-  },
-];
+let connections = [];
 let canvas = document.getElementById("canvasMap");
 let ctx = canvas.getContext("2d");
 
@@ -53,13 +28,20 @@ function getDistance(position) {
 }
 
 function convertPosition(range, position) {
+  //const x = canvas.width / 360 * (180 + position.longitude)
+  //const y = canvas.height / 180 * (90 - position.longitude)
+
   const x =
-    canvas.width / 2 + (current.position.longitude - position.longitude);
-  const y = canvas.height / 2 + (current.position.latitude - position.latitude);
+    canvas.width / 2 +
+    ((current.position.longitude - position.longitude) / 0.0025) *
+    (canvas.width / (range / 100));
+  const y =
+    canvas.height / 2 +
+    ((current.position.latitude - position.latitude) / 0.0025) *
+    (canvas.height / (range / 100));
 
   return { x: x, y: y };
 }
-
 function draw() {
   // Clear
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -95,7 +77,7 @@ function draw() {
     //  (client.position.latitude - current.position.latitude) / 0.00009;
 
     position = convertPosition(range, client.position);
-    console.log(position)
+    console.log(position);
 
     ctx.translate(position.x, position.y);
     ctx.beginPath();
@@ -180,11 +162,9 @@ function toggleLogin() {
 $(document).ready(function() {
   toggleLogin();
 
-  draw();
-
-  //setInterval(function() {
-  //  synchronize();
-  //}, 2500);
+  setInterval(function() {
+    synchronize();
+  }, 2500);
 
   $("#colorPicker").change(() => {
     current.color = $("#colorPicker").val();
@@ -196,17 +176,14 @@ $(document).ready(function() {
 
   $("#range-slider").on("input", () => {
     $("#rangeText").html(`Range: <b>${$("#range-slider").val()}</b>m`);
-  });
-
-  $("#range-slider").on("change", () => {
     draw();
   });
 
-  $("#loginForm").submit(() => {
+  $("#loginForm").submit(event => {
     current.identifier = $("#clientIdentifier").val();
 
     toggleLogin();
-    e.preventDefault();
+    event.preventDefault();
   });
 
   $("#logoutButton").click(() => {

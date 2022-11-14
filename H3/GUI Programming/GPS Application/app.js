@@ -10,23 +10,22 @@ app.use(express.static("public"));
 
 let clients = [
   {
-    identifier: "Alanya Pizza",
-    color: "red",
+    identifier: "Mercantec Erhvervsskole",
+    color: "Red",
     position: {
-      latitude: 56.16594770658154,
-      longitude: 9.535972537460449,
+      latitude: 56.46522397183195,
+      longitude: 9.41383465599167,
     },
   },
   {
-    identifier: "Netto",
-    color: "Yellow",
+    identifier: "Føtex",
+    color: "Blue",
     position: {
-      latitude: 56.171221610042195,
-      longitude: 9.551184146300569,
+      latitude: 56.45297078703165,
+      longitude: 9.406617115689468,
     },
   },
 ];
-
 function getClientIndex(identifier) {
   for (let i = 0; i < clients.length; i++) {
     if (clients[i].identifier === identifier) {

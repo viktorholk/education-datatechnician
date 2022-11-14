@@ -14,6 +14,8 @@
     crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"
     integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
+
+  <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
 </head>
 
 <body>
@@ -22,7 +24,7 @@
     <div id="loginForm">
       <h2 class="text-center text-secondary">Login</h2>
 
-      <form class="form">
+      <form class="form" id="test">
         <label for="client" class="form-label">Client</label>
         <input type="text" class="form-control" name="client" id="clientIdentifier" placeholder="Identifier" required />
         <label for="colorPicker" class="form-label">Pick a color</label>
@@ -38,9 +40,8 @@
       <div id="map">
         <canvas id="canvasMap" height="500" width="500"></canvas>
         <label id="rangeText">Range: <b>1500</b>m</label>
-        <input type="range" min="100" max="10000" value="1500" class="slider" id="range-slider" list="range-snaps" />
-        <datalist id="range-snaps">
-        </datalist>
+        <input type="range" min="100" max="10000" value="1100" class="slider" id="range-slider" list="range-snaps" />
+        <datalist id="range-snaps"> </datalist>
       </div>
 
       <h2 class="text-center text-secondary">My Location</h2>
