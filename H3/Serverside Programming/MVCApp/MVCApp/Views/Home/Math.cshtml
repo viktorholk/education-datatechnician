@@ -1,14 +1,65 @@
 ﻿@model MVCApp.Models.Calculation
 
 @{
-    ViewData["Title"] = "Math Page";
+ViewData["Title"] = "Math Page";
 }
-
-<div class="text-center">
-    <label>What is @Model.Values[0] @Model.Operator @Model.Values[1] </label>
-    <form asp-controller="Home" asp-action="MathValidate" method="post">
-        <label asp-for="Answer">Answer</label>
-        <input asp-for="Answer" class="form-control" />
-        <input type="submit" value="Submit" class="btn btn-primary"/>
-    </form>
+<div class="tooltip">
+    Hover over me
+    <span class="tooltiptext">Tooltip text</span>
 </div>
+<div class="d-inline-flex flex-column text-center">
+    <p>What is</p>
+    <h1>@Model.Values[0] @Model.OperatorAsSymbol() @Model.Values[1] </h1>
+
+    <form asp-controller="Home" asp-action="MathValidate">
+        <label  asp-for="Answer">Answer</label>
+        <input asp-for="Answer" class="form-control" />
+        <br />
+        <input type="submit" value="Submit" class="btn btn-primary" />
+    </form>
+    <br />
+
+    <button onClick="showHints()" class="btn">Show Hints</button>
+    <ul id="hints" style="display: none;">
+
+    </ul>
+
+
+</div>
+
+
+@section Scripts{
+<script>
+    function shuffle(array) {
+        let currentIndex = array.length, randomIndex;
+
+        // While there remain elements to shuffle.
+        while (currentIndex != 0) {
+
+            // Pick a remaining element.
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+
+            // And swap it with the current element.
+            [array[currentIndex], array[randomIndex]] = [
+                array[randomIndex], array[currentIndex]];
+        }
+
+        return array;
+    }
+
+    function showHints(event) {
+        document.getElementById("hints").style.display = "block";
+    }
+
+    const result = @Model.Result();
+
+    const hints = shuffle([result, result + 1, result - 1])
+
+    for (const i of hints) {
+
+        document.getElementById('hints').innerHTML += `<li style="color: red">${i}</li>`;
+    }
+
+</script>
+}

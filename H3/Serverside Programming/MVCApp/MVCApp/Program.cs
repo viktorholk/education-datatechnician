@@ -1,7 +1,14 @@
+using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+
+builder.Host.UseSerilog((ctx, lc) =>
+{
+    lc.ReadFrom.Configuration(ctx.Configuration);
+});
 
 var app = builder.Build();
 
@@ -15,7 +22,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseSerilogRequestLogging();
 app.UseRouting();
 
 app.UseAuthorization();

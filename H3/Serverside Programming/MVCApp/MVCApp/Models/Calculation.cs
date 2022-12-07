@@ -4,8 +4,7 @@
     {
         Addition,
         Subtraction,
-        Multiplication,
-        Division
+        Multiplication
     }
     public class Calculation
     {
@@ -20,23 +19,39 @@
 
             Values = values;
             Operator = @operator;
+
         }
 
         public int Result()
         {
             return Operator switch
             {
-                Operator.Addition       => Values[0] + Values[1],
-                Operator.Subtraction    => Values[0] - Values[1],
+                Operator.Addition => Values[0] + Values[1],
+                Operator.Subtraction => Values[0] - Values[1],
                 Operator.Multiplication => Values[0] * Values[1],
-                Operator.Division       => Values[0] / Values[1],
-                _                       => 0,
+                _ => 0,
             };
         }
 
         public bool Validate()
         {
             return Answer == Result();
+        }
+
+        public string OperatorAsSymbol()
+        {
+            return this.Operator switch
+            {
+                Operator.Addition => "+",
+                Operator.Subtraction => "-",
+                Operator.Multiplication => "*",
+                _ => ""
+            };
+        }
+
+        public override string ToString()
+        {
+            return $"{this.Values[0]} {this.Operator} {this.Values[1]} = {this.Answer}";
         }
     }
 }

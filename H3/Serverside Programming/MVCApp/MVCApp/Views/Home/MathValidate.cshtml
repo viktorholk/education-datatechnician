@@ -1,8 +1,23 @@
-﻿
+﻿@model MVCApp.Models.Calculation
 @{
     ViewData["Title"] = "Validate Math";
 }
+@if (@Model != null) {
 
 <div class="text-center">
+    @if (Model.Validate()){
+    <h1 class="text-success">Correct Answer!</h1>
+    <p>You answered @Model.Answer</p>
+    } else {
+    <h1 class="text-danger">Incorrect Answer</h1>
+    <p>You answered @Model.Answer The correct answer was @Model.Result()</p>
+    }
+
+  <input type="button" class="btn btn-primary" value="Try again" onclick="window.location= '@Url.Action( "Math", "Home")'" />
+
 
 </div>
+} else {
+<h1 class="text-danger">Something went wrong</h1>
+}
+
