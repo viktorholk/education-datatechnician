@@ -1,0 +1,1 @@
+extern int ucs_init(int mode);

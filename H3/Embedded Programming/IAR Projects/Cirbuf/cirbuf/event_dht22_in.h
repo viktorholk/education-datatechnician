@@ -1,0 +1,1 @@
+extern void event_dht22_in(void);

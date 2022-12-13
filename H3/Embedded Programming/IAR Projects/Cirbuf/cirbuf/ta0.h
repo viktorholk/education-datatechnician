@@ -1,0 +1,1 @@
+extern void ta0_init(int time, char *event);

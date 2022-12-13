@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <fileVersion>4</fileVersion>
+    <fileChecksum>711063740</fileChecksum>
+    <configuration>
+        <name>Debug</name>
+        <outputs>
+            <file>$PROJ_DIR$\cirbuf\dht22.c</file>
+            <file>$PROJ_DIR$\cirbuf\event_console_in.c</file>
+            <file>$PROJ_DIR$\cirbuf\event_console_in.h</file>
+            <file>$PROJ_DIR$\cirbuf\event_timer_ta0.c</file>
+            <file>$PROJ_DIR$\cirbuf\dht22.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\event_console_in.r43</file>
+            <file>$PROJ_DIR$\Debug\Obj\ht_cirbuf.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\UCA1_uart_intr.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\ht_cirbuf.r43</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\xencoding_limits.h</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\yvals.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\cirbuf.pbd</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\ystdio.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\UCS.r43</file>
+            <file>$PROJ_DIR$\Debug\Obj\UCA1_uart_intr.r43</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\ycheck.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\ta0.r43</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\ysizet.h</file>
+            <file>$TOOLKIT_DIR$\lib\dlib\dl430xlsfn.h</file>
+            <file>$PROJ_DIR$\Debug\Exe\cirbuf.d43</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\stdio.h</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\DLib_Defaults.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\event_timer_ta0.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\UCS.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\main.xcl</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\DLib_Threads.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\event_timer_ta0.r43</file>
+            <file>$PROJ_DIR$\Debug\Obj\event_console_in.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\ta0.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\main.r43</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\DLib_Product.h</file>
+            <file>$PROJ_DIR$\cirbuf\main.c</file>
+            <file>$TOOLKIT_DIR$\lib\dlib\dl430xlsfn.r43</file>
+            <file>$PROJ_DIR$\Debug\Obj\UCS.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\event_timer_ta0.__cstat.et</file>
+            <file>$PROJ_DIR$\cirbuf\UCS.h</file>
+            <file>$TOOLKIT_DIR$\config\linker\lnk430f5529.xcl</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\stdarg.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\ht_cirbuf.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\main.__cstat.et</file>
+            <file>$TOOLKIT_DIR$\inc\intrinsics.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\ta0.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\UCA1_uart_intr.__cstat.et</file>
+            <file>$PROJ_DIR$\cirbuf\UCS.c</file>
+            <file>$TOOLKIT_DIR$\inc\in430.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\dht22.xcl</file>
+            <file>$PROJ_DIR$\cirbuf\ht_cirbuf.c</file>
+            <file>$PROJ_DIR$\cirbuf\ht_cirbuf.h</file>
+            <file>$TOOLKIT_DIR$\inc\msp430.h</file>
+            <file>$TOOLKIT_DIR$\inc\dlib\c\yfuns.h</file>
+            <file>$TOOLKIT_DIR$\inc\msp430f5529.h</file>
+            <file>$PROJ_DIR$\cirbuf\ta0.c</file>
+            <file>$TOOLKIT_DIR$\config\linker\multiplier32.xcl</file>
+            <file>$PROJ_DIR$\Debug\List\cirbuf.map</file>
+            <file>$PROJ_DIR$\Debug\Obj\dht22.r43</file>
+            <file>$TOOLKIT_DIR$\inc\io430f5529.h</file>
+            <file>$TOOLKIT_DIR$\inc\io430.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\event_console_in.__cstat.et</file>
+            <file>$PROJ_DIR$\cirbuf\ta0.h</file>
+            <file>$PROJ_DIR$\cirbuf\event_timer_ta0.h</file>
+            <file>$PROJ_DIR$\cirbuf\UCA1_uart_intr.c</file>
+            <file>$PROJ_DIR$\cirbuf\UCA1_uart_intr.h</file>
+            <file>$PROJ_DIR$\Debug\Exe\cirbuf.ulp</file>
+            <file>$PROJ_DIR$\cirbuf\event_dht22_in.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\event_dht22_in.r43</file>
+            <file>$PROJ_DIR$\Debug\Obj\event_dht22_in.xcl</file>
+            <file>$PROJ_DIR$\cirbuf\event_dhtt22_in.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\event_dht22_in.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\dht22.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\event_dhtt22_in.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\event_dhtt22_in.r43</file>
+            <file>$PROJ_DIR$\cirbuf\event_dht22_in.h</file>
+        </outputs>
+        <file>
+            <name>[ROOT_NODE]</name>
+            <outputs>
+                <tool>
+                    <name>XLINK</name>
+                    <file> 19 53</file>
+                </tool>
+                <tool>
+                    <name>ULP430</name>
+                    <file> 62</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\cirbuf\dht22.c</name>
+            <outputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 54</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 45</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 68</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 56 55 40 4 20 15 10 21 18 30 9 25 17 12</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\cirbuf\event_console_in.c</name>
+            <outputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 5</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 27</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 57</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 20 15 10 21 18 30 9 25 17 12 61 47 2</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\cirbuf\event_timer_ta0.c</name>
+            <outputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 26</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 22</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 34</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 20 15 10 21 18 30 9 25 17 12 61 47</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Debug\Exe\cirbuf.d43</name>
+            <outputs>
+                <tool>
+                    <name>XLINK</name>
+                    <file> 53</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>XLINK</name>
+                    <file> 36 52 54 5 64 26 8 29 16 14 13 32</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\cirbuf\main.c</name>
+            <outputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 29</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 24</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 39</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 56 55 40 20 15 10 21 18 30 9 25 17 12 61 47 58 35 59 2 4</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\cirbuf\UCS.c</name>
+            <outputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 13</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 23</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 33</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 48 50 44 40</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\cirbuf\ht_cirbuf.c</name>
+            <outputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 8</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 6</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 38</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 47</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\cirbuf\ta0.c</name>
+            <outputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 16</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 28</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 41</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 56 55 40</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\cirbuf\UCA1_uart_intr.c</name>
+            <outputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 14</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 7</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 42</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 48 50 44 40 20 15 10 21 18 30 9 25 17 12 37 49 61 47</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\cirbuf\event_dht22_in.c</name>
+            <outputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 64</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 65</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 67</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 4</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\cirbuf\event_dhtt22_in.c</name>
+            <outputs>
+                <tool>
+                    <name>ICC430</name>
+                    <file> 70</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 69</file>
+                </tool>
+            </outputs>
+        </file>
+    </configuration>
+    <configuration>
+        <name>Release</name>
+        <outputs />
+        <forcedrebuild>
+            <name>[MULTI_TOOL]</name>
+            <tool>XLINK</tool>
+        </forcedrebuild>
+    </configuration>
+</project>
