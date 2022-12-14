@@ -1,31 +1,91 @@
 #include <stdint.h>
 #include <stdio.h>
 
-void printbits(unsigned int v) {
-  for (; v; v >>= 1)
-    putchar('0' + (v & 1));
+typedef struct {
+  unsigned int humidity;
+  signed int temperature;
+} dht22_t;
 
+int dht22_convert(unsigned char *dht22arr, dht22_t *dht22) {
+
+  for (int i = 0; i < 40; i++) {
+    printf("%x", dht22arr[i]);
+    if ((i + 1) % 8 == 0)
+      printf(" ");
+  }
   printf("\n");
-}
-
-int main(void) {
-
-  int bits[] = {0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0,
-                0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0};
-
   // Define an array to hold the resulting bytes
-  unsigned char bytes[5] = {0x00, 0x00, 0x00, 0x00, 0x00};
+  unsigned char bytes[5];
 
   // Iterate over the bytes in the array
   for (int i = 0; i < 5; i++) {
     for (int j = 0; j < 8; j++) {
-      bytes[i] |= (bits[8 * i + (7 - j)] << j);
+      bytes[i] |= (dht22arr[8 * i + (7 - j)] << j);
     }
   }
 
   // Print the resulting bytes
   for (int i = 0; i < 5; i++) {
     printf("%d ", bytes[i]);
+  }
+
+  if (!(bytes[0] + bytes[1] + bytes[2] + bytes[3] == bytes[4]))
+    return -2;
+
+  printf("\n");
+
+  // byte[0] = 0000 0010
+  // byte[1] = 1001 0010
+  // byte[0] << 8 = 0010 0000 0000
+  // byte[0] << 8 | bytes[1] = 0010 0000 0000 | 1001 0010 = 0010 1001 0010
+  dht22->humidity = ((bytes[0] << 8) | bytes[1]) / 10;
+
+  // Check if minus flag is present
+  signed int temperature;
+  int negativeTemperatureFlag = 0;
+
+  // If the 8 bit in the temperature byte is present it is a flag that the
+  // temperature is negative
+  if (bytes[2] & 0x80) {
+    negativeTemperatureFlag = 1;
+
+    // Clear flag
+    bytes[2] &= ~0x80;
+  }
+
+  temperature = ((bytes[2] << 8) | bytes[3]) / 10;
+
+  // Convert to negative number if the flag has been set
+  if (negativeTemperatureFlag)
+    temperature = ~(temperature) + 1;
+
+  dht22->temperature = temperature;
+  return 0;
+}
+
+int main(void) {
+
+  // unsigned char bitArr[] = {0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0,
+  //                           1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+  //                           1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0};
+
+  unsigned char bitArr[] = {0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1,
+                            0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1,
+                            0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0};
+
+  dht22_t data;
+
+  int status = dht22_convert(bitArr, &data);
+
+  switch (status) {
+  case 0:
+    printf("Humidity: %d\n", data.humidity);
+    printf("Temperature: %d\n", data.temperature);
+    break;
+  case -2:
+    printf("Parity checksum mismatch!");
+
+    break;
   }
 
   return 0;
