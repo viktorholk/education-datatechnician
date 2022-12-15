@@ -14,16 +14,16 @@ int dht22_convert(unsigned int *dht22arr, dht22_t *dht22) {
   // Scrap the first 3 readings
   const int offset = 2;
 
-  for (int i = offset; i < 40 + offset + 1; i++) {
+  for (int i = offset; i < 42; i++) {
     const int difference = dht22arr[i + 1] - dht22arr[i];
-    // printf("%d-%d = %d\n", dht22arr[i + 1], dht22arr[i], difference);
     int bit = (difference < 110) ? 0 : 1;
 
     bit_arr[i - offset] = bit;
 
-    printf("%d", bit);
+    printf("%-2d %d-%d = %-3d = %d\n\r", i - offset + 1, dht22arr[i + 1],
+           dht22arr[i], difference, bit);
   }
-  printf("\n");
+  printf("\n\r");
 
   for (int i = 0; i < 40; i++) {
     printf("%d", bit_arr[i]);
@@ -31,7 +31,7 @@ int dht22_convert(unsigned int *dht22arr, dht22_t *dht22) {
       printf(" ");
   }
 
-  printf("\n");
+  printf("\n\r");
   // Define an array to hold the resulting bytes
   unsigned char bytes[5];
 
@@ -46,12 +46,12 @@ int dht22_convert(unsigned int *dht22arr, dht22_t *dht22) {
   for (int i = 0; i < 5; i++) {
     printf("%-9d", bytes[i]);
   }
-  printf("\n");
+  printf("\n\r");
 
-  // if (!(bytes[0] + bytes[1] + bytes[2] + bytes[3] == bytes[4]))
-  //   return -2;
+  if (!(bytes[0] + bytes[1] + bytes[2] + bytes[3] == bytes[4]))
+    return -2;
 
-  printf("\n");
+  printf("\n\r");
 
   // byte[0] = 0000 0010
   // byte[1] = 1001 0010
@@ -85,10 +85,10 @@ int dht22_convert(unsigned int *dht22arr, dht22_t *dht22) {
 int main(void) {
 
   unsigned int reading[] = {
-      1001, 1026, 1186, 1266, 1346, 1426, 1506, 1586, 1667, 1747, 1873,
-      2014, 2142, 2222, 2350, 2478, 2558, 2685, 2764, 2858, 2938, 3018,
-      3098, 3178, 3258, 3339, 3418, 3559, 3686, 3767, 3894, 3974, 4102,
-      4182, 4261, 4399, 4479, 4607, 4687, 4815, 4943, 5070, 5197};
+      1001, 1026, 1186, 1266, 1346, 1426, 1507, 1587, 1667, 1794, 1874,
+      1967, 2047, 2127, 2207, 2335, 2463, 2590, 2717, 2811, 2891, 2971,
+      3051, 3131, 3211, 3291, 3370, 3512, 3639, 3719, 3799, 3927, 4007,
+      4087, 4214, 4352, 4480, 4560, 4688, 4815, 4895, 5023, 5102};
 
   // unsigned char bitArr[] = {0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0,
   //                           1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
@@ -100,8 +100,8 @@ int main(void) {
 
   switch (status) {
   case 0:
-    printf("Humidity: %d\n", data.humidity);
-    printf("Temperature: %d\n", data.temperature);
+    printf("Humidity: %d\n\r", data.humidity);
+    printf("Temperature: %d\n\r", data.temperature);
     break;
   case -2:
     printf("Parity checksum mismatch!");
