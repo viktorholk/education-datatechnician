@@ -127,28 +127,26 @@ void dht22_read(unsigned int *dht22_array, char *event) {
 // Return 0 on succes
 // Return -1 to indicate invalid timer value or other error from ISR
 // return -2 to indicate parity error
-signed int dht22_convert(unsigned int *dht22arr, dht22_t *dht22) {
-
+int dht22_convert(unsigned int *dht22arr, dht22_t *dht22) {
   // Convert to bit array
-  unsigned char bit_arr[40];
+  unsigned int bit_arr[40];
 
-  //Print all readings
-  for (int i = 0; i < 43; i++)
-  {
+  for (int i = 0; i < 43; i++) {
     printf("%d ", dht22arr[i]);
   }
-           printf("\n\r");
-  
+  printf("\n\r");
+
   // Scrap the first 3 readings
   const int offset = 2;
 
   for (int i = offset; i < 42; i++) {
-    const char difference = dht22arr[i + 1] - dht22arr[i];
-    char bit = (difference < 110) ? 0 : 1;
+    const int difference = dht22arr[i + 1] - dht22arr[i];
+
+    int bit = (difference < 110) ? 0 : 1;
 
     bit_arr[i - offset] = bit;
 
-    printf("%-2d %d-%d = %-3d = %d\n\r", i - offset + 1, dht22arr[i + 1],
+    printf("%-2d %d-%d = %-3d = %d\n\r", i - offset, dht22arr[i + 1],
            dht22arr[i], difference, bit);
   }
   printf("\n\r");
@@ -156,27 +154,30 @@ signed int dht22_convert(unsigned int *dht22arr, dht22_t *dht22) {
   for (int i = 0; i < 40; i++) {
     printf("%d", bit_arr[i]);
     if ((i + 1) % 8 == 0)
-      printf(" ");
+      printf(" | ");
   }
 
   printf("\n\r");
   // Define an array to hold the resulting bytes
-  unsigned char bytes[5] = {0x00, 0x00, 0x00, 0x00, 0x00};
+  unsigned char bytes[5];
 
   // Iterate over the bytes in the array
   for (int i = 0; i < 5; i++) {
-    for (int j = 0; j < 8; j++) {
-      bytes[i] |= (char)(bit_arr[8 * i + (7 - j)] << j);
+    for (int j = 0x80, k = 0; j > 0; j = j >> 1, k++) {
+      if (bit_arr[(i * 8) + k] == 0) {
+        bytes[i] &= ~j;
+      } else
+        bytes[i] |= j;
     }
   }
 
   // Print the resulting bytes
   for (int i = 0; i < 5; i++) {
-    printf("%-9d", bytes[i]);
+    printf("%-11d", bytes[i]);
   }
   printf("\n\r");
 
-  if (!(bytes[0] + bytes[1] + bytes[2] + bytes[3] == bytes[4]))
+  if ((unsigned char)(bytes[0] + bytes[1] + bytes[2] + bytes[3]) != bytes[4])
     return -2;
 
   printf("\n\r");
@@ -207,6 +208,31 @@ signed int dht22_convert(unsigned int *dht22arr, dht22_t *dht22) {
     temperature = ~(temperature) + 1;
 
   dht22->temperature = temperature;
+
+  for (int i = 0; i < 2; i++) {
+
+    if (!i)
+      printf("Calculate Humidity:    ");
+    else
+      printf("Calculate Temperature: ");
+
+    for (int j = 0; j < 16; j++) {
+      printf("%d", bit_arr[i * 16 + j]);
+      if ((j + 1) % 8 == 0)
+        printf(" ");
+    }
+    if (!i) {
+      printf("= %xH = %d / 10 = %d", ((bytes[0] << 8) | bytes[1]),
+             ((bytes[0] << 8) | bytes[1]), ((bytes[0] << 8) | bytes[1]) / 10);
+    } else
+      printf("= %xH = %d / 10 = %d", ((bytes[2] << 8) | bytes[3]),
+             ((bytes[2] << 8) | bytes[3]), ((bytes[2] << 8) | bytes[3]) / 10);
+
+    printf("\n\r");
+  }
+
+  printf("\n\r");
+
   return 0;
 }
 

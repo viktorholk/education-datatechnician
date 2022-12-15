@@ -62,16 +62,14 @@ int main(void) {
   
   switch (status) {
   case 0:
-    printf("Humidity: %d\n\r", data.humidity);
-    printf("Temperature: %d\n\r", data.temperature);
+    printf("Humidity:                    %d%\n\r", data.humidity);
+    printf("Temperature(Degree Celsius): %d\n\r", data.temperature);
     break;
   case -2:
     printf("Parity checksum mismatch!");
+
     break;
-  default:
-    printf("Something went wrong");
-    break;
-  }  
+  }
   
   while(1);
   
